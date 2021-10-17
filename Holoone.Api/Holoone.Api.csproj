@@ -54,7 +54,8 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Helpers\Constants\RequestConstants.cs" />
-    <Compile Include="Helpers\PerBaseUrlFlurlClientFactory.cs" />
+    <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\MediaFile.cs" />
     <Compile Include="Services\IResponse.cs" />
     <Compile Include="Models\UserPermissions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

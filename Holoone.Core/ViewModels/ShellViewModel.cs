@@ -4,12 +4,15 @@ using Holoone.Core.Services.Interfaces;
 using Holoone.Core.ViewModels;
 using Holoone.Core.ViewModels.Home;
 using Holoone.Core.ViewModels.Login;
+using Holoone.Core.ViewModels.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media;
 
 namespace Holoone.Core.ViewModels
 {
@@ -48,7 +51,41 @@ namespace Holoone.Core.ViewModels
             await base.OnActivateAsync(cancellationToken);
         }
 
-        private async Task ShowHomePage() => await NavigationService.GoTo<HomeViewModel>();
+        public SolidColorBrush _theme = Application.Current.Resources["GrayDark1Color"] as SolidColorBrush;
+        public SolidColorBrush Theme
+        {
+            get => _theme;
+            set { _theme = value; NotifyOfPropertyChange(nameof(Theme)); }
+        }
+
+        public string _themeName = "Dark Theme";
+        public string ThemeName
+        {
+            get => _themeName;
+            set { _themeName = value; NotifyOfPropertyChange(nameof(ThemeName)); }
+        }
+
+        public void ToggleTheme()
+        {
+            if (Theme.Color == (Application.Current.Resources["GrayDark1Color"] as SolidColorBrush).Color)
+            {
+                Theme = Application.Current.Resources["WhiteColor"] as SolidColorBrush;
+                ThemeName = "White Theme";
+            }
+            else
+            {
+                Theme = Application.Current.Resources["GrayDark1Color"] as SolidColorBrush;
+                ThemeName = "Dark Theme";
+            }
+        }
+
+        public async Task ShowHomePage() => await NavigationService.GoTo<HomeViewModel>();
+
+        public async Task ShowViewPage() => await NavigationService.GoTo<HomeViewModel>();
+
+        public async Task ShowSpherePage() => await NavigationService.GoTo<HomeViewModel>();
+
+        public async Task ShowSettingsPage() => await NavigationService.GoTo<SettingsViewModel>();
 
         //public async Task ShowHomeScreenAsync()
         //{

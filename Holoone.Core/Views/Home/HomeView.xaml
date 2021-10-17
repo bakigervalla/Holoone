@@ -7,17 +7,24 @@
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="Red">
-        <TextBlock Text="Hello one" FontWeight="ExtraBold" FontSize="18"/>
 
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+    <Grid Style="{StaticResource HomeLevelButtons}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--<Image Opacity="0.1" Margin="0,40" Stretch="Uniform"
+            Source="pack://application:,,,/Holoone.Core;component/Resources/Images/holo_one_logo.png" />-->
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center">
             <!--<Button Content="Login"
                     x:Name="btnMinus" 
                     cal:Message.Attach="[Event Click]=[Action Minus(left.Text, right.Text):result.Text]" />-->
 
             <Button x:Name="ShowLoginPage">Login</Button>
-            <Button>Anchors</Button>
-            <Button>Export</Button>
+            <Button Margin="10 0">Anchors</Button>
+            <Button x:Name="ShowExportPage">Export</Button>
         </StackPanel>
 
     </Grid>

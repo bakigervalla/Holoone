@@ -5,12 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"
         xmlns:local="clr-namespace:Holoone.Core"
-        mc:Ignorable="d"
-        Title="Holo-one Navisworks plugin" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+        xmlns:cont="clr-namespace:Holoone.Core.Views.Controls"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d" Background="{Binding Theme, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+        Title=" " Height="450" Width="800" WindowStartupLocation="CenterScreen">
+
+    <!--Background="{StaticResource PurpleDarkColor}"-->
+    <!--<Window.Resources>
+        <ResourceDictionary Source="pack://application:,,,/Holoone.Core;component/Resources/Styles/App.xaml" />
+    </Window.Resources>-->
+
+    <Window.Icon>
+        <BitmapImage UriSource="pack://application:,,,/Holoone.Core;component/Resources/Images/holo_one_logo.png" />
+    </Window.Icon>
 
     <Grid MinHeight="200">
-        <ContentControl
-            cal:View.Model="{Binding NavigationService.ActiveItem}" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <md:Card 
+            md:ShadowAssist.ShadowDepth="Depth1"
+            md:ShadowAssist.ShadowEdges="Bottom">
+            <cont:MenuControl />
+        </md:Card>
+
+        <Grid Grid.Row="1">
+            <Grid.Background>
+                <ImageBrush Stretch="Uniform" 
+                            ImageSource="pack://application:,,,/Holoone.Core;component/Resources/Images/holo_one_logo.png"
+                            Opacity="0.05"
+                            />
+            </Grid.Background>
+            
+            <ContentControl cal:View.Model="{Binding NavigationService.ActiveItem}" />
+
+
+            
+        </Grid>
     </Grid>
 
 </Window>

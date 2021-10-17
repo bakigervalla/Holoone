@@ -2,14 +2,46 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Holoone.Core"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
              >
     <Application.Resources>
         <ResourceDictionary>
+
+            <!-- Custom Generic Styles -->
+            <!--<Style TargetType="Grid">
+                <Setter Property="Background" Value="Red" />
+            </Style>-->
+
+            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
+                <Setter Property="Foreground" Value="{StaticResource WhiteColor}" />
+            </Style>
+            <Style x:Key="HyperlinkButton" TargetType="Button">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <ContentPresenter/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
                     <local:Bootstrapper x:Key="bootstrapper"/>
                 </ResourceDictionary>
+                <!--<ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.Grey.Primary.xaml" />-->
+                <!--<md:BundledTheme BaseTheme="Light" PrimaryColor="Aqua" SecondaryColor="DarkGreen" />-->
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <!-- Custom Styles -->
+                <ResourceDictionary Source="pack://application:,,,/Holoone.Core;component/Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Holoone.Core;component/Resources/Styles/Menu.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Holoone.Core;component/Resources/Styles/Buttons.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
+
     </Application.Resources>
+
+
 </Application>

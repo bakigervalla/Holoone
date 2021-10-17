@@ -7,6 +7,7 @@ using Holoone.Core.Services.Interfaces;
 using Holoone.Core.ViewModels;
 using Holoone.Core.ViewModels.Home;
 using Holoone.Core.ViewModels.Login;
+using Holoone.Core.ViewModels.Settings;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -34,6 +35,7 @@ namespace Holoone.Core
 
             _container.PerRequest<ShellViewModel>();
             _container.PerRequest<HomeViewModel>();
+            _container.PerRequest<SettingsViewModel>();
             _container.PerRequest<LoginViewModel>();
             _container.PerRequest<LoginSphereMicrosoftViewModel>();
             _container.PerRequest<LoginThinkRealityViewModel>();

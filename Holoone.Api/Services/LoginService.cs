@@ -17,15 +17,15 @@ namespace Holoone.Api.Services
 
         private readonly IFlurlClient _flurlClient;
 
-        private static string _githubUsername;
-        private static string _githubPassword;
-        private static string _githubToken;
+        private static string _usUrl;
+        private static string _euUrl;
+        private static string _chUrl;
 
         public LoginService(IFlurlClientFactory flurlClientFac)
         {
-            _githubUsername = Environment.GetEnvironmentVariable("GITHUB_USERNAME");
-            _githubPassword = Environment.GetEnvironmentVariable("GITHUB_PASS");
-            _githubToken = Environment.GetEnvironmentVariable("GITHUB_TOKEN");
+            _usUrl = Environment.GetEnvironmentVariable("US_URL");
+            _euUrl = Environment.GetEnvironmentVariable("EU_URL");
+            _chUrl = Environment.GetEnvironmentVariable("CH_URL");
 
             _flurlClient = flurlClientFac.Get(RequestConstants.BaseUrl);
         }
@@ -63,7 +63,7 @@ namespace Holoone.Api.Services
                     .WithHeader(RequestConstants.UserAgent, RequestConstants.UserAgentValue)
                     .SetQueryParams(new { userId = 1 })
                     //.WithBasicAuth(_githubUsername, _githubPassword) //alternative way of logging in (basic auth)
-                    .WithOAuthBearerToken(_githubToken)
+                    .WithOAuthBearerToken(_euUrl)
                     .GetJsonAsync<IEnumerable<UserPermissions>>();
         }
 

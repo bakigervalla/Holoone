@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Holoone.Api.Models;
 using Holoone.Core.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,17 @@ namespace Holoone.Core.ViewModels
             NavigationService = navigationService;
         }
 
+        public LoginCredentials LoginCredentials { get; set; }
+
+        public EmployeeDisplay EmployeeDisplay { get; set; }
+
+        public string UserFullName { get =>
+                LoginCredentials != null
+                ? $"Welcome {LoginCredentials.Username}"
+                    : EmployeeDisplay != null
+                      ? $"Welcome {EmployeeDisplay.FirstName} {EmployeeDisplay.LastName}"
+                      : "Welcome";
+        }
 
     }
 }
