@@ -33,11 +33,13 @@
                 <!--<md:BundledTheme BaseTheme="Light" PrimaryColor="Aqua" SecondaryColor="DarkGreen" />-->
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.LightBlue.xaml" />
+                
                 <!-- Custom Styles -->
                 <ResourceDictionary Source="pack://application:,,,/Holoone.Core;component/Resources/Styles/Colors.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/Holoone.Core;component/Resources/Styles/Menu.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Holoone.Core;component/Resources/Styles/Buttons.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Holoone.Core;component/Resources/Styles/ScrollBar.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="pack://application:,,,/Holoone.Core;component/Resources/Styles/ToolTip.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 

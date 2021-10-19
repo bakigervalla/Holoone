@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
                     >
 
     <SolidColorBrush x:Key="GrayDark2Color" Color="#21212d" />
@@ -15,5 +16,7 @@
     <SolidColorBrush x:Key="WhiteColor" Color="#FFFFFF" />
     <SolidColorBrush x:Key="WhiteSmoke" Color="#EFEFEF" />
     <SolidColorBrush x:Key="TransaprentColor" Color="Transparent" />
+    <SolidColorBrush x:Key="MaterialDesignBody" Color="#DD000000" po:Freeze="True" />
+    <SolidColorBrush x:Key="MaterialDesignCheckBoxDisabled" Color="#FFBDBDBD" po:Freeze="True" />
 
 </ResourceDictionary>

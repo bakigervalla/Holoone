@@ -51,6 +51,8 @@ namespace Holoone.Core.ViewModels
             await base.OnActivateAsync(cancellationToken);
         }
 
+        public bool IsUserLoggedIn { get; set; }
+
         public SolidColorBrush _theme = Application.Current.Resources["GrayDark1Color"] as SolidColorBrush;
         public SolidColorBrush Theme
         {

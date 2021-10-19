@@ -10,17 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WPFSpark;
 
-namespace Holoone.Core.Views
+namespace Holoone.Core.Views.Controls
 {
     /// <summary>
-    /// Interaction logic for ShellView.xaml
+    /// Interaction logic for Header.xaml
     /// </summary>
-    public partial class ShellView : SparkWindow
+    public partial class Header : UserControl
     {
-        public ShellView()
+        public Header()
         {
             InitializeComponent();
         }
