@@ -12,19 +12,6 @@
                 <Setter Property="Background" Value="Red" />
             </Style>-->
 
-            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
-                <Setter Property="Foreground" Value="{StaticResource WhiteColor}" />
-            </Style>
-            <Style x:Key="HyperlinkButton" TargetType="Button">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Button">
-                            <ContentPresenter/>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
                     <local:Bootstrapper x:Key="bootstrapper"/>
@@ -41,6 +28,9 @@
                 <ResourceDictionary Source="pack://application:,,,/Holoone.Core;component/Resources/Styles/ScrollBar.xaml"></ResourceDictionary>
                 <ResourceDictionary Source="pack://application:,,,/Holoone.Core;component/Resources/Styles/ToolTip.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
+
+
+            
         </ResourceDictionary>
 
     </Application.Resources>

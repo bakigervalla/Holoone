@@ -18,9 +18,9 @@ namespace Holoone.Core.Views.Login
     /// <summary>
     /// Interaction logic for LoginSphereMicrosoftView.xaml
     /// </summary>
-    public partial class LoginSphereMicrosoftView : UserControl
+    public partial class LoginSphereView : UserControl
     {
-        public LoginSphereMicrosoftView()
+        public LoginSphereView()
         {
             InitializeComponent();
         }

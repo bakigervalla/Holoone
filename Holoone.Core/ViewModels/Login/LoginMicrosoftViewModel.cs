@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Holoone.Core.ViewModels.Login
 {
-    public class LoginSphereMicrosoftViewModel : BaseViewModel
+    public class LoginMicrosoftViewModel : BaseViewModel
     {
         private readonly ILoginService _apiLoginService;
 
-        public LoginSphereMicrosoftViewModel(
+        public LoginMicrosoftViewModel(
             IHoloNavigationService navigationService,
             ILoginService apiLoginService) : base(navigationService)
         {
@@ -51,7 +51,7 @@ namespace Holoone.Core.ViewModels.Login
 
         public async Task OnAddCommandAsync()
         {
-            await _apiLoginService.AddLoginAsync(UserPermission);
+            //await _apiLoginService.AddLoginAsync(UserPermission);
         }
 
         //public async Task ShowLoginSphereMicrosoftAsync()
@@ -76,7 +76,7 @@ namespace Holoone.Core.ViewModels.Login
 
         public async Task LoginAsync()
         {
-            await _apiLoginService.AddLoginAsync(UserPermission);
+            //await _apiLoginService.LoginAsync(UserPermission);
             await NavigationService.GoTo<HomeViewModel>();
         }
 

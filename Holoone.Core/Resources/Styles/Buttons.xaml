@@ -5,10 +5,24 @@
                     >
 
     <!-- Default Button -->
+    <!--<Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource GlyphBrush}" />
+    </Style>-->
+
+    <Style x:Key="HyperlinkButton" TargetType="Button">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <ContentPresenter/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+        
     <Style x:Key="DefaultButton" TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFlatButton}">
         <Setter Property="Background" Value="{StaticResource PrimaryBlueColor}" />
         <Setter Property="Foreground" Value="{StaticResource WhiteColor}" />
-        <Setter Property="Height" Value="auto" />
+        <Setter Property="MinHeight" Value="35" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
@@ -43,6 +57,11 @@
         </Setter>
     </Style>
 
+
+    <Style TargetType="Button" BasedOn="{StaticResource DefaultButton}">
+        
+    </Style>
+    
     <Style x:Key="HomeLevelButtons" TargetType="Grid">
         <Style.Resources>
             <Style TargetType="Button" BasedOn="{StaticResource DefaultButton}">
@@ -144,7 +163,7 @@
                 <Setter Property="Height" Value="auto" />
                 <Setter Property="Foreground" Value="{StaticResource WhiteColor}" />
             </Style>
-            <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
+            <!--<Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignFloatingHintTextBox}">
                 <Setter Property="Width" Value="240" />
                 <Setter Property="Height" Value="34" />
                 <Setter Property="Padding" Value="2" />
@@ -157,7 +176,7 @@
                         <Setter Property="BorderThickness" Value="1" />
                     </Trigger>
                 </Style.Triggers>
-            </Style>
+            </Style>-->
         </Style.Resources>
     </Style>
 

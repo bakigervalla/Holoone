@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Holoone.Api.Helpers.Extensions;
 
 namespace Holoone.Api.Services
 {
@@ -28,6 +29,14 @@ namespace Holoone.Api.Services
             _chUrl = Environment.GetEnvironmentVariable("CH_URL");
 
             _flurlClient = flurlClientFac.Get(RequestConstants.BaseUrl);
+            _flurlClient.BaseUrl = RequestConstants.BaseUrl;
+        }
+
+        public async Task<IFlurlResponse> LoginAsync(LoginCredentials loginCredentials)
+        {
+            return await _flurlClient.Request("api-token-auth/")
+                    .WithHeader(RequestConstants.UserAgent, RequestConstants.UserAgentValue)
+                    .PostJsonAsync(loginCredentials);
         }
 
         public async Task<IEnumerable<UserPermissions>> GetLoginAsync()
@@ -53,18 +62,6 @@ namespace Holoone.Api.Services
         public async Task<UserPermissions> GetLoginAsync(string id)
         {
             return await _flurlClient.Request("things", id).GetJsonAsync<UserPermissions>();
-        }
-
-        public async Task AddLoginAsync(UserPermissions userPermission)
-        {
-            var result = await _flurlClient.Request("users")
-                    // .AppendPathSegments("user", "repos")
-                    .AppendPathSegment("authenticate")
-                    .WithHeader(RequestConstants.UserAgent, RequestConstants.UserAgentValue)
-                    .SetQueryParams(new { userId = 1 })
-                    //.WithBasicAuth(_githubUsername, _githubPassword) //alternative way of logging in (basic auth)
-                    .WithOAuthBearerToken(_euUrl)
-                    .GetJsonAsync<IEnumerable<UserPermissions>>();
         }
 
         public async Task UpdateLoginAsync(UserPermissions userPermission)

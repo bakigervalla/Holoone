@@ -27,7 +27,8 @@ namespace Holoone.Core.ViewModels
             IHoloNavigationService navigationService) : base(navigationService)
         {
             _apiLoginService = apiLoginService;
-            //_navigationService = navigationService;
+
+            ShowHomePage();
         }
 
         /// <summary>
@@ -47,7 +48,6 @@ namespace Holoone.Core.ViewModels
         /// <returns></returns>
         protected override async Task OnActivateAsync(CancellationToken cancellationToken)
         {
-            await ShowHomePage();
             await base.OnActivateAsync(cancellationToken);
         }
 
@@ -81,7 +81,7 @@ namespace Holoone.Core.ViewModels
             }
         }
 
-        public async Task ShowHomePage() => await NavigationService.GoTo<HomeViewModel>();
+        public void ShowHomePage() => NavigationService.GoTo<HomeViewModel>();
 
         public async Task ShowViewPage() => await NavigationService.GoTo<HomeViewModel>();
 

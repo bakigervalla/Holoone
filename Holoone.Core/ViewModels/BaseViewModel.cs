@@ -23,13 +23,16 @@ namespace Holoone.Core.ViewModels
 
         public EmployeeDisplay EmployeeDisplay { get; set; }
 
-        public string UserFullName { get =>
-                LoginCredentials != null
-                ? $"Welcome {LoginCredentials.Username}"
-                    : EmployeeDisplay != null
-                      ? $"Welcome {EmployeeDisplay.FirstName} {EmployeeDisplay.LastName}"
-                      : "Welcome";
-        }
+        private string _userFullName = "Welcome";
+        public string UserFullName { get => _userFullName; set { _userFullName = value; NotifyOfPropertyChange(nameof(UserFullName)); } }
+
+        //public string UserFullName { get =>
+        //        LoginCredentials != null
+        //        ? $"Welcome {LoginCredentials.Username}"
+        //            : EmployeeDisplay != null
+        //              ? $"Welcome {EmployeeDisplay.FirstName} {EmployeeDisplay.LastName}"
+        //              : "Welcome";
+        //}
 
     }
 }

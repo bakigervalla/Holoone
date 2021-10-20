@@ -8,7 +8,7 @@ namespace Holoone.Api.Helpers.Constants
 {
     public static class RequestConstants
     {
-        public const string BaseUrl = "https://dev.holo-one.com";
+        public const string BaseUrl = "https://dev.holo-one.com/core/";
         public const string UserAgent = "User-Agent";
         public const string UserAgentValue = "Flurl";
     }

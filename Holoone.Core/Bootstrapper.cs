@@ -37,8 +37,9 @@ namespace Holoone.Core
             _container.PerRequest<HomeViewModel>();
             _container.PerRequest<SettingsViewModel>();
             _container.PerRequest<LoginViewModel>();
-            _container.PerRequest<LoginSphereMicrosoftViewModel>();
+            _container.PerRequest<LoginSphereViewModel>();
             _container.PerRequest<LoginThinkRealityViewModel>();
+            _container.PerRequest<LoginMicrosoftViewModel>();
         }
 
 

@@ -64,12 +64,14 @@
     <Compile Include="Helpers\Converters\BooleanOrConverter.cs" />
     <Compile Include="Helpers\Converters\IsHitVisibilityConverter.cs" />
     <Compile Include="Helpers\Converters\VisibilityConverter.cs" />
+    <Compile Include="Helpers\Extensions\Utility.cs" />
     <Compile Include="Services\Interfaces\IHoloNavigationService.cs" />
     <Compile Include="Services\HoloNavigationService.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\Export\ExportViewModel.cs" />
     <Compile Include="ViewModels\Home\HomeViewModel.cs" />
-    <Compile Include="ViewModels\Login\LoginSphereMicrosoftViewModel.cs" />
+    <Compile Include="ViewModels\Login\LoginMicrosoftViewModel.cs" />
+    <Compile Include="ViewModels\Login\LoginSphereViewModel.cs" />
     <Compile Include="ViewModels\Login\LoginThinkRealityViewModel.cs" />
     <Compile Include="ViewModels\Login\LoginViewModel.cs" />
     <Compile Include="ViewModels\Settings\SettingsViewModel.cs" />
@@ -86,8 +88,11 @@
     <Compile Include="Views\Home\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Login\LoginSphereMicrosoftView.xaml.cs">
-      <DependentUpon>LoginSphereMicrosoftView.xaml</DependentUpon>
+    <Compile Include="Views\Login\LoginMicrosoftView.xaml.cs">
+      <DependentUpon>LoginMicrosoftView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Login\LoginSphereView.xaml.cs">
+      <DependentUpon>LoginSphereView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Login\LoginThinkRealityView.xaml.cs">
       <DependentUpon>LoginThinkRealityView.xaml</DependentUpon>
@@ -149,7 +154,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Login\LoginSphereMicrosoftView.xaml">
+    <Page Include="Views\Login\LoginMicrosoftView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Login\LoginSphereView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

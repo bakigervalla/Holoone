@@ -51,7 +51,7 @@ namespace Holoone.Core.ViewModels.Login
 
         public async Task OnAddCommandAsync()
         {
-            await _apiLoginService.AddLoginAsync(UserPermission);
+            //await _apiLoginService.LoginAsync(UserPermission);
         }
 
         //public async Task ShowLoginSphereMicrosoftAsync()
@@ -74,11 +74,11 @@ namespace Holoone.Core.ViewModels.Login
         //        );
         //}
 
-        public async Task LoginAsync()
-        {
-            await _apiLoginService.AddLoginAsync(UserPermission);
-            await NavigationService.GoTo<HomeViewModel>();
-        }
+        //public async Task LoginAsync()
+        //{
+        //    await _apiLoginService.AddLoginAsync(UserPermission);
+        //    await NavigationService.GoTo<HomeViewModel>();
+        //}
 
         #endregion
 

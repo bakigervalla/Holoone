@@ -7,6 +7,40 @@ using System.Threading.Tasks;
 
 namespace Holoone.Api.Models
 {
+
+    public class LoginSphereCredentials
+    {
+        [JsonProperty("mode")]
+        public string Mode { get; set; } = "raw";
+
+        [JsonProperty("raw")]
+        public LoginCredentials Raw { get; set; }
+
+        [JsonProperty("options")]
+        public LoginOptions Options { get; set; }
+    }
+
+    public class LoginOptions
+    {
+        [JsonProperty("raw")]
+        public LoginLanguage Raw { get; set; }
+    }
+    public class LoginLanguage
+    {
+        [JsonProperty("language")]
+        public string Language { get; set; } = "json";
+    }
+
+    //{
+    //	"mode": "raw",
+    //	"raw": "{\r\n    \"username\" : \"\",\r\n    \"password\" : \"\"\r\n\r\n}",
+    //	"options": {
+    //		"raw": {
+    //			"language": "json"
+    //		}
+    //	}
+    //}
+
     public class LoginCredentials
     {
         [JsonProperty("username")]

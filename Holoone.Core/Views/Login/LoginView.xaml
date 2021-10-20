@@ -17,7 +17,7 @@
                Source="pack://application:,,,/Holoone.Core;component/Resources/Images/holo_one_logo_login.png" />
 
         <StackPanel Grid.Row="1" VerticalAlignment="Top" Orientation="Vertical" Style="{StaticResource LoginLevelButtons}">
-            <Button x:Name="ShowLoginSphereMicrosoftPage" VerticalAlignment="Top">Login with Sphere</Button>
+            <Button x:Name="ShowLoginSpherePage" VerticalAlignment="Top">Login with Sphere</Button>
             <Button x:Name="ShowLoginThinkRealityPage" Margin="0 10" >Login with ThinkReality</Button>
         </StackPanel>
 
