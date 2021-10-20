@@ -1,10 +1,12 @@
 ﻿using Caliburn.Micro;
+using Holoone.Api.Helpers.Constants;
 using Holoone.Api.Models;
 using Holoone.Core.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Holoone.Core.ViewModels
@@ -19,12 +21,14 @@ namespace Holoone.Core.ViewModels
             NavigationService = navigationService;
         }
 
+        protected override Task OnInitializeAsync(CancellationToken cancellationToken)
+        {
+            return base.OnInitializeAsync(cancellationToken);
+        }
+
         public LoginCredentials LoginCredentials { get; set; }
 
         public EmployeeDisplay EmployeeDisplay { get; set; }
-
-        private string _userFullName = "Welcome";
-        public string UserFullName { get => _userFullName; set { _userFullName = value; NotifyOfPropertyChange(nameof(UserFullName)); } }
 
         //public string UserFullName { get =>
         //        LoginCredentials != null

@@ -13,7 +13,7 @@ namespace Holoone.Core.ViewModels.Login
 {
     public class LoginViewModel : BaseViewModel
     {
-        public LoginViewModel(IHoloNavigationService navigationService) : base(navigationService){}
+        public LoginViewModel(IHoloNavigationService navigationService) : base(navigationService){ }
 
         public void ShowLoginSpherePage() => NavigationService.GoTo<LoginSphereViewModel>();
 

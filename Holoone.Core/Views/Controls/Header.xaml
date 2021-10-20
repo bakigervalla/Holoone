@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Holoone.Core.Views.Controls"
-             xmlns:views="clr-namespace:Holoone.Core.Views.Controls"
+             xmlns:static="clr-namespace:Holoone.Api.Helpers.Constants;assembly=Holoone.Api"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"
              
@@ -19,7 +19,7 @@
         
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,8">
 
-            <TextBlock Text="{Binding UserFullName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+            <TextBlock Text="{Binding Path=UserFullName, Source={x:Static static:RequestConstants.UserLogin}}" 
                        Margin="0,0" 
                        FontSize="12px" 
                        Foreground="{StaticResource WhiteColor}" 

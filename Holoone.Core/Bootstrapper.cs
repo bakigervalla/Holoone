@@ -5,6 +5,8 @@ using Holoone.Api.Services.Interfaces;
 using Holoone.Core.Services;
 using Holoone.Core.Services.Interfaces;
 using Holoone.Core.ViewModels;
+using Holoone.Core.ViewModels.Anchor;
+using Holoone.Core.ViewModels.Export;
 using Holoone.Core.ViewModels.Home;
 using Holoone.Core.ViewModels.Login;
 using Holoone.Core.ViewModels.Settings;
@@ -40,6 +42,8 @@ namespace Holoone.Core
             _container.PerRequest<LoginSphereViewModel>();
             _container.PerRequest<LoginThinkRealityViewModel>();
             _container.PerRequest<LoginMicrosoftViewModel>();
+            _container.PerRequest<AnchorViewModel>();
+            _container.PerRequest<ExportViewModel>();
         }
 
 

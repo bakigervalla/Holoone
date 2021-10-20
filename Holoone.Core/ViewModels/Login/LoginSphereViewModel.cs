@@ -1,4 +1,5 @@
-﻿using Holoone.Api.Models;
+﻿using Holoone.Api.Helpers.Constants;
+using Holoone.Api.Models;
 using Holoone.Api.Services.Interfaces;
 using Holoone.Core.Services.Interfaces;
 using Holoone.Core.ViewModels.Home;
@@ -6,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Windows.Security.ExchangeActiveSyncProvisioning;
@@ -26,6 +28,7 @@ namespace Holoone.Core.ViewModels.Login
             LoginCredentials = new LoginCredentials { Username = "baki.test@holo-one.com" };
         }
 
+
         #region navigation
         public async Task ShowLoginMicrosoftPage() => await NavigationService.GoTo<LoginMicrosoftViewModel>();
 
@@ -36,11 +39,14 @@ namespace Holoone.Core.ViewModels.Login
         public async Task<int> LoginAsync(object parameter)
         {
 
+            if (LoginCredentials.HasErrors)
+                return 0;
+
             var deviceInformation = new EasClientDeviceInformation();
 
-            var passwordBox = parameter as System.Windows.Controls.PasswordBox;
-            LoginCredentials.Password = passwordBox.Password;
-            LoginCredentials.DeviceId = deviceInformation.SystemProductName;
+            //var passwordBox = parameter as System.Windows.Controls.PasswordBox;
+            //LoginCredentials.Password = passwordBox.Password;
+            //LoginCredentials.DeviceId = deviceInformation.SystemProductName;
 
             try
             {
@@ -49,7 +55,11 @@ namespace Holoone.Core.ViewModels.Login
                 if (response.ResponseMessage.IsSuccessStatusCode)
                 {
                     MessageBox.Show("Logged in successfully.");
-                    UserFullName = $"{UserFullName} {LoginCredentials.Username}";
+
+                    RequestConstants.UserLogin.UserFullName = $"{RequestConstants.UserLogin.UserFullName} {LoginCredentials.Username}";
+                    RequestConstants.UserLogin.IsLoggedIn = true;
+                    RequestConstants.UserLogin.Token = "Sphere";
+
                     await NavigationService.GoTo<HomeViewModel>();
                 }
                 else
@@ -57,7 +67,7 @@ namespace Holoone.Core.ViewModels.Login
             }
             catch (Exception ex)
             {
-                string e = ex.Message;
+                MessageBox.Show(ex.Message);
             }
             return default;
             //var request = await Post(url, credentials);

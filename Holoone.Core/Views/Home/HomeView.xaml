@@ -6,7 +6,9 @@
              xmlns:local="clr-namespace:Holoone.Core.Views.Home"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             xmlns:conv="clr-namespace:Holoone.Core.Helpers.Converters"
+             xmlns:static="clr-namespace:Holoone.Api.Helpers.Constants;assembly=Holoone.Api">
 
     <Grid Style="{StaticResource HomeLevelButtons}">
 
@@ -15,11 +17,11 @@
                     x:Name="btnMinus" 
                     cal:Message.Attach="[Event Click]=[Action Minus(left.Text, right.Text):result.Text]" />-->
 
-            <Button x:Name="ShowLoginPage">Login</Button>
-            <Button Margin="0 10">Anchors</Button>
-            <Button x:Name="ShowExportPage">Export</Button>
+            <Button x:Name="ShowLoginPage" IsEnabled="{Binding Path=IsLoggedIn, Source={x:Static static:RequestConstants.UserLogin}, Converter={conv:IsHitVisibilityConverter}, ConverterParameter=Inverted}">Login</Button>
+            <Button x:Name="ShowAnchorPage" Margin="0 10" IsEnabled="{Binding Path=IsLoggedIn, Source={x:Static static:RequestConstants.UserLogin}}">Anchors</Button>
+            <Button x:Name="ShowExportPage" IsEnabled="{Binding Path=IsLoggedIn, Source={x:Static static:RequestConstants.UserLogin}}">Export</Button>
         </StackPanel>
 
     </Grid>
-    
+
 </UserControl>

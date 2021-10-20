@@ -12,14 +12,15 @@
         <!--<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.LightBlue.xaml" />-->
-
+        <!-- Other MaterialDesign resource stuff -->
+        <!--<ResourceDictionary Source="pack://application:,,,/MaterialDesignExtensions;component/Themes/Generic.xaml" />-->
         <!-- Custom Styles -->
         <!--
         <ResourceDictionary Source="pack://application:,,,/Holoone.Core;component/Resources/Styles/Colors.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Holoone.Core;component/Resources/Styles/Buttons.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Holoone.Core;component/Resources/Styles/ScrollBar.xaml"></ResourceDictionary>
         <ResourceDictionary Source="pack://application:,,,/Holoone.Core;component/Resources/Styles/ToolTip.xaml"></ResourceDictionary>-->
-
+        
     </ResourceDictionary.MergedDictionaries>
 
     <converters:BooleanOrConverter x:Key="BooleanOrConverter" />
@@ -672,4 +673,30 @@
         </Style.Triggers>
     </Style>
 
+    <ControlTemplate x:Key="validationTemplate">
+        <DockPanel>
+            <!--specify where the decorated control is placed relative to the other elements in the template-->
+            <TextBlock Foreground="Red" FontSize="20" Text="*" VerticalAlignment="Top" />
+            <AdornedElementPlaceholder />
+        </DockPanel>
+    </ControlTemplate>
+
+    <!--set the error template for all textboxes
+            bind the value of the tooltip to the first error in the errors collection
+            ValidatesOnDataErrors uses IDataErrorInfo in the viewmodel to determine if the input is valid.-->
+    <Style TargetType="TextBox" x:Key="validationTextBox" BasedOn="{StaticResource DefaultTextBox}">
+        <!--VerticalContentAlignment is set here as the DefaultTextBox style in MainSkin is overriden.
+                An alternative would be to add BasedOn="{StaticResource DefaultTextBox}" to the style, but this will
+                display an error in Visual Studio. As MainSkin is added in BeeDockPane on runtime, Visual Studio
+                does not know that MainSkin is available in this element.-->
+        <Setter Property="VerticalContentAlignment"  Value="Center" />
+        <Setter Property="Validation.ErrorTemplate" Value="{StaticResource validationTemplate}" />
+        <Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="true">
+                <Setter Property="ToolTip"
+                    Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors).CurrentItem.ErrorContent}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
 </ResourceDictionary>

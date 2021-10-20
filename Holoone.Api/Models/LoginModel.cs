@@ -1,56 +1,51 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Holoone.Api.Models
 {
-
-    public class LoginSphereCredentials
+    public class LoginCredentials : BaseModel
     {
-        [JsonProperty("mode")]
-        public string Mode { get; set; } = "raw";
-
-        [JsonProperty("raw")]
-        public LoginCredentials Raw { get; set; }
-
-        [JsonProperty("options")]
-        public LoginOptions Options { get; set; }
-    }
-
-    public class LoginOptions
-    {
-        [JsonProperty("raw")]
-        public LoginLanguage Raw { get; set; }
-    }
-    public class LoginLanguage
-    {
-        [JsonProperty("language")]
-        public string Language { get; set; } = "json";
-    }
-
-    //{
-    //	"mode": "raw",
-    //	"raw": "{\r\n    \"username\" : \"\",\r\n    \"password\" : \"\"\r\n\r\n}",
-    //	"options": {
-    //		"raw": {
-    //			"language": "json"
-    //		}
-    //	}
-    //}
-
-    public class LoginCredentials
-    {
+        [Required(ErrorMessage ="Username is required")]
         [JsonProperty("username")]
         public string Username { get; set; }
 
+        [Required(ErrorMessage = "Password is required")]
         [JsonProperty("password")]
         public string Password { get; set; }
 
         [JsonProperty("device_id")]
         public string DeviceId { get; set; }
+
+        private List<HostOption> _hosts = new List<HostOption> { 
+            new HostOption { IsChecked = true, Text = "USA" },
+            new HostOption { IsChecked = false, Text = "Europe" },
+            new HostOption { IsChecked = false, Text = "China" }
+        };
+
+        [JsonIgnore]
+        public List<HostOption> Hosts { get => _hosts; set { _hosts = value; RaisePropertyChanged(); }}
+    }
+
+    public class HostOption
+    {
+        public bool IsChecked { get; set; }
+        public string Text { get; set; }
+    }
+
+    public class UserLogin : BaseModel
+    {
+        private string _userFullName = "Welcome";
+        public string UserFullName { get => _userFullName; set { _userFullName = value; RaisePropertyChanged(); } }
+        public string Token { get; set; }
+
+        private bool _isLoggedIn;
+        public bool IsLoggedIn { get => _isLoggedIn; set { _isLoggedIn = value; RaisePropertyChanged(); } }
     }
 
     public class LoginCredentialsGraph

@@ -29,11 +29,13 @@ namespace Holoone.Api.Services
             _chUrl = Environment.GetEnvironmentVariable("CH_URL");
 
             _flurlClient = flurlClientFac.Get(RequestConstants.BaseUrl);
-            _flurlClient.BaseUrl = RequestConstants.BaseUrl;
         }
 
         public async Task<IFlurlResponse> LoginAsync(LoginCredentials loginCredentials)
         {
+            string hostKey = loginCredentials.Hosts.Single(x => x.IsChecked).Text;
+            _flurlClient.BaseUrl = RequestConstants.SphereBaseUrls[hostKey];
+
             return await _flurlClient.Request("api-token-auth/")
                     .WithHeader(RequestConstants.UserAgent, RequestConstants.UserAgentValue)
                     .PostJsonAsync(loginCredentials);

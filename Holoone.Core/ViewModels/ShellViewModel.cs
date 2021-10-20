@@ -1,7 +1,10 @@
 ﻿using Caliburn.Micro;
+using Holoone.Api.Models;
 using Holoone.Api.Services.Interfaces;
 using Holoone.Core.Services.Interfaces;
 using Holoone.Core.ViewModels;
+using Holoone.Core.ViewModels.Anchor;
+using Holoone.Core.ViewModels.Export;
 using Holoone.Core.ViewModels.Home;
 using Holoone.Core.ViewModels.Login;
 using Holoone.Core.ViewModels.Settings;
@@ -27,7 +30,7 @@ namespace Holoone.Core.ViewModels
             IHoloNavigationService navigationService) : base(navigationService)
         {
             _apiLoginService = apiLoginService;
-
+            
             ShowHomePage();
         }
 
