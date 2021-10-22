@@ -10,7 +10,7 @@ namespace Holoone.Core.ViewModels.Anchor
     public class AnchorViewModel : BaseViewModel
     {
 
-        public AnchorViewModel(IHoloNavigationService navigationService) : base(navigationService)
+        public AnchorViewModel(IHoloNavigationService navigationService) //: base(navigationService)
         {
 
         }

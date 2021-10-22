@@ -10,7 +10,10 @@ namespace Holoone.Api.Services.Interfaces
 {
     public interface ILoginService
     {
-        Task<IFlurlResponse> LoginAsync(LoginCredentials loginCredentials);
+        Task<IFlurlResponse> LoginSphereAsync(LoginCredentials loginCredentials);
+
+        Task<IFlurlResponse> LoginWithMicrosoftAsync(LoginCredentialsGraph loginCredentialsGraph);
+
         Task<IEnumerable<UserPermissions>> GetLoginAsync();
         Task<UserPermissions> GetLoginAsync(string id);
         

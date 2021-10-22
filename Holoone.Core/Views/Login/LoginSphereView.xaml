@@ -44,14 +44,14 @@
         </StackPanel>
 
         <StackPanel Grid.Row="3">
-            <Button Content="Login">
-                <i:Interaction.Triggers>
+            <Button x:Name="LoginAsync" Content="Login">
+                <!--<i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
                         <cal:ActionMessage MethodName="LoginAsync">
                             <cal:Parameter Value="{Binding ElementName=PasswordBox}" />
                         </cal:ActionMessage>
                     </i:EventTrigger>
-                </i:Interaction.Triggers>
+                </i:Interaction.Triggers>-->
             </Button>
             <Button x:Name="ShowLoginMicrosoftPage" Margin="0 10" >Sign in with Microsoft</Button>
         </StackPanel>

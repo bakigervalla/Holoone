@@ -18,7 +18,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-        
+
     <Style x:Key="DefaultButton" TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFlatButton}">
         <Setter Property="Background" Value="{StaticResource PrimaryBlueColor}" />
         <Setter Property="Foreground" Value="{StaticResource WhiteColor}" />
@@ -59,9 +59,9 @@
 
 
     <Style TargetType="Button" BasedOn="{StaticResource DefaultButton}">
-        
+
     </Style>
-    
+
     <Style x:Key="HomeLevelButtons" TargetType="Grid">
         <Style.Resources>
             <Style TargetType="Button" BasedOn="{StaticResource DefaultButton}">
@@ -155,7 +155,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <Style x:Key="LoginSphereMicrosoftLevelButtons" TargetType="Grid">
         <Style.Resources>
             <Style TargetType="Button" BasedOn="{StaticResource DefaultButton}">
@@ -177,7 +177,33 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>-->
+            <!--<Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
+                <Setter Property="Foreground" Value="{StaticResource GlyphBrush}" />
+            </Style>-->
         </Style.Resources>
+    </Style>
+
+    <Style x:Key="LogoutButton" TargetType="{x:Type Button}">
+        <Setter Property="Width" Value="auto" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+
+                        <Border Background="{TemplateBinding Background}" x:Name="border" CornerRadius="0" 
+                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <wpf:Ripple Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" Focusable="False"    
+                                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                        Padding="{TemplateBinding Padding}" 
+                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
 </ResourceDictionary>

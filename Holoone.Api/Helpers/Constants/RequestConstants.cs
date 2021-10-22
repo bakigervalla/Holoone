@@ -31,9 +31,5 @@ namespace Holoone.Api.Helpers.Constants
 
         public const string UserAgent = "User-Agent";
         public const string UserAgentValue = "Flurl";
-
-        public static UserLogin UserLogin { get; set; } = new UserLogin();
-
-
     }
 }

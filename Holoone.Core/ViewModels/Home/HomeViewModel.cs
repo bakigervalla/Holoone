@@ -14,7 +14,7 @@ namespace Holoone.Core.ViewModels.Home
     public class HomeViewModel : BaseViewModel
     {
 
-        public HomeViewModel(IHoloNavigationService navigationService) : base(navigationService)
+        public HomeViewModel(IHoloNavigationService navigationService) //: base(navigationService)
         {
             
         }

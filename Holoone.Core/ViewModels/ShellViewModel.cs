@@ -1,4 +1,6 @@
 ﻿using Caliburn.Micro;
+using Hanssens.Net;
+using Holoone.Api.Helpers.Constants;
 using Holoone.Api.Models;
 using Holoone.Api.Services.Interfaces;
 using Holoone.Core.Services.Interfaces;
@@ -21,76 +23,31 @@ namespace Holoone.Core.ViewModels
 {
     public class ShellViewModel : BaseViewModel
     {
-
-        private readonly ILoginService _apiLoginService;
-        //private readonly IHoloNavigationService _navigationService;
+        private readonly ILocalStorage _localeStorage;
 
         public ShellViewModel(
-            ILoginService apiLoginService,
-            IHoloNavigationService navigationService) : base(navigationService)
+            IHoloNavigationService navigationService,
+            ILocalStorage localeStorage)
         {
-            _apiLoginService = apiLoginService;
-            
+            _localeStorage = localeStorage;
+
             ShowHomePage();
-        }
-
-        /// <summary>
-        /// add logic which should execute only the first time that the screen is activated. After initialization is complete, IsInitialized will be true.
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        protected override Task OnInitializeAsync(CancellationToken cancellationToken)
-        {
-            return base.OnInitializeAsync(cancellationToken);
-        }
-
-        /// <summary>
-        /// add logic which should execute every time the screen is activated. After activation is complete, IsActive will be true.
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        protected override async Task OnActivateAsync(CancellationToken cancellationToken)
-        {
-            await base.OnActivateAsync(cancellationToken);
-        }
-
-        public bool IsUserLoggedIn { get; set; }
-
-        public SolidColorBrush _theme = Application.Current.Resources["GrayDark1Color"] as SolidColorBrush;
-        public SolidColorBrush Theme
-        {
-            get => _theme;
-            set { _theme = value; NotifyOfPropertyChange(nameof(Theme)); }
-        }
-
-        public string _themeName = "Dark Theme";
-        public string ThemeName
-        {
-            get => _themeName;
-            set { _themeName = value; NotifyOfPropertyChange(nameof(ThemeName)); }
-        }
-
-        public void ToggleTheme()
-        {
-            if (Theme.Color == (Application.Current.Resources["GrayDark1Color"] as SolidColorBrush).Color)
-            {
-                Theme = Application.Current.Resources["WhiteColor"] as SolidColorBrush;
-                ThemeName = "White Theme";
-            }
-            else
-            {
-                Theme = Application.Current.Resources["GrayDark1Color"] as SolidColorBrush;
-                ThemeName = "Dark Theme";
-            }
         }
 
         public void ShowHomePage() => NavigationService.GoTo<HomeViewModel>();
 
-        public async Task ShowViewPage() => await NavigationService.GoTo<HomeViewModel>();
-
-        public async Task ShowSpherePage() => await NavigationService.GoTo<HomeViewModel>();
-
         public async Task ShowSettingsPage() => await NavigationService.GoTo<SettingsViewModel>();
+
+        public async Task Logout()
+        {
+            Instance.UserLogin.IsLoggedIn = false;
+            Instance.UserLogin.UserFullName = "Welcome";
+            Instance.UserLogin.Token = string.Empty;
+
+            _localeStorage.Clear();
+
+            await NavigationService.GoTo<HomeViewModel>();
+        }
 
         //public async Task ShowHomeScreenAsync()
         //{
@@ -113,6 +70,5 @@ namespace Holoone.Core.ViewModels
         //{
         //    ActivateItemAsync(new LoginViewModel(IoC.Get<ILoginService>(), IoC.Get<INavigationService>()));
         //}
-
     }
 }

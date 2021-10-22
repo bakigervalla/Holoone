@@ -9,7 +9,7 @@ namespace Holoone.Core.ViewModels.Settings
 {
     public class SettingsViewModel : BaseViewModel
     {
-        public SettingsViewModel(IHoloNavigationService navigationService) : base(navigationService)
+        public SettingsViewModel(IHoloNavigationService navigationService) //: base(navigationService)
         {
 
         }

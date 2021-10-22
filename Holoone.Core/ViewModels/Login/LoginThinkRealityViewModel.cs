@@ -16,9 +16,12 @@ namespace Holoone.Core.ViewModels.Login
 
         public LoginThinkRealityViewModel(
             IHoloNavigationService navigationService,
-            ILoginService apiLoginService) : base(navigationService)
+            ILoginService apiLoginService) //: base(navigationService)
         {
             _apiLoginService = apiLoginService;
+
+            // CRITICAL: remove on deploy
+            LoginCredentials = new LoginCredentials { Username = "baki.test@holo-one.com" };
         }
 
 

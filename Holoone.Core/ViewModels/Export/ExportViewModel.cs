@@ -11,7 +11,7 @@ namespace Holoone.Core.ViewModels.Export
     public class ExportViewModel : BaseViewModel
     {
 
-        public ExportViewModel(IHoloNavigationService navigationService) : base(navigationService)
+        public ExportViewModel(IHoloNavigationService navigationService) //: base(navigationService)
         {
 
         }

@@ -52,16 +52,10 @@
                     <materialDesign:PackIcon Kind="Home"/>
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="_Views" cal:Message.Attach="ShowViewPage"
+            <MenuItem Header="_Settings" cal:Message.Attach="ShowSettingsPage"
                       Style="{StaticResource MainMenuItem}">
                 <MenuItem.Icon>
-                    <materialDesign:PackIcon Kind="DockWindow"/>
-                </MenuItem.Icon>
-            </MenuItem>
-            <MenuItem Header="_Sphere" cal:Message.Attach="ShowSpherePage"
-                      Style="{StaticResource MainMenuItem}" >
-                <MenuItem.Icon>
-                    <materialDesign:PackIcon Kind="GamepadCircle"/>
+                    <materialDesign:PackIcon Kind="Gear"/>
                 </MenuItem.Icon>
             </MenuItem>
         </Menu>

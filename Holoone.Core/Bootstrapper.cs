@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using Flurl.Http.Configuration;
+using Hanssens.Net;
 using Holoone.Api.Services;
 using Holoone.Api.Services.Interfaces;
 using Holoone.Core.Services;
@@ -34,6 +35,7 @@ namespace Holoone.Core
             _container.Singleton<ILoginService, LoginService>();
             _container.Singleton<IFlurlClientFactory, DefaultFlurlClientFactory>();
             _container.Singleton<IHoloNavigationService, HoloNavigationService>();
+            _container.Singleton<ILocalStorage, LocalStorage>();
 
             _container.PerRequest<ShellViewModel>();
             _container.PerRequest<HomeViewModel>();

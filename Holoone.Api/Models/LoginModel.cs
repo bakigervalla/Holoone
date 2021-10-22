@@ -27,7 +27,6 @@ namespace Holoone.Api.Models
             new HostOption { IsChecked = false, Text = "Europe" },
             new HostOption { IsChecked = false, Text = "China" }
         };
-
         [JsonIgnore]
         public List<HostOption> Hosts { get => _hosts; set { _hosts = value; RaisePropertyChanged(); }}
     }
@@ -48,7 +47,7 @@ namespace Holoone.Api.Models
         public bool IsLoggedIn { get => _isLoggedIn; set { _isLoggedIn = value; RaisePropertyChanged(); } }
     }
 
-    public class LoginCredentialsGraph
+    public class LoginCredentialsGraph: BaseModel
     {
         [JsonProperty("license_type")]
         public string LicenseType { get; set; }
@@ -61,6 +60,14 @@ namespace Holoone.Api.Models
 
         [JsonProperty("device_id")]
         public string DeviceId { get; set; }
+
+        private List<HostOption> _hosts = new List<HostOption> {
+            new HostOption { IsChecked = true, Text = "USA" },
+            new HostOption { IsChecked = false, Text = "Europe" },
+            new HostOption { IsChecked = false, Text = "China" }
+        };
+        [JsonIgnore]
+        public List<HostOption> Hosts { get => _hosts; set { _hosts = value; RaisePropertyChanged(); } }
     }
 
     public class EmployeeDisplay

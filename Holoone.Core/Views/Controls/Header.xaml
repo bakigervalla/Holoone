@@ -6,8 +6,9 @@
              xmlns:local="clr-namespace:Holoone.Core.Views.Controls"
              xmlns:static="clr-namespace:Holoone.Api.Helpers.Constants;assembly=Holoone.Api"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"
-             
+             xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"             
+             xmlns:conv="clr-namespace:Holoone.Core.Helpers.Converters"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -17,19 +18,26 @@
                 ImageSource="pack://application:,,,/Holoone.Core;component/Resources/Images/holo-one-logo-text.png" />
         </Grid.Background>
         
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,8">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="8">
 
-            <TextBlock Text="{Binding Path=UserFullName, Source={x:Static static:RequestConstants.UserLogin}}" 
+            <!--Text="{Binding Path=UserFullName, Source={x:Static static:RequestConstants.UserLogin}}"-->
+
+            <TextBlock Text="{Binding UserLogin.UserFullName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                        Margin="0,0" 
                        FontSize="12px" 
                        Foreground="{StaticResource WhiteColor}" 
                        VerticalAlignment="Center" />
 
-            <Button Style="{DynamicResource GearButton}" Foreground="White" 
-                    cal:Message.Attach="ShowSettingsPage">
-                <materialDesign:PackIcon Kind="Gear" Height="18" Width="18" />
+            <Button cal:Message.Attach="Logout" 
+                    Style="{StaticResource LogoutButton}" 
+                    HorizontalAlignment="Right">
+                <TextBlock Text="Log out" 
+                           FontSize="12px"
+                           Cursor="Hand"
+                           Foreground="{StaticResource WhiteColor}"
+                           Visibility="{Binding UserLogin.IsLoggedIn, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={conv:VisibilityConverter}}"
+                       />
             </Button>
-
         </StackPanel>
 
     </Grid>

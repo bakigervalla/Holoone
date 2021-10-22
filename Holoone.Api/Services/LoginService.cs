@@ -31,7 +31,7 @@ namespace Holoone.Api.Services
             _flurlClient = flurlClientFac.Get(RequestConstants.BaseUrl);
         }
 
-        public async Task<IFlurlResponse> LoginAsync(LoginCredentials loginCredentials)
+        public async Task<IFlurlResponse> LoginSphereAsync(LoginCredentials loginCredentials)
         {
             string hostKey = loginCredentials.Hosts.Single(x => x.IsChecked).Text;
             _flurlClient.BaseUrl = RequestConstants.SphereBaseUrls[hostKey];
@@ -40,6 +40,83 @@ namespace Holoone.Api.Services
                     .WithHeader(RequestConstants.UserAgent, RequestConstants.UserAgentValue)
                     .PostJsonAsync(loginCredentials);
         }
+
+        public async Task<IFlurlResponse> LoginWithMicrosoftAsync(LoginCredentialsGraph loginCredentialsGraph)
+        {
+            string hostKey = loginCredentialsGraph.Hosts.Single(x => x.IsChecked).Text;
+            _flurlClient.BaseUrl = RequestConstants.SphereBaseUrls[hostKey];
+
+            return await _flurlClient.Request("/integration/microsoft-graph/authorize/native/")
+                    .WithHeader(RequestConstants.UserAgent, RequestConstants.UserAgentValue)
+                    .PostJsonAsync(loginCredentialsGraph);
+        }
+
+
+        //public async Task<int> LoginWithGraphToken(string graphToken, DateTimeOffset expiryOn, bool isMR)
+        //{
+        //    var url = "/integration/microsoft-graph/authorize/native/";
+        //    string licenseType = isMR ? "mr" : "lite";
+
+        //    LoginCredentialsGraph credentialsGraph = new LoginCredentialsGraph
+        //    {
+        //        LicenseType = licenseType,
+        //        Token = graphToken,
+        //        ExpiresAt = expiryOn.ToUnixTimeMilliseconds(),
+        //        DeviceId = SystemInfo.deviceUniqueIdentifier
+        //    };
+
+        //    var request = await Post(url, credentialsGraph);
+        //    if (request.Response.IsSuccess)
+        //    {
+        //        var jsonToken = JObject.Parse(request.Response.DataAsText);
+        //        PlayerPrefConstants.AuthToken.Value = ((string)jsonToken["token"]);
+        //        PlayerPrefs.Save();
+        //        return request.Response.StatusCode;
+        //    }
+
+        //    return request.Response.StatusCode;
+        //}
+
+        //public async Task<bool> UpdateGraphToken(string graphToken, DateTimeOffset expiryOn)
+        //{
+        //    var url = "integration/microsoft-graph/token/update/";
+        //    LoginCredentialsGraph credentialsGraph = new LoginCredentialsGraph
+        //    {
+        //        Token = graphToken,
+        //        ExpiresAt = expiryOn.ToUnixTimeMilliseconds()
+        //    };
+
+        //    var request = await Post(url, credentialsGraph);
+        //    return request.Response.IsSuccess;
+        //}
+
+        //public async Task<bool> GetJWTToken(string guestDisplayName = null, string callId = null)
+        //{
+        //    string url = "api-jwt-auth/";
+
+        //    if (!string.IsNullOrEmpty(guestDisplayName) && !string.IsNullOrEmpty(callId))
+        //    {
+        //        url += $"guest/?username={guestDisplayName}&call_id={callId}";
+        //    }
+
+        //    var request = await Get(url);
+        //    if (request.Response != null && request.Response.IsSuccess)
+        //    {
+        //        var jwtToken = request.Response.DataAsText;
+
+        //        PlayerPrefConstants.JwtToken.Value = jwtToken.Replace("\"", "");
+        //        PlayerPrefs.Save();
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        Debug.LogError(request.Exception);
+        //    }
+
+        //    return false;
+        //}
+
+
 
         public async Task<IEnumerable<UserPermissions>> GetLoginAsync()
         {
