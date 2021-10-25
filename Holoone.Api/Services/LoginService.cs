@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Holoone.Api.Helpers.Extensions;
+using Holoone.Api.Services.MicrosoftGraph;
+using Microsoft.Identity.Client;
 
 namespace Holoone.Api.Services
 {
@@ -17,18 +19,24 @@ namespace Holoone.Api.Services
     {
 
         private readonly IFlurlClient _flurlClient;
+        private readonly IMicrosoftGraphService _microsoftGraph;
+         
 
         private static string _usUrl;
         private static string _euUrl;
         private static string _chUrl;
 
-        public LoginService(IFlurlClientFactory flurlClientFac)
+        public LoginService(
+            IFlurlClientFactory flurlClientFac,
+            IMicrosoftGraphService microsoftGraph
+            )
         {
             _usUrl = Environment.GetEnvironmentVariable("US_URL");
             _euUrl = Environment.GetEnvironmentVariable("EU_URL");
             _chUrl = Environment.GetEnvironmentVariable("CH_URL");
 
             _flurlClient = flurlClientFac.Get(RequestConstants.BaseUrl);
+            _microsoftGraph = microsoftGraph;
         }
 
         public async Task<IFlurlResponse> LoginSphereAsync(LoginCredentials loginCredentials)
@@ -41,16 +49,48 @@ namespace Holoone.Api.Services
                     .PostJsonAsync(loginCredentials);
         }
 
-        public async Task<IFlurlResponse> LoginWithMicrosoftAsync(LoginCredentialsGraph loginCredentialsGraph)
+        public async Task<MicrosoftGraphResponse> LoginWithMicrosoftAsync()
         {
-            string hostKey = loginCredentialsGraph.Hosts.Single(x => x.IsChecked).Text;
-            _flurlClient.BaseUrl = RequestConstants.SphereBaseUrls[hostKey];
+            try
+            {
+                CreateApplication(true);
 
-            return await _flurlClient.Request("/integration/microsoft-graph/authorize/native/")
-                    .WithHeader(RequestConstants.UserAgent, RequestConstants.UserAgentValue)
-                    .PostJsonAsync(loginCredentialsGraph);
+                var authResult = await _microsoftGraph.CallGraph(SignInMethods.Dialog);
+
+                if(authResult == null)
+                    return new MicrosoftGraphResponse { HttpStatusCode = System.Net.HttpStatusCode.BadRequest };
+
+                return new MicrosoftGraphResponse
+                {
+                    HttpStatusCode = System.Net.HttpStatusCode.OK,
+                    User = new UserLogin
+                    {
+                        IsLoggedIn = true,
+                        Token = authResult.AccessToken,
+                        UserFullName = authResult.Account.Username,
+                        TokenExpires = authResult.ExpiresOn.ToLocalTime()
+                    }
+                };
+            }
+            catch
+            {
+                throw;
+            }
         }
 
+        private void CreateApplication(bool useWam)
+        {
+            var builder = PublicClientApplicationBuilder.Create(RequestConstants.ClientId)
+                .WithAuthority($"{RequestConstants.Instance}{RequestConstants.Tenant}")
+                .WithDefaultRedirectUri();
+
+            if (useWam)
+            {
+                builder.WithExperimentalFeatures();
+                // builder.WithWindowsBrokerOptions(true);  // Requires redirect URI "ms-appx-web://microsoft.aad.brokerplugin/{client_id}" in app registration
+            }
+            RequestConstants._clientApp = builder.Build();
+        }
 
         //public async Task<int> LoginWithGraphToken(string graphToken, DateTimeOffset expiryOn, bool isMR)
         //{

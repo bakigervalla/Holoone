@@ -1,5 +1,6 @@
 ﻿using Flurl.Http;
 using Holoone.Api.Models;
+using Holoone.Api.Services.MicrosoftGraph;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Holoone.Api.Services.Interfaces
     {
         Task<IFlurlResponse> LoginSphereAsync(LoginCredentials loginCredentials);
 
-        Task<IFlurlResponse> LoginWithMicrosoftAsync(LoginCredentialsGraph loginCredentialsGraph);
+        Task<MicrosoftGraphResponse> LoginWithMicrosoftAsync();
 
         Task<IEnumerable<UserPermissions>> GetLoginAsync();
         Task<UserPermissions> GetLoginAsync(string id);

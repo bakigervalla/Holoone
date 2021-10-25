@@ -29,6 +29,9 @@ namespace Holoone.Api.Models
         };
         [JsonIgnore]
         public List<HostOption> Hosts { get => _hosts; set { _hosts = value; RaisePropertyChanged(); }}
+
+        [JsonIgnore]
+        public bool IsDirty { get; set; }
     }
 
     public class HostOption
@@ -42,6 +45,8 @@ namespace Holoone.Api.Models
         private string _userFullName = "Welcome";
         public string UserFullName { get => _userFullName; set { _userFullName = value; RaisePropertyChanged(); } }
         public string Token { get; set; }
+
+        public DateTimeOffset TokenExpires { get; set; }
 
         private bool _isLoggedIn;
         public bool IsLoggedIn { get => _isLoggedIn; set { _isLoggedIn = value; RaisePropertyChanged(); } }

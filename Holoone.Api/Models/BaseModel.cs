@@ -91,9 +91,19 @@ namespace Holoone.Api.Models
         /// Uses attributes to determine if a validation error has occured.
         public virtual void CollectErrors(string propertyName)
         {
+
+            var isProcessed = Errors.Count(x => x.Key == propertyName) > 0;
+
+            if (isProcessed)
+                return;
+
+            var isDirty = this.GetType().GetProperty("IsDirty")?.GetValue(this, null);
+            if (isDirty != null && bool.Parse(isDirty.ToString()) == false)
+                return;
+
             // remove any outdated errors for this property
             Errors.Remove(propertyName);
-
+            
             PropertyInfo prop;
 
             if (PropertyInfos.TryGetValue(propertyName, out prop))
@@ -113,6 +123,7 @@ namespace Holoone.Api.Models
                         string errorMessage = $"{propertyName} is required";
                         // add the error to the Errors dictionary. errorMessage will be displayed in the tooltip
                         Errors.Add(prop.Name, errorMessage);
+                        RaisePropertyChanged(propertyName);
                     }
                 }
                 if (maxLenAttr != null)
@@ -177,6 +188,39 @@ namespace Holoone.Api.Models
         public object Clone()
         {
             return MemberwiseClone();
+        }
+
+        public BaseModel ValidateObject<T>(T obj) where T : INotifyPropertyChanged
+        {
+            if (obj == null)
+                throw new ArgumentNullException("object to validate cannot be null");
+
+            Errors.Clear(); //clear all errors
+
+            foreach (var item in GetProperties(obj))
+            {
+                CollectErrors(item.Name);
+                RaisePropertyChanged();
+                // Errors.Add(item.Name, string.Join(";", ValidateProperty(obj, item).ToArray())); //Set or remove error
+            }
+            return this;
+        }
+
+        private IEnumerable<PropertyInfo> GetProperties(object obj)
+        {
+            return obj.GetType().GetProperties().Where(p => p.GetCustomAttributes(typeof(ValidationAttribute), true).Length > 0).Select(p => p);
+        }
+
+        private IEnumerable<string> ValidateProperty<T>(T obj, PropertyInfo propInfo)
+        {
+            if (obj == null || propInfo == null)
+                throw new ArgumentNullException("object to validate cannot be null");
+
+            var results = new List<ValidationResult>();
+
+            if (!Validator.TryValidateProperty(propInfo.GetValue(obj), new ValidationContext(obj, null, null) { MemberName = propInfo.Name }, results))
+                return results.Select(s => s.ErrorMessage);
+            return Enumerable.Empty<string>();
         }
 
     }

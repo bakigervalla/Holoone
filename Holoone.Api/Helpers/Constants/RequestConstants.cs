@@ -1,4 +1,5 @@
 ﻿using Holoone.Api.Models;
+using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,5 +32,31 @@ namespace Holoone.Api.Helpers.Constants
 
         public const string UserAgent = "User-Agent";
         public const string UserAgentValue = "Flurl";
+
+        // Microsoft Graph
+        //Set the API Endpoint to Graph 'me' endpoint. 
+        // To change from Microsoft public cloud to a national cloud, use another value of graphAPIEndpoint.
+        // Reference with Graph endpoints here: https://docs.microsoft.com/graph/deployments#microsoft-graph-and-graph-explorer-service-root-endpoints
+        public static string GraphAPIEndpoint = "https://graph.microsoft.com/v1.0/me";
+
+        //Set the scope for API call to user.read
+        public static string[] Scopes = new string[] { "user.read" };
+
+        // Below are the clientId (Application Id) of your app registration and the tenant information. 
+        // You have to replace:
+        // - the content of ClientID with the Application Id for your app registration
+        // - The content of Tenant by the information about the accounts allowed to sign-in in your application:
+        //   - For Work or School account in your org, use your tenant ID, or domain
+        //   - for any Work or School accounts, use organizations
+        //   - for any Work or School accounts, or Microsoft personal account, use common
+        //   - for Microsoft Personal account, use consumers
+        public static string ClientId = "4a1aa1d5-c567-49d0-ad0b-cd957a47f842";
+
+        // Note: Tenant is important for the quickstart.
+        public static string Tenant = "common";
+        public static string Instance = "https://login.microsoftonline.com/";
+        public static IPublicClientApplication _clientApp;
+
+        public static IPublicClientApplication PublicClientApp { get { return _clientApp; } }
     }
 }

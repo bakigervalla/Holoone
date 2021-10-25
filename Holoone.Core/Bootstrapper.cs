@@ -3,6 +3,7 @@ using Flurl.Http.Configuration;
 using Hanssens.Net;
 using Holoone.Api.Services;
 using Holoone.Api.Services.Interfaces;
+using Holoone.Api.Services.MicrosoftGraph;
 using Holoone.Core.Services;
 using Holoone.Core.Services.Interfaces;
 using Holoone.Core.ViewModels;
@@ -36,14 +37,14 @@ namespace Holoone.Core
             _container.Singleton<IFlurlClientFactory, DefaultFlurlClientFactory>();
             _container.Singleton<IHoloNavigationService, HoloNavigationService>();
             _container.Singleton<ILocalStorage, LocalStorage>();
+            _container.Singleton<IMicrosoftGraphService, MicrosoftGraphService>(); 
 
             _container.PerRequest<ShellViewModel>();
             _container.PerRequest<HomeViewModel>();
             _container.PerRequest<SettingsViewModel>();
             _container.PerRequest<LoginViewModel>();
-            _container.PerRequest<LoginSphereViewModel>();
+            _container.PerRequest<LoginSphereAndMicrosoftViewModel>();
             _container.PerRequest<LoginThinkRealityViewModel>();
-            _container.PerRequest<LoginMicrosoftViewModel>();
             _container.PerRequest<AnchorViewModel>();
             _container.PerRequest<ExportViewModel>();
         }

@@ -16,7 +16,7 @@ namespace Holoone.Core.ViewModels.Login
         public LoginViewModel(IHoloNavigationService navigationService)
 { }
             
-        public void ShowLoginSpherePage() => NavigationService.GoTo<LoginSphereViewModel>();
+        public void ShowLoginSpherePage() => NavigationService.GoTo<LoginSphereAndMicrosoftViewModel>();
 
         public void ShowLoginThinkRealityPage() => NavigationService.GoTo<LoginThinkRealityViewModel>();
 
