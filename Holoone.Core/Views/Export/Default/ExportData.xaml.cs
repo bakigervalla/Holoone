@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Holoone.Core.Views.Export.Default
+namespace Holoone.Core.Views.Export.Default.ExportDefault
 {
     /// <summary>
-    /// Interaction logic for ExportDefaultSelectionView.xaml
+    /// Interaction logic for ExportDataView.xaml
     /// </summary>
-    public partial class ExportDefaultSelectionView : UserControl
+    public partial class ExportData : UserControl
     {
-        public ExportDefaultSelectionView()
+        public ExportData()
         {
             InitializeComponent();
         }

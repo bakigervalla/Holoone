@@ -29,7 +29,8 @@ namespace Holoone.Core.ViewModels.Login
             _apiLoginService = apiLoginService;
             _localeStorage = localeStorage;
 
-            LoginCredentials = new LoginCredentials { };
+            // CRITICAL: remove on deploy
+            LoginCredentials = new LoginCredentials { Username = "baki.test@holo-one.com" };
         }
 
         #region methods

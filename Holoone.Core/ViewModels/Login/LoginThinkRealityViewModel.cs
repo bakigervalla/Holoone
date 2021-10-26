@@ -20,8 +20,7 @@ namespace Holoone.Core.ViewModels.Login
         {
             _apiLoginService = apiLoginService;
 
-            // CRITICAL: remove on deploy
-            LoginCredentials = new LoginCredentials { Username = "baki.test@holo-one.com" };
+            LoginCredentials = new LoginCredentials {};
         }
 
 
@@ -45,17 +44,17 @@ namespace Holoone.Core.ViewModels.Login
 
         #region --Private helpers--
 
-        public async Task OnDeleteCommandAsync()
-        {
-            await _apiLoginService.DeleteLoginAsync(UserPermission);
+        //public async Task OnDeleteCommandAsync()
+        //{
+        //    await _apiLoginService.DeleteLoginAsync(UserPermission);
 
-            await NavigationService.GoTo<HomeViewModel>();
-        }
+        //    await NavigationService.GoTo<HomeViewModel>();
+        //}
 
-        public async Task OnAddCommandAsync()
-        {
-            //await _apiLoginService.LoginAsync(UserPermission);
-        }
+        //public async Task OnAddCommandAsync()
+        //{
+        //    //await _apiLoginService.LoginAsync(UserPermission);
+        //}
 
         //public async Task ShowLoginSphereMicrosoftAsync()
         //{

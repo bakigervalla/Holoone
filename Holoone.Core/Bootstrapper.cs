@@ -9,6 +9,8 @@ using Holoone.Core.Services.Interfaces;
 using Holoone.Core.ViewModels;
 using Holoone.Core.ViewModels.Anchor;
 using Holoone.Core.ViewModels.Export;
+using Holoone.Core.ViewModels.Export.BIM;
+using Holoone.Core.ViewModels.Export.Default;
 using Holoone.Core.ViewModels.Home;
 using Holoone.Core.ViewModels.Login;
 using Holoone.Core.ViewModels.Settings;
@@ -37,7 +39,8 @@ namespace Holoone.Core
             _container.Singleton<IFlurlClientFactory, DefaultFlurlClientFactory>();
             _container.Singleton<IHoloNavigationService, HoloNavigationService>();
             _container.Singleton<ILocalStorage, LocalStorage>();
-            _container.Singleton<IMicrosoftGraphService, MicrosoftGraphService>(); 
+            _container.Singleton<IMicrosoftGraphService, MicrosoftGraphService>();
+            _container.Singleton<IExportService, ExportService>(); 
 
             _container.PerRequest<ShellViewModel>();
             _container.PerRequest<HomeViewModel>();
@@ -47,6 +50,8 @@ namespace Holoone.Core
             _container.PerRequest<LoginThinkRealityViewModel>();
             _container.PerRequest<AnchorViewModel>();
             _container.PerRequest<ExportViewModel>();
+            _container.PerRequest<ExportDefaultViewModel>();
+            _container.PerRequest<ExportBIMViewModel>();
         }
 
 

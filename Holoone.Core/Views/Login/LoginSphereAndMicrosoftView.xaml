@@ -8,7 +8,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:cal="http://www.caliburnproject.org"
              xmlns:dep="clr-namespace:Holoone.Core.Helpers"
              xmlns:model="clr-namespace:Holoone.Api.Models;assembly=Holoone.Api">
 

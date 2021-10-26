@@ -70,6 +70,8 @@
     <Compile Include="Services\HoloNavigationService.cs" />
     <Compile Include="ViewModels\Anchor\AnchorViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\Export\BIM\ExportBIMViewModel.cs" />
+    <Compile Include="ViewModels\Export\Default\ExportDefaultViewModel.cs" />
     <Compile Include="ViewModels\Export\ExportViewModel.cs" />
     <Compile Include="ViewModels\Home\HomeViewModel.cs" />
     <Compile Include="ViewModels\Login\LoginSphereAndMicrosoftViewModel.cs" />
@@ -117,11 +119,14 @@
     <Compile Include="Views\Export\BIM\New\ExportBIMNewView.xaml.cs">
       <DependentUpon>ExportBIMNewView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Export\Default\ExportDefaultSelectionView.xaml.cs">
-      <DependentUpon>ExportDefaultSelectionView.xaml</DependentUpon>
+    <Compile Include="Views\Export\Default\ExportData.xaml.cs">
+      <DependentUpon>ExportData.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Export\Default\ExportDefaultView.xaml.cs">
       <DependentUpon>ExportDefaultView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Export\Default\Selection.xaml.cs">
+      <DependentUpon>Selection.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Export\ExportView.xaml.cs">
       <DependentUpon>ExportView.xaml</DependentUpon>
@@ -228,11 +233,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Export\Default\ExportDefaultSelectionView.xaml">
+    <Page Include="Views\Export\Default\ExportData.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Export\Default\ExportDefaultView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Export\Default\Selection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

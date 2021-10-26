@@ -15,10 +15,7 @@ namespace Holoone.Api.Services.Interfaces
 
         Task<MicrosoftGraphResponse> LoginWithMicrosoftAsync();
 
-        Task<IEnumerable<UserPermissions>> GetLoginAsync();
-        Task<UserPermissions> GetLoginAsync(string id);
-        
-        Task UpdateLoginAsync(UserPermissions userPermission);
-        Task DeleteLoginAsync(UserPermissions userPermission);
+        Task<IFlurlResponse> UpdateMicrosoftGraphTokenAsync(string graphToken, DateTimeOffset expiryOn);
+        Task<UserPermissions> LoginWithThinkReality(string id);
     }
 }

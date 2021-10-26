@@ -11,16 +11,11 @@ namespace Holoone.Core.ViewModels.Export
     public class ExportViewModel : BaseViewModel
     {
 
-        public ExportViewModel(IHoloNavigationService navigationService) //: base(navigationService)
+        public ExportViewModel(IHoloNavigationService navigationService) 
         {
-
         }
 
-        public void ShowHomePage() => NavigationService.GoTo<HomeViewModel>();
-
-        public async Task ExportAsync(object model)
-        {
-
-        }
+        public void ShowExportDefaultPage() => NavigationService.GoTo<Default.ExportDefaultViewModel>();
+        public void ShowExportBIMPage() => NavigationService.GoTo<BIM.ExportBIMViewModel>();
     }
 }
