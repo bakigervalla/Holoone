@@ -21,15 +21,17 @@ using System.Windows.Media;
 
 namespace Holoone.Core.ViewModels
 {
-    public class ShellViewModel : BaseViewModel
+    public class ShellViewModel : BaseViewModel, IHandle<bool>
     {
         private readonly ILocalStorage _localeStorage;
 
         public ShellViewModel(
             IHoloNavigationService navigationService,
-            ILocalStorage localeStorage)
+            ILocalStorage localeStorage,
+            IEventAggregator eventAggregator)
         {
             _localeStorage = localeStorage;
+            eventAggregator.Subscribe(this);
 
             ShowHomePage();
         }
@@ -47,6 +49,14 @@ namespace Holoone.Core.ViewModels
             _localeStorage.Clear();
 
             await NavigationService.GoTo<HomeViewModel>();
+        }
+
+        private bool _isBusy;
+        public bool IsBusy { get => _isBusy; set { _isBusy = value; NotifyOfPropertyChange(nameof(IsBusy)); } }
+
+        public async Task HandleAsync(bool message, CancellationToken cancellationToken)
+        {
+            IsBusy = message;
         }
 
         //public async Task ShowHomeScreenAsync()

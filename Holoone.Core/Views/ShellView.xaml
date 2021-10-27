@@ -23,7 +23,8 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         Foreground="#666"
         xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"
-        xmlns:static="clr-namespace:Holoone.Api.Helpers.Constants;assembly=Holoone.Api"
+        xmlns:static="clr-namespace:Holoone.Api.Helpers.Constants;assembly=Holoone.Api" xmlns:viewmodels="clr-namespace:Holoone.Core.ViewModels" 
+        d:DataContext="{d:DesignInstance Type=viewmodels:ShellViewModel}"
         Title="Holo|one"
         >
 

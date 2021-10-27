@@ -8,14 +8,11 @@ namespace Holoone.Core.ViewModels
 {
     public class BaseViewModel : SingletonBaseViewModel
     {
-
         public BaseViewModel()
         {
-            IsBusy = false;
+           
         }
         public new UserLogin UserLogin { get => Instance.UserLogin; }
 
-        private bool _isBusy;
-        public bool IsBusy { get => _isBusy; set { _isBusy = value; NotifyOfPropertyChange(nameof(IsBusy)); } }
     }
 }

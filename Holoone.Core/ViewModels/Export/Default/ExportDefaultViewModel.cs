@@ -1,4 +1,5 @@
-﻿using Holoone.Api.Models;
+﻿using Caliburn.Micro;
+using Holoone.Api.Models;
 using Holoone.Api.Services;
 using Holoone.Api.Services.Interfaces;
 using Holoone.Core.Services.Interfaces;
@@ -16,13 +17,16 @@ namespace Holoone.Core.ViewModels.Export.Default
     public class ExportDefaultViewModel : BaseViewModel
     {
         private readonly IExportService _exportService;
+        private readonly IEventAggregator _eventAggregator;
 
         public ExportDefaultViewModel(
             IHoloNavigationService navigationService,
-            IExportService exportService
+            IExportService exportService,
+            IEventAggregator eventAggregator
             )
         {
             _exportService = exportService;
+            _eventAggregator = eventAggregator;
 
             try
             {
@@ -57,7 +61,7 @@ namespace Holoone.Core.ViewModels.Export.Default
             try
             {
 
-                IsBusy = true;
+                await _eventAggregator.PublishOnUIThreadAsync(true);
 
                 var files = GetSelectedFiles();
 
@@ -119,7 +123,7 @@ namespace Holoone.Core.ViewModels.Export.Default
             }
             finally
             {
-                IsBusy = false;
+                await _eventAggregator.PublishOnUIThreadAsync(false);
             }
         }
 

@@ -23,12 +23,12 @@
                 <HierarchicalDataTemplate>
                     <TreeViewItem Header="{Binding Name}" Padding="0">
                         <TreeView ItemsSource="{Binding ListofFiles}" Padding="0">
-                            <!--<TreeView.ItemContainerStyle>
-        <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource MaterialDesignTreeViewItem}">
-            <Setter Property="IsSelected" Value="{Binding IsSelected}" />
-                                    <Setter Property="Padding" Value="0" />
-                                </Style>
-    </TreeView.ItemContainerStyle>-->
+                                <TreeView.ItemContainerStyle>
+                                    <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource MaterialDesignTreeViewItem}">
+                                        <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                                        <Setter Property="Padding" Value="2" />
+                                    </Style>
+                                </TreeView.ItemContainerStyle>
                             <TreeView.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Name}" Padding="0" Margin="0" />
