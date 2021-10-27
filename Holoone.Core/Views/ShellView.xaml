@@ -35,14 +35,14 @@
             <!--<converters:VisibilityConverter x:Key="ProgressVisibility"></converters:VisibilityConverter>-->
         </ResourceDictionary>
     </wpfspark:SparkWindow.Resources>
-    
+
     <Grid Style="{StaticResource RootGrid}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-               
+
         <views:Header x:Name="HeaderControl" HorizontalAlignment="Stretch" />
 
         <Menu Grid.Row="1" IsMainMenu="True" Style="{StaticResource AccountMenu}" HorizontalAlignment="Center">
@@ -60,9 +60,16 @@
             </MenuItem>
         </Menu>
 
-        <ContentControl Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Stretch"
+        <StackPanel Grid.Row="2" Height="80" Width="80" VerticalAlignment="Center" Panel.ZIndex="100">
+            <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" IsIndeterminate="True" 
+                     VerticalAlignment="Center" VerticalContentAlignment="Center" Width="40"
+                     Visibility="{Binding IsBusy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={converters:VisibilityConverter}}" />
+        </StackPanel>
+
+        <ContentControl Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Stretch" 
+                        Opacity="{Binding IsBusy, Converter={converters:OpacityConverter}}" 
+                        IsHitTestVisible="{Binding IsBusy, Converter={StaticResource InvertBooleanConverter}}"
                         cal:View.Model="{Binding NavigationService.ActiveItem}" />
 
     </Grid>
-
 </wpfspark:SparkWindow>

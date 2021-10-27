@@ -50,10 +50,10 @@ namespace Holoone.Core.ViewModels.Login
 
                 if (response.ResponseMessage.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Logged in successfully.");
-
                     var dynamic = await response.GetJsonAsync();
 
+                    Instance.UserLogin.Username = LoginCredentials.Username;
+                    Instance.UserLogin.Password = LoginCredentials.Password;
                     Instance.UserLogin.UserFullName = LoginCredentials.Username;
                     Instance.UserLogin.IsLoggedIn = true;
                     Instance.UserLogin.Token = dynamic.token;
@@ -79,9 +79,12 @@ namespace Holoone.Core.ViewModels.Login
 
                 if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    MessageBox.Show("Logged in successfully.");
-
-                    Instance.UserLogin = response.User;
+                    // Instance.UserLogin = response.User;
+                    Instance.UserLogin.Username = response.User.Username;
+                    Instance.UserLogin.Password = response.User.Password;
+                    Instance.UserLogin.UserFullName = response.User.UserFullName;
+                    Instance.UserLogin.IsLoggedIn = true;
+                    Instance.UserLogin.Token = response.User.Token;
 
                     _localeStorage.Store("user_login", Instance.UserLogin);
 

@@ -8,18 +8,14 @@ using System.Windows.Markup;
 
 namespace Holoone.Core.Helpers.Converters
 {
-    public class VisibilityConverter : MarkupExtension, IValueConverter
+    public class OpacityConverter : MarkupExtension, IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            bool IsReversed = false;
-            if (parameter != null)
-                IsReversed = bool.Parse(parameter.ToString());
-
             if ((bool)value == true)
-                return IsReversed ? "Collapsed" : "Visible";
+                return "0.4";
             else
-                return IsReversed ? "Visible" : "Collapsed";
+                return "1";
 
         }
         public object ConvertBack(object value, Type targetTypes, object parameter, System.Globalization.CultureInfo culture)

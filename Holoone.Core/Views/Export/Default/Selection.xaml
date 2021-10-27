@@ -18,21 +18,20 @@
         
         <UniformGrid Grid.Row="1" Columns="2" Rows="4" Margin="0,40">
             <UniformGrid.Resources>
-                <Style TargetType="{x:Type RadioButton}" BasedOn="{StaticResource MaterialDesignRadioButton}">
+                <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource MaterialDesignCheckBox}">
                     <Setter Property="VerticalAlignment" Value="Center"/>
                     <Setter Property="Margin" Value="20,0"/>
                 </Style>
             </UniformGrid.Resources>
 
-            <RadioButton GroupName="SelectLayer" Content="Up vector" IsChecked="True" />
-            <RadioButton GroupName="SelectLayer" Content="Handedness" />
-            <RadioButton GroupName="SelectLayer" Content="Tabletop" />
-            <RadioButton GroupName="SelectLayer" Content="Overlay Y/N" />
-            <RadioButton GroupName="SelectLayer" Content="Decimate" />
-            <RadioButton GroupName="SelectLayer" Content="Remove Hid" />
-            <RadioButton GroupName="SelectLayer" Content="Merge" />
-            <RadioButton GroupName="SelectLayer" Content="Hierarhy" />
-
+            <CheckBox Content="Up vector" IsChecked="{Binding ProcessingParams.UpVectorDefinition }" />
+            <CheckBox Content="Handedness" IsChecked="{Binding ProcessingParams.ModelType}" />
+            <CheckBox Content="Tabletop" IsChecked="{Binding ProcessingParams.ModelSize }" />
+            <CheckBox Content="Overlay Y/N" IsChecked="{Binding ProcessingParams.ModelOverlay }" />
+            <CheckBox Content="Decimate" IsChecked="{Binding ProcessingParams.ModelType }" />
+            <CheckBox Content="Remove Hid" IsChecked="{Binding ProcessingParams.RemoveHiddenGeometry }" />
+            <CheckBox Content="Merge" IsChecked="{Binding ProcessingParams.MergeGeometry }" />
+            <CheckBox Content="Hierarhy" IsChecked="{Binding ProcessingParams.HierarchyCutoff }" />
         </UniformGrid>
 
         <Button Grid.Row="2" x:Name="NavigateToExportPage" VerticalAlignment="Center">Select Model</Button>

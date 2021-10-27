@@ -16,18 +16,31 @@
         <Image Height="80" VerticalAlignment="Center" 
                Source="pack://application:,,,/Holoone.Core;component/Resources/Images/export.png" />
 
-        <TreeView Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" MinWidth="310" Style="{StaticResource MaterialDesignTreeView}"
-                  >
-            <TreeViewItem Header="Model" IsExpanded="True">
-                <TreeViewItem Header="Coke"></TreeViewItem>
-                <TreeViewItem Header="Pepsi"></TreeViewItem>
-                <TreeViewItem Header="Orange Juice"></TreeViewItem>
-                <TreeViewItem Header="Milk"></TreeViewItem>
-                <TreeViewItem Header="Iced Tea"></TreeViewItem>
-                <TreeViewItem Header="Mango Shake"></TreeViewItem>
-            </TreeViewItem>
+        <Border Grid.Row="1" CornerRadius="4" BorderThickness="1" BorderBrush="#efefef">
+        <TreeView HorizontalAlignment="Stretch" VerticalAlignment="Top" MinWidth="310" Style="{StaticResource MaterialDesignTreeView}"
+                  ItemsSource="{Binding Folders}" Margin="0" Padding="0">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate>
+                    <TreeViewItem Header="{Binding Name}" Padding="0">
+                        <TreeView ItemsSource="{Binding ListofFiles}" Padding="0">
+                            <!--<TreeView.ItemContainerStyle>
+        <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource MaterialDesignTreeViewItem}">
+            <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                                    <Setter Property="Padding" Value="0" />
+                                </Style>
+    </TreeView.ItemContainerStyle>-->
+                            <TreeView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" Padding="0" Margin="0" />
+                                </DataTemplate>
+                            </TreeView.ItemTemplate>
+                        </TreeView>
+                    </TreeViewItem>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
         </TreeView>
-
+        </Border>
+        
         <Button Grid.Row="2" x:Name="ExportAsync" VerticalAlignment="Center">Export</Button>
     </Grid>
 

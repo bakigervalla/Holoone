@@ -42,6 +42,9 @@ namespace Holoone.Api.Models
 
     public class UserLogin : BaseModel
     {
+        public string Username { get; set; }
+        public string Password { get; set; }
+
         private string _userFullName = "Welcome";
         public string UserFullName { get => _userFullName; set { _userFullName = value; RaisePropertyChanged(); } }
         public string Token { get; set; }

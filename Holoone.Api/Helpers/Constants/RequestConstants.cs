@@ -10,8 +10,9 @@ namespace Holoone.Api.Helpers.Constants
 {
     public static class RequestConstants
     {
+        public const string RootUrl = "https://dev.holo-one.com/";
         public const string BaseUrl = "https://dev.holo-one.com/core/";
-
+        
         public static IDictionary<string, string> SphereBaseUrls = new Dictionary<string, string> {
             { "USA", "https://dev.holo-one.com/core/"},
             { "Europe", "https://dev.holo-one.com/core/"},
