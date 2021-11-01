@@ -41,7 +41,7 @@
         </TreeView>
         </Border>
         
-        <Button Grid.Row="2" x:Name="ExportAsync" VerticalAlignment="Center">Export</Button>
+        <Button Grid.Row="2" x:Name="ExportAsync" HorizontalAlignment="Center" Width="240" VerticalAlignment="Center">Export</Button>
     </Grid>
 
 </UserControl>

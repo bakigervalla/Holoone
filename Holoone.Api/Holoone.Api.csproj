@@ -61,11 +61,13 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Helpers\Constants\RequestConstants.cs" />
+    <Compile Include="Helpers\Extensions\GetPropertyInfo.cs" />
     <Compile Include="Helpers\Extensions\Utility.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\MediaFile.cs" />
     <Compile Include="Models\MediaItem.cs" />
+    <Compile Include="Models\ProcessingParams.cs" />
     <Compile Include="Services\Export\ExportService.cs" />
     <Compile Include="Services\Export\IExportService.cs" />
     <Compile Include="Services\IResponse.cs" />

@@ -23,6 +23,44 @@ namespace Holoone.Core.Views.Export.Default.ExportDefault
         public Selection()
         {
             InitializeComponent();
+            //txtNum.Text = "1";
         }
+
+        private int _numValue = 1;
+
+        public int NumValue
+        {
+            get { return _numValue; }
+            set
+            {
+                _numValue = value;
+                txtNum.Text = value.ToString();
+            }
+        }
+
+        private void cmdUp_Click(object sender, RoutedEventArgs e)
+        {
+            NumValue++;
+        }
+
+        private void cmdDown_Click(object sender, RoutedEventArgs e)
+        {
+            if(NumValue == 0)
+                return;
+            NumValue--;
+        }
+
+        private void txtNum_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (txtNum == null)
+            {
+                return;
+            }
+
+            if (int.TryParse(txtNum.Text, out _numValue))
+                txtNum.Text = _numValue.ToString();
+
+        }
+
     }
 }

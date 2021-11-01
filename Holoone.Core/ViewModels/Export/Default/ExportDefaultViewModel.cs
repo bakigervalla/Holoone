@@ -3,14 +3,19 @@ using Holoone.Api.Models;
 using Holoone.Api.Services;
 using Holoone.Api.Services.Interfaces;
 using Holoone.Core.Services.Interfaces;
+using Holoone.Core.ViewModels.Home;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Windows.Storage;
+using Windows.Storage.Streams;
 
 namespace Holoone.Core.ViewModels.Export.Default
 {
@@ -39,8 +44,10 @@ namespace Holoone.Core.ViewModels.Export.Default
 
         }
 
+        #region properties
         private ProcessingParams _processingParams = new ProcessingParams();
         public ProcessingParams ProcessingParams { get => _processingParams; set { _processingParams = value; NotifyOfPropertyChange(nameof(ProcessingParams)); } }
+        #endregion
 
         #region navigation
 
@@ -60,62 +67,67 @@ namespace Holoone.Core.ViewModels.Export.Default
         {
             try
             {
-
                 await _eventAggregator.PublishOnUIThreadAsync(true);
+
+                var requestParams = new RequestProcessingParams
+                {
+                    ProcessingParams = ProcessingParams
+                };
+
+                string processingArgs = JsonConvert.SerializeObject(requestParams);
 
                 var files = GetSelectedFiles();
 
                 foreach (var file in files)
                 {
+                    var valParts = new NameValueCollection
+                    {
+                        { "display_name", Path.GetFileNameWithoutExtension(file.path) },
+                        { "parent_folder", "5820" }, // Shared=5820, Test=5735
+                        { "file_extension", Path.GetExtension(file.path).Replace(".", "") },
+                    };
+
+                    var valColl = new NameValueCollection
+                    {
+                        { file.path, "" }
+                    };
+
+                    await _exportService.ExportModelFormCompositionAsync(Instance.UserLogin, valParts, valColl, ProcessingParams);
+
+                    MessageBox.Show("Uploaded successfully.");
+
+                    await NavigationService.GoTo<HomeViewModel>();
 
 
-                    MediaItem model = new MediaItem(file.path);
+                    #region "flurAPI not in use"
+                    /*
+                        var requestParams = new RequestProcessingParams
+                        {
+                            ProcessingParams = ProcessingParams
+                        };
 
-                    // Version: 1
-                    //{
-                    //DisplayName = fileName,
-                    //FileExtension = System.IO.Path.GetExtension(file.path),
-                    //File = new StreamContent(filestream),
-                    //ParentFolder = null,
-                    //ProcessingParams = new ProcessingParams
-                    //{
-                    //    ModelType = "default",
-                    //    UpVectorDefinition = "y",
-                    //    CoordinateSystemOrientation = "left_hand",
-                    //    ModelSize = "tabletop",
-                    //    ModelOverlay = 0,
-                    //    OptimizeModel = 1,
-                    //    RemoveHiddenGeometry = 0,
-                    //    MergeGeometry = 1,
-                    //    HierarchyCutoff = 1,
-                    //    ExtractMetadata = 0,
-                    //    BlockingCollider = 0,
-                    //    IsPrimary = false
-                    //}
+                        string processingArgs = JsonConvert.SerializeObject(requestParams);
 
-                    //};
+                        var mediaItem = new MediaItem
+                        {
+                            Mode = "formdata",
+                            RequestProcessingParams = requestParams,
+                            FormData = new List<FormData>
+                        {
+                            // new FormData { Key = "file", Src = file.path, Type = "file" },
+                            new FormData { Key = "display_name", Value = "Baki File", Type = "text" },
+                            new FormData { Key = "parent_folder", Value="5820", Type = "text" },
+                            new FormData { Key = "file_extension", Value = System.IO.Path.GetExtension(file.path), Type = "text" },
+                            //* new FormData { Key = "processing_params", Value = processingArgs, Type = "text" },
+                        }
+                        };
 
-                    // Version: 2
-                    //MultipartFormDataContent content = new MultipartFormDataContent();
-                    //FileStream filestream = new FileStream(file.path, FileMode.Open);
-                    //string fileName = System.IO.Path.GetFileNameWithoutExtension(file.path);
-                    //content.Add(new StreamContent(filestream), "file", fileName);
-                    //content.Add(new StringContent("", UTF8Encoding.UTF8));
+                        //VERSION 1:
+                        var result = await _exportService.ExportModelAsync(Instance.UserLogin, mediaItem, file.path);
+                    */
+                    #endregion
 
-                    // Version: 3
-                    //IList<KeyValuePair<string, string>> postData = new List<KeyValuePair<string,string>> {
-                    //    new KeyValuePair<string, string>("file", @"e:\Users\BGERVALLA\Downloads\Autodesk\Navisworks\Navis 'Drawings\holo_one_logo.png"),
-                    //    new KeyValuePair<string, string>("display_name", "Baki test api"),
-                    //    new KeyValuePair<string, string>("parent_folder", null),
-                    //    new KeyValuePair<string, string>("file_extension", "png"),
-                    //    new KeyValuePair<string, string>("processing_params", "{\"processing_params\": {\"model_type\": \"default\", \"up_vector_definition\": \"y\", \"coordinate_system_orientation\": \"left_hand\", \"model_size\": \"tabletop\", \"model_overlay\": 0, \"optimize_model\": 1, \"remove_hidden_geometry\": 0, \"merge_geometry\": 1, \"hierarchy_cutoff\": 1, \"extract_metadata\": 0, \"blocking_collider\" : 0}, \"is_primary\": false}")
-                    //};
-
-                    //var content = new FormUrlEncodedContent(postData);
-
-                    var result = await _exportService.ExportModelAsync(Instance.UserLogin, null, model);
                 }
-
             }
             catch (Exception ex)
             {
