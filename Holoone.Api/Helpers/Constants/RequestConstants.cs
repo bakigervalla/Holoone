@@ -51,11 +51,17 @@ namespace Holoone.Api.Helpers.Constants
         //   - for any Work or School accounts, use organizations
         //   - for any Work or School accounts, or Microsoft personal account, use common
         //   - for Microsoft Personal account, use consumers
-        public static string ClientId = "4a1aa1d5-c567-49d0-ad0b-cd957a47f842";
+
+        // Holo one AG ClientId: 863ced6e-1061-4c26-9911-e6eef5f64418 (shows Holo one AG on the web dialog that opens for login)
+        // Just another ClientId that shows unverified on web dialog: "4a1aa1d5-c567-49d0-ad0b-cd957a47f842";
+        public static string ClientId = "863ced6e-1061-4c26-9911-e6eef5f64418";
 
         // Note: Tenant is important for the quickstart.
+        // "common": allows anyone with microsoft account to login
+        // Client ID: "f0afb69b-5fee-45d0-bf59-a332c9b695e7";
+        // Tenant ID: 0d4ed3fc-659e-476e-b1e1-8a1f041eb6bc
         public static string Tenant = "common";
-        public static string Instance = "https://login.microsoftonline.com/";
+        public static string Instance = "https://login.microsoftonline.com/"; 
         public static IPublicClientApplication _clientApp;
 
         public static IPublicClientApplication PublicClientApp { get { return _clientApp; } }

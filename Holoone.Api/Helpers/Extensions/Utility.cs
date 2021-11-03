@@ -12,5 +12,39 @@ namespace Holoone.Api.Helpers.Extensions
         {
             return System.Net.WebUtility.UrlEncode(url);
         }
+
+        public static string UrlDecode(this string url)
+        {
+            return System.Net.WebUtility.UrlDecode(url);
+        }
+
+        public static string HtmlDecode(this string url)
+        {
+            return System.Text.RegularExpressions.Regex.Unescape(url);
+            // url.Replace(@"\u0026", "&");
+        }
+
+
+        public static string DecodeUrlString(this string url)
+        {
+            string newUrl;
+            while ((newUrl = Uri.UnescapeDataString(url)) != url)
+                url = newUrl;
+            return newUrl;
+        }
+
+        public static string GetTextBetween(this string strSource, string strStart, string strEnd)
+        {
+            if (strSource.Contains(strStart) && strSource.Contains(strEnd))
+            {
+                int Start, End;
+                Start = strSource.IndexOf(strStart, 0) + strStart.Length;
+                End = strSource.IndexOf(strEnd, Start);
+                return strSource.Substring(Start, End - Start);
+            }
+
+            return "";
+        }
+
     }
 }

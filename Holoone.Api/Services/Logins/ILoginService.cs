@@ -13,7 +13,7 @@ namespace Holoone.Api.Services.Interfaces
     {
         Task<IFlurlResponse> LoginSphereAsync(LoginCredentials loginCredentials);
 
-        Task<MicrosoftGraphResponse> LoginWithMicrosoftAsync();
+        Task<MicrosoftGraphResponse> LoginWithMicrosoftAsync(LoginCredentials loginCredentials);
 
         Task<IFlurlResponse> UpdateMicrosoftGraphTokenAsync(string graphToken, DateTimeOffset expiryOn);
         Task<UserPermissions> LoginWithThinkReality(string id);

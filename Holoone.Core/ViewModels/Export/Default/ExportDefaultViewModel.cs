@@ -54,6 +54,9 @@ namespace Holoone.Core.ViewModels.Export.Default
         private IEnumerable<MediaFile> _mediaFiles;
         public IEnumerable<MediaFile> MediaFiles { get => _mediaFiles; set { _mediaFiles = value; NotifyOfPropertyChange(nameof(MediaFiles)); } }
 
+        private MediaFile _selectedFolder;
+        public MediaFile SelectedFolder { get => _selectedFolder; set { _selectedFolder = value; NotifyOfPropertyChange(nameof(SelectedFolder)); } }
+
         #endregion
 
         #region navigation
@@ -84,11 +87,7 @@ namespace Holoone.Core.ViewModels.Export.Default
                 var response = await _exportService.GetCompanyMediaFolderContent(Instance.UserLogin, 0);
 
                 if (response.ResponseMessage.IsSuccessStatusCode)
-                {
                     MediaFiles = await response.GetJsonAsync<IList<MediaFile>>();
-                    // add children to show arrow
-                   // MediaFiles.ToList().ForEach(x => x.SubFolders = new List<MediaFile> { new MediaFile() });
-                }
                 else
                     MessageBox.Show("Could not retrieve folders");
 
@@ -109,22 +108,12 @@ namespace Holoone.Core.ViewModels.Export.Default
             {
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
-                //List<MediaFile> _folders = MediaFiles.ToList();
-                //var _subFolders = _folders.Where(x => x.MediaFiles != null && x.MediaFiles.Count > 0).SelectMany(x => x.MediaFiles);
-
-                //if (_subFolders != null)
-                //    _folders = _folders.Concat(_subFolders).ToList();
-
-                //var folder = _folders.Single(x => x.Id == mediaFile.Id);
-
                 var response = await _exportService.GetCompanyMediaFolderContent(Instance.UserLogin, mediaFile.Id);
 
                 if (response.ResponseMessage.IsSuccessStatusCode)
                 {
                     var result = await response.GetJsonAsync<IList<MediaFile>>();
                     mediaFile.SubFolders = result.Where(x => x.MediaFileType == "folder").ToList();
-                    // add children to show arrow
-                    // mediaFile.SubFolders.ToList().ForEach(x => x.SubFolders = new List<MediaFile> { new MediaFile() });
                 }
                 else
                     MessageBox.Show("Could not retrieve folders");
@@ -140,6 +129,10 @@ namespace Holoone.Core.ViewModels.Export.Default
             }
         }
 
+        public void SetSelectedFolder(MediaFile selectedFolder)
+        {
+            SelectedFolder = selectedFolder;
+        }
 
         public async Task ExportAsync()
         {
@@ -147,6 +140,11 @@ namespace Holoone.Core.ViewModels.Export.Default
             {
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
+                if(SelectedFolder == null)
+                {
+                    MessageBox.Show("Please select a folder for export.");
+                    return;
+                }
                 var requestParams = new RequestProcessingParams
                 {
                     ProcessingParams = ProcessingParams
@@ -161,7 +159,7 @@ namespace Holoone.Core.ViewModels.Export.Default
                     var valParts = new NameValueCollection
                     {
                         { "display_name", Path.GetFileNameWithoutExtension(file.path) },
-                        { "parent_folder", "5820" }, // Shared=5820, Test=5735
+                        { "parent_folder", SelectedFolder.Id.ToString() },
                         { "file_extension", Path.GetExtension(file.path).Replace(".", "") },
                     };
 

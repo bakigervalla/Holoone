@@ -9,9 +9,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Holoone.Api.Helpers.Extensions;
 using Holoone.Api.Services.MicrosoftGraph;
 using Microsoft.Identity.Client;
+using Newtonsoft.Json.Linq;
+using System.Diagnostics;
+using Holoone.Api.Helpers.Extensions;
 
 namespace Holoone.Api.Services
 {
@@ -21,20 +23,11 @@ namespace Holoone.Api.Services
         private readonly IFlurlClient _flurlClient;
         private readonly IMicrosoftGraphService _microsoftGraph;
 
-
-        private static string _usUrl;
-        private static string _euUrl;
-        private static string _chUrl;
-
         public LoginService(
             IFlurlClientFactory flurlClientFac,
             IMicrosoftGraphService microsoftGraph
             )
         {
-            _usUrl = Environment.GetEnvironmentVariable("US_URL");
-            _euUrl = Environment.GetEnvironmentVariable("EU_URL");
-            _chUrl = Environment.GetEnvironmentVariable("CH_URL");
-
             _flurlClient = flurlClientFac.Get(RequestConstants.BaseUrl);
             _microsoftGraph = microsoftGraph;
         }
@@ -49,11 +42,27 @@ namespace Holoone.Api.Services
                     .PostJsonAsync(loginCredentials);
         }
 
-        public async Task<MicrosoftGraphResponse> LoginWithMicrosoftAsync()
+        public async Task<MicrosoftGraphResponse> LoginWithMicrosoftAsync(LoginCredentials loginCredentials)
+        {
+            string hostKey = loginCredentials.Hosts.Single(x => x.IsChecked).Text;
+            _flurlClient.BaseUrl = RequestConstants.SphereBaseUrls[hostKey];
+
+            string response = await _flurlClient.Request("integration/microsoft-graph/authorize/?request_type=sign_up&origin=app")
+                                    // .WithHeaders(new { Content_Type = "application/x-www-form-urlencoded" })
+                                    // .WithHeader(RequestConstants.UserAgent, RequestConstants.UserAgentValue)
+                                    .GetStringAsync();
+
+            var url = response.GetTextBetween("redirect_uri=", "\",").HtmlDecode().DecodeUrlString();
+            var urlMsaSignUp = response.GetTextBetween("urlMsaSignUp\":\"", "\",").HtmlDecode().DecodeUrlString();
+
+            return await CallMicrosoftGraph(urlMsaSignUp);
+        }
+
+        private async Task<MicrosoftGraphResponse> CallMicrosoftGraph(string urlMsaSignUp)
         {
             try
             {
-                CreateApplication(true);
+                CreateApplication(true, urlMsaSignUp);
 
                 var authResult = await _microsoftGraph.CallGraph(SignInMethods.Dialog);
 
@@ -78,11 +87,12 @@ namespace Holoone.Api.Services
             }
         }
 
-        private void CreateApplication(bool useWam)
+        private void CreateApplication(bool useWam, string Url)
         {
             var builder = PublicClientApplicationBuilder.Create(RequestConstants.ClientId)
                 .WithAuthority($"{RequestConstants.Instance}{RequestConstants.Tenant}")
-                .WithDefaultRedirectUri();
+                .WithDefaultRedirectUri()
+                ;
 
             if (useWam)
             {

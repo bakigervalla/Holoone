@@ -10,6 +10,7 @@
              xmlns:classes="clr-namespace:Holoone.Api.Models;assembly=Holoone.Api"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
     <Grid VerticalAlignment="Stretch" Margin="10,20,10,10" HorizontalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="80" />
@@ -23,12 +24,24 @@
 
         <TextBlock Grid.Row="1" VerticalAlignment="Center" Text="Output Destination" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" />
 
-        <TreeView Grid.Row="2" Name="treeView" Margin="5" ItemsSource="{Binding MediaFiles}" >
+        <!--<TreeView Grid.Row="2" Name="treeView" Margin="5" ItemsSource="{Binding MediaFiles}" >
             <TreeView.ItemContainerStyle>
-                <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource HoloTreeView}">
+                <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource HoloFolderTreeViewItemStyle}">
                     <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <Setter Property="Padding" Value="2" />
+                    -->
+        <!--<Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
+        <!--
+                    <Setter Property="IsExpanded" Value="False" />
                     <Setter Property="Margin" Value="0" />
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding IsExpanded}" Value="False" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="IsExpanded" Value="True" />
+                        </MultiDataTrigger>
+                    </Style.Triggers>
                 </Style>
             </TreeView.ItemContainerStyle>
             <TreeView.Resources>
@@ -38,44 +51,50 @@
 
             </TreeView.Resources>
             
-        </TreeView>
+        </TreeView>-->
 
-        <!--<Border Grid.Row="2" CornerRadius="4" BorderThickness="1" BorderBrush="#efefef">
-            <TreeView HorizontalAlignment="Stretch" VerticalAlignment="Top" MinWidth="310" Style="{StaticResource MaterialDesignTreeView}"
-                  Margin="0" Padding="0"
-                       ItemsSource="{Binding MediaFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                <TreeView.ItemTemplate>
-                    <HierarchicalDataTemplate ItemsSource="{Binding SubFolders, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                        <TreeViewItem Header="{Binding DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Padding="0">
+        <TreeView Grid.Row="2"  Name="treeView" Margin="0" ItemsSource="{Binding MediaFiles}">
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource HoloFolderTreeViewItemStyle}" />
+            </TreeView.ItemContainerStyle>
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding SubFolders, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <StackPanel Orientation="Horizontal">
+                        <Path x:Name="ExpandPath" Fill="#FFC300" Margin="-4 0 0 0">
+                            <Path.Style>
+                                <Style TargetType="Path">
+                                    <Setter Property="Data" Value="{StaticResource FolderClosed}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType=TreeViewItem}}" Value="True">
+                                            <Setter Property="Data" Value="{StaticResource FolderOpened}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Path.Style>
                             <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Expanded">
+                                <i:EventTrigger EventName="MouseLeftButtonUp">
                                     <cal:ActionMessage MethodName="GetSubfoldersAsync">
                                         <cal:Parameter Value="{Binding }" />
                                     </cal:ActionMessage>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
-                            <TreeView ItemsSource="{Binding SubFolders, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                <TreeView.ItemContainerStyle>
-                                    <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource MaterialDesignTreeViewItem}">
-                                        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <Setter Property="Padding" Value="2" />
-                                        <Setter Property="Margin" Value="0" />
-                                    </Style>
-                                </TreeView.ItemContainerStyle>
-                                <TreeView.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Padding="0" Margin="0" HorizontalAlignment="Left" />
-                                    </DataTemplate>
-                                </TreeView.ItemTemplate>
-                            </TreeView>
-                        </TreeViewItem>
-                    </HierarchicalDataTemplate>
-                </TreeView.ItemTemplate>
-        
-            </TreeView>
-        </Border>-->
+                        </Path>
+                        <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" Padding="6 3 0 0" >
+                                <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseLeftButtonUp">
+                                    <cal:ActionMessage MethodName="SetSelectedFolder">
+                                        <cal:Parameter Value="{Binding }" />
+                                    </cal:ActionMessage>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBlock>
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
 
         <Button Grid.Row="3" x:Name="NavigateToExportPage" HorizontalAlignment="Center" Width="240" VerticalAlignment="Center">Continue to Export</Button>
+
     </Grid>
 
 </UserControl>

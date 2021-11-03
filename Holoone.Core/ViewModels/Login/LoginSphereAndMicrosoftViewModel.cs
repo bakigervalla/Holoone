@@ -75,7 +75,7 @@ namespace Holoone.Core.ViewModels.Login
         {
             try
             {
-                var response = await _apiLoginService.LoginWithMicrosoftAsync();
+                var response = await _apiLoginService.LoginWithMicrosoftAsync(LoginCredentials);
 
                 if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
                 {
@@ -95,7 +95,7 @@ namespace Holoone.Core.ViewModels.Login
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.Message);
+                // MessageBox.Show(ex.Message);
                 MessageBox.Show("Login failed");
             }
         }

@@ -63,8 +63,10 @@
     <Compile Include="Helpers\BindingProxy.cs" />
     <Compile Include="Helpers\Converters\BooleanOrConverter.cs" />
     <Compile Include="Helpers\Converters\IsHitVisibilityConverter.cs" />
+    <Compile Include="Helpers\Converters\LeftMarginMultiplierConverter.cs" />
     <Compile Include="Helpers\Converters\OpacityConverter.cs" />
     <Compile Include="Helpers\Converters\VisibilityConverter.cs" />
+    <Compile Include="Helpers\Extensions\TreeViewItemExtensions.cs" />
     <Compile Include="Helpers\Extensions\Utility.cs" />
     <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Services\Interfaces\IHoloNavigationService.cs" />
