@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Holoone.Api.Models
 {
-    public class MediaFile
+    public class MediaFile : BaseModel
     {
         // ID of media files internally stored in Sphere backend (needs to remain an int)
         [JsonProperty("id", NullValueHandling = NullValueHandling.Ignore)]
@@ -80,6 +80,14 @@ namespace Holoone.Api.Models
 
         //public bool Is360Video => Equals(MediaSubtype, VideoSubtypes.Video360);
         //public bool IsBIMModel => (Equals(MediaSubtype, ModelSubtypes.BIMModel) || Equals(ModelSubtype, ModelSubtypes.BIMModel));
+
+        private bool _isSelected;
+        [JsonIgnore]
+        public bool IsSelected { get => _isSelected; set { _isSelected = value; RaisePropertyChanged(nameof(IsSelected)); } }
+
+        private IList<MediaFile> _mediaFolders;
+        [JsonIgnore]
+        public IList<MediaFile> SubFolders { get => _mediaFolders; set { _mediaFolders = value; RaisePropertyChanged(nameof(SubFolders)); } }
 
         public override string ToString()
         {

@@ -6,6 +6,7 @@ using Holoone.Core.Services.Interfaces;
 using Holoone.Core.ViewModels.Home;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -14,6 +15,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using Windows.Storage;
 using Windows.Storage.Streams;
 
@@ -45,14 +47,26 @@ namespace Holoone.Core.ViewModels.Export.Default
         }
 
         #region properties
+
         private ProcessingParams _processingParams = new ProcessingParams();
         public ProcessingParams ProcessingParams { get => _processingParams; set { _processingParams = value; NotifyOfPropertyChange(nameof(ProcessingParams)); } }
+
+        private IEnumerable<MediaFile> _mediaFiles;
+        public IEnumerable<MediaFile> MediaFiles { get => _mediaFiles; set { _mediaFiles = value; NotifyOfPropertyChange(nameof(MediaFiles)); } }
+
         #endregion
 
         #region navigation
 
         public string _state = "Selection";
         public string State { get => _state; set { _state = value; NotifyOfPropertyChange("State"); } }
+
+        public void NavigateToFoldersPage()
+        {
+            State = "FolderSelection";
+
+            Task.Run(async () => await GetFoldersAsync());
+        }
 
         public void NavigateToExportPage()
         {
@@ -61,7 +75,71 @@ namespace Holoone.Core.ViewModels.Export.Default
 
         #endregion
 
-        public List<Folder> Folders { get; set; } = new List<Folder>();
+        public async Task GetFoldersAsync()
+        {
+            try
+            {
+                await _eventAggregator.PublishOnUIThreadAsync(true);
+
+                var response = await _exportService.GetCompanyMediaFolderContent(Instance.UserLogin, 0);
+
+                if (response.ResponseMessage.IsSuccessStatusCode)
+                {
+                    MediaFiles = await response.GetJsonAsync<IList<MediaFile>>();
+                    // add children to show arrow
+                   // MediaFiles.ToList().ForEach(x => x.SubFolders = new List<MediaFile> { new MediaFile() });
+                }
+                else
+                    MessageBox.Show("Could not retrieve folders");
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                await _eventAggregator.PublishOnUIThreadAsync(false);
+            }
+        }
+
+        public async Task GetSubfoldersAsync(MediaFile mediaFile)
+        {
+            try
+            {
+                await _eventAggregator.PublishOnUIThreadAsync(true);
+
+                //List<MediaFile> _folders = MediaFiles.ToList();
+                //var _subFolders = _folders.Where(x => x.MediaFiles != null && x.MediaFiles.Count > 0).SelectMany(x => x.MediaFiles);
+
+                //if (_subFolders != null)
+                //    _folders = _folders.Concat(_subFolders).ToList();
+
+                //var folder = _folders.Single(x => x.Id == mediaFile.Id);
+
+                var response = await _exportService.GetCompanyMediaFolderContent(Instance.UserLogin, mediaFile.Id);
+
+                if (response.ResponseMessage.IsSuccessStatusCode)
+                {
+                    var result = await response.GetJsonAsync<IList<MediaFile>>();
+                    mediaFile.SubFolders = result.Where(x => x.MediaFileType == "folder").ToList();
+                    // add children to show arrow
+                    // mediaFile.SubFolders.ToList().ForEach(x => x.SubFolders = new List<MediaFile> { new MediaFile() });
+                }
+                else
+                    MessageBox.Show("Could not retrieve folders");
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                await _eventAggregator.PublishOnUIThreadAsync(false);
+            }
+        }
+
 
         public async Task ExportAsync()
         {
@@ -139,6 +217,8 @@ namespace Holoone.Core.ViewModels.Export.Default
             }
         }
 
+
+        public List<Folder> Folders { get; set; } = new List<Folder>();
         private IEnumerable<OFile> GetSelectedFiles()
         {
             foreach (var file in Folders.SelectMany(x => x.ListofFiles.Where(f => f.IsSelected)))

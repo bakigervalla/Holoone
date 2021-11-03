@@ -126,6 +126,9 @@
     <Compile Include="Views\Export\Default\ExportDefaultView.xaml.cs">
       <DependentUpon>ExportDefaultView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Export\Default\FolderSelection.xaml.cs">
+      <DependentUpon>FolderSelection.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Export\Default\Selection.xaml.cs">
       <DependentUpon>Selection.xaml</DependentUpon>
     </Compile>
@@ -179,6 +182,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\Styles\ToolTip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Styles\TreeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -239,6 +246,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Export\Default\ExportDefaultView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Export\Default\FolderSelection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

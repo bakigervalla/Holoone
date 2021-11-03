@@ -29,6 +29,7 @@
                 <ResourceDictionary Source="pack://application:,,,/Holoone.Core;component/Resources/Styles/Buttons.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Holoone.Core;component/Resources/Styles/ScrollBar.xaml"></ResourceDictionary>
                 <ResourceDictionary Source="pack://application:,,,/Holoone.Core;component/Resources/Styles/ToolTip.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="pack://application:,,,/Holoone.Core;component/Resources/Styles/TreeView.xaml" />
                 
             </ResourceDictionary.MergedDictionaries>
 

@@ -194,5 +194,21 @@ namespace Holoone.Api.Services
                 return await reader.ReadToEndAsync();
             };
         }
+
+        public async Task<IFlurlResponse> GetCompanyMediaFolderContent(UserLogin user, int folderId = 0)
+        {
+            _flurlClient.BaseUrl = RequestConstants.BaseUrl;
+
+            string url = "media/";
+            
+            if(folderId != 0)
+                url += $"/?folder_pk={folderId}";
+
+            return await _flurlClient.Request(url)
+                   .WithBasicAuth(user.Username, user.Password)
+                   // .WithHeader("Content-Type", "application/x-www-form-urlencoded")
+                   .GetAsync();
+        }
+
     }
 }
