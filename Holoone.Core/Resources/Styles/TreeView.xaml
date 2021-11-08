@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:cal="http://www.caliburnproject.org"
-                    xmlns:conv="clr-namespace:Holoone.Core.Helpers.Converters"
+                    xmlns:conv="clr-namespace:HolooneNavis.Helpers.Converters"
                     xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes">
 
     <Geometry x:Key="FolderClosed">

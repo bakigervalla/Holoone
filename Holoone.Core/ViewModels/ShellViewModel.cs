@@ -3,13 +3,13 @@ using Hanssens.Net;
 using Holoone.Api.Helpers.Constants;
 using Holoone.Api.Models;
 using Holoone.Api.Services.Interfaces;
-using Holoone.Core.Services.Interfaces;
-using Holoone.Core.ViewModels;
-using Holoone.Core.ViewModels.Anchor;
-using Holoone.Core.ViewModels.Export;
-using Holoone.Core.ViewModels.Home;
-using Holoone.Core.ViewModels.Login;
-using Holoone.Core.ViewModels.Settings;
+using HolooneNavis.Services.Interfaces;
+using HolooneNavis.ViewModels;
+using HolooneNavis.ViewModels.Anchor;
+using HolooneNavis.ViewModels.Export;
+using HolooneNavis.ViewModels.Home;
+using HolooneNavis.ViewModels.Login;
+using HolooneNavis.ViewModels.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 
-namespace Holoone.Core.ViewModels
+namespace HolooneNavis.ViewModels
 {
     public class ShellViewModel : BaseViewModel, IHandle<bool>
     {

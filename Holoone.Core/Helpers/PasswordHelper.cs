@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Holoone.Core.Helpers
+namespace HolooneNavis.Helpers
 {
     public static class PasswordHelper
     {

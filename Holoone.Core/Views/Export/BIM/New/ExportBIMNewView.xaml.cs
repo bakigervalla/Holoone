@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Holoone.Core.Views.Export.BIM.New
+namespace HolooneNavis.Views.Export.BIM.New
 {
     /// <summary>
     /// Interaction logic for ExportBIMNewView.xaml

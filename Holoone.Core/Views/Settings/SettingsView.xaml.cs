@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Holoone.Core.Views.Settings
+namespace HolooneNavis.Views.Settings
 {
     /// <summary>
     /// Interaction logic for SettingsView.xaml

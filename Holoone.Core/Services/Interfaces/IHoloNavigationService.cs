@@ -1,8 +1,8 @@
 ﻿using Caliburn.Micro;
-using Holoone.Core.ViewModels;
+using HolooneNavis.ViewModels;
 using System.Threading.Tasks;
 
-namespace Holoone.Core.Services.Interfaces
+namespace HolooneNavis.Services.Interfaces
 {
     public interface IHoloNavigationService
     {

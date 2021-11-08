@@ -1,0 +1,7 @@
+E:\Program Files\Projects\Holoone\HolooneNavis\obj\Debug\HolooneNavis.csprojAssemblyReference.cache
+E:\Program Files\Projects\Holoone\HolooneNavis\obj\Debug\HolooneNavis.csproj.CoreCompileInputs.cache
+E:\Program Files\Autodesk\Navisworks Simulate 2019\Plugins\HolooneNavis\HolooneNavis.dll
+E:\Program Files\Autodesk\Navisworks Simulate 2019\Plugins\HolooneNavis\HolooneNavis.pdb
+E:\Program Files\Projects\Holoone\HolooneNavis\obj\Debug\HolooneNavis.csproj.CopyComplete
+E:\Program Files\Projects\Holoone\HolooneNavis\obj\Debug\HolooneNavis.dll
+E:\Program Files\Projects\Holoone\HolooneNavis\obj\Debug\HolooneNavis.pdb

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Holoone.Core.Helpers
+namespace HolooneNavis.Helpers
 {
     /// <summary>
     /// Add Proxy <ut:BindingProxy x:Key="Proxy" Data="{Binding}" /> to Resources

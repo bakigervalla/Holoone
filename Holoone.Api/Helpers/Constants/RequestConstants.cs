@@ -60,6 +60,7 @@ namespace Holoone.Api.Helpers.Constants
         // "common": allows anyone with microsoft account to login
         // Client ID: "f0afb69b-5fee-45d0-bf59-a332c9b695e7";
         // Tenant ID: 0d4ed3fc-659e-476e-b1e1-8a1f041eb6bc
+        // Client secret: missing (my app secret id: 2a193a34-d7c1-49b4-bd39-fd0192751081)
         public static string Tenant = "common";
         public static string Instance = "https://login.microsoftonline.com/"; 
         public static IPublicClientApplication _clientApp;

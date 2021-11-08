@@ -11,6 +11,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -108,7 +109,7 @@ namespace Holoone.Api.Services
         // version 2
         public async Task<string> ExportModelFormCompositionAsync(UserLogin user, NameValueCollection values, NameValueCollection files, ProcessingParams processingParams)
         {
-            string encoded = System.Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1")
+            string encodedCredentials = System.Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1")
                                            .GetBytes(user.Username + ":" + user.Password));
 
             string url = RequestConstants.BaseUrl + "media/add/file/";
@@ -123,9 +124,8 @@ namespace Holoone.Api.Services
 
             // Create the request and set parameters
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-
             request.ContentType = "multipart/form-data; boundary=" + boundary;
-            request.Headers.Add("Authorization", "Basic " + encoded);
+            request.Headers.Add("Authorization", "Basic " + encodedCredentials);
 
             request.ContentType = "multipart/form-data; boundary=" + boundary;
             request.Method = "POST";

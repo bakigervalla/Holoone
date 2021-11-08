@@ -2,8 +2,8 @@
 using Holoone.Api.Models;
 using Holoone.Api.Services;
 using Holoone.Api.Services.Interfaces;
-using Holoone.Core.Services.Interfaces;
-using Holoone.Core.ViewModels.Home;
+using HolooneNavis.Services.Interfaces;
+using HolooneNavis.ViewModels.Home;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -19,7 +19,7 @@ using System.Windows.Data;
 using Windows.Storage;
 using Windows.Storage.Streams;
 
-namespace Holoone.Core.ViewModels.Export.Default
+namespace HolooneNavis.ViewModels.Export.Default
 {
     public class ExportDefaultViewModel : BaseViewModel
     {
@@ -73,7 +73,10 @@ namespace Holoone.Core.ViewModels.Export.Default
 
         public void NavigateToExportPage()
         {
-            State = "ExportData";
+            if (SelectedFolder == null)
+                MessageBox.Show("Please select a folder for export.");
+            else
+                State = "ExportData";
         }
 
         #endregion
@@ -87,7 +90,11 @@ namespace Holoone.Core.ViewModels.Export.Default
                 var response = await _exportService.GetCompanyMediaFolderContent(Instance.UserLogin, 0);
 
                 if (response.ResponseMessage.IsSuccessStatusCode)
+                {
                     MediaFiles = await response.GetJsonAsync<IList<MediaFile>>();
+                    MediaFiles = MediaFiles.Where(x => x.MediaFileType == "folder").ToList();
+                    MediaFiles = MediaFiles.Prepend(new MediaFile { Id = 0, DisplayName = "Root Folder" });
+                }
                 else
                     MessageBox.Show("Could not retrieve folders");
 
@@ -106,6 +113,12 @@ namespace Holoone.Core.ViewModels.Export.Default
         {
             try
             {
+                if (mediaFile.Id == 0)
+                {
+                    SelectedFolder = mediaFile;
+                    return;
+                }
+
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
                 var response = await _exportService.GetCompanyMediaFolderContent(Instance.UserLogin, mediaFile.Id);
@@ -114,6 +127,8 @@ namespace Holoone.Core.ViewModels.Export.Default
                 {
                     var result = await response.GetJsonAsync<IList<MediaFile>>();
                     mediaFile.SubFolders = result.Where(x => x.MediaFileType == "folder").ToList();
+
+                    SelectedFolder = mediaFile;
                 }
                 else
                     MessageBox.Show("Could not retrieve folders");
@@ -129,22 +144,12 @@ namespace Holoone.Core.ViewModels.Export.Default
             }
         }
 
-        public void SetSelectedFolder(MediaFile selectedFolder)
-        {
-            SelectedFolder = selectedFolder;
-        }
-
         public async Task ExportAsync()
         {
             try
             {
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
-                if(SelectedFolder == null)
-                {
-                    MessageBox.Show("Please select a folder for export.");
-                    return;
-                }
                 var requestParams = new RequestProcessingParams
                 {
                     ProcessingParams = ProcessingParams
@@ -159,7 +164,7 @@ namespace Holoone.Core.ViewModels.Export.Default
                     var valParts = new NameValueCollection
                     {
                         { "display_name", Path.GetFileNameWithoutExtension(file.path) },
-                        { "parent_folder", SelectedFolder.Id.ToString() },
+                        { "parent_folder", SelectedFolder.Id == 0 ? "null" : SelectedFolder.Id.ToString() },
                         { "file_extension", Path.GetExtension(file.path).Replace(".", "") },
                     };
 

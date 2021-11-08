@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Holoone.Core.Views.Login
+namespace HolooneNavis.Views.Login
 {
     /// <summary>
     /// Interaction logic for LoginThinkReality.xaml

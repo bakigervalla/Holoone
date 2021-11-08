@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="Holoone.Core.Views.Export.ExportView"
+﻿<UserControl x:Class="HolooneNavis.Views.Export.ExportView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Holoone.Core.Views.Export"
+             xmlns:local="clr-namespace:HolooneNavis.Views.Export"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
 
         <Image Height="80" VerticalAlignment="Center" 
-               Source="pack://application:,,,/Holoone.Core;component/Resources/Images/export.png" />
+               Source="pack://application:,,,/HolooneNavis;component/Resources/Images/export.png" />
                         
         <StackPanel Grid.Row="1" VerticalAlignment="Top" Orientation="Vertical" Style="{StaticResource LoginLevelButtons}">
             <Button x:Name="ShowExportDefaultPage" VerticalAlignment="Top">Default</Button>

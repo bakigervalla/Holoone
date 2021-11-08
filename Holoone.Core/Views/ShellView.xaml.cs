@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using WPFSpark;
 
-namespace Holoone.Core.Views
+namespace HolooneNavis.Views
 {
     /// <summary>
     /// Interaction logic for ShellView.xaml

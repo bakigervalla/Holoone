@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Holoone.Core.Views.Login
+namespace HolooneNavis.Views.Login
 {
     /// <summary>
     /// Interaction logic for LoginSphereMicrosoftView.xaml

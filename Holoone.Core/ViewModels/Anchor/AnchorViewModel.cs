@@ -1,11 +1,11 @@
-﻿using Holoone.Core.Services.Interfaces;
+﻿using HolooneNavis.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Holoone.Core.ViewModels.Anchor
+namespace HolooneNavis.ViewModels.Anchor
 {
     public class AnchorViewModel : BaseViewModel
     {

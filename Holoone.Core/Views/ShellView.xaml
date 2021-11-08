@@ -1,18 +1,18 @@
-﻿<wpfspark:SparkWindow x:Class="Holoone.Core.Views.ShellView"
+﻿<wpfspark:SparkWindow x:Class="HolooneNavis.Views.ShellView"
         xmlns:wpfspark="clr-namespace:WPFSpark;assembly=WPFSpark"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Holoone.Core.Views"
+        xmlns:local="clr-namespace:HolooneNavis.Views"
         mc:Ignorable="d"
         ResizeMode="CanResize" 
         WindowStartupLocation="CenterScreen"
         Height="650" Width="400" 
 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:converters="clr-namespace:Holoone.Core.Helpers.Converters"
-        xmlns:views="clr-namespace:Holoone.Core.Views.Controls"
+        xmlns:converters="clr-namespace:HolooneNavis.Helpers.Converters"
+        xmlns:views="clr-namespace:HolooneNavis.Views.Controls"
                       
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
@@ -23,7 +23,7 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         Foreground="#666"
         xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro.Platform"
-        xmlns:static="clr-namespace:Holoone.Api.Helpers.Constants;assembly=Holoone.Api" xmlns:viewmodels="clr-namespace:Holoone.Core.ViewModels" 
+        xmlns:static="clr-namespace:Holoone.Api.Helpers.Constants;assembly=Holoone.Api" xmlns:viewmodels="clr-namespace:HolooneNavis.ViewModels" 
         d:DataContext="{d:DesignInstance Type=viewmodels:ShellViewModel}"
         Title="Holo|one"
         >
@@ -31,9 +31,9 @@
     <wpfspark:SparkWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Holoone.Core;component/Resources/Styles/Style.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/HolooneNavis;component/Resources/Styles/Style.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <!--<converters:VisibilityConverter x:Key="ProgressVisibility"></converters:VisibilityConverter>-->
+            <converters:VisibilityConverter x:Key="ProgressVisibility"></converters:VisibilityConverter>
         </ResourceDictionary>
     </wpfspark:SparkWindow.Resources>
 

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Holoone.Core.Views.Controls
+namespace HolooneNavis.Views.Controls
 {
     /// <summary>
     /// Interaction logic for Header.xaml

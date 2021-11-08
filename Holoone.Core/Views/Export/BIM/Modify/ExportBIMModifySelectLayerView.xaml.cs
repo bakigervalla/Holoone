@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Holoone.Core.Views.Export.BIM.Modify
+namespace HolooneNavis.Views.Export.BIM.Modify
 {
     /// <summary>
     /// Interaction logic for ExportBIMModifySelectLayerView.xaml

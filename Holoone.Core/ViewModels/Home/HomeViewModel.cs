@@ -1,10 +1,10 @@
-﻿using Holoone.Core.Services.Interfaces;
-using Holoone.Core.ViewModels.Anchor;
-using Holoone.Core.ViewModels.Export;
-using Holoone.Core.ViewModels.Login;
+﻿using HolooneNavis.Services.Interfaces;
+using HolooneNavis.ViewModels.Anchor;
+using HolooneNavis.ViewModels.Export;
+using HolooneNavis.ViewModels.Login;
 using System.Threading.Tasks;
 
-namespace Holoone.Core.ViewModels.Home
+namespace HolooneNavis.ViewModels.Home
 {
     public class HomeViewModel : BaseViewModel
     {

@@ -5,9 +5,9 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{4424254A-B369-49EB-BE46-E3A088D37610}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <RootNamespace>Holoone.Core</RootNamespace>
-    <AssemblyName>Holoone.Core</AssemblyName>
+    <OutputType>Library</OutputType>
+    <RootNamespace>HolooneNavis</RootNamespace>
+    <AssemblyName>HolooneNavis</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -22,7 +22,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\Autodesk\Navisworks Simulate 2019\Plugins\HolooneNavis\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -36,10 +36,37 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autodesk.Navisworks.Api">
+      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="Autodesk.Navisworks.Automation">
+      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.Automation.dll</HintPath>
+    </Reference>
+    <Reference Include="Autodesk.Navisworks.ComApi">
+      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.ComApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Autodesk.Navisworks.Controls">
+      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Autodesk.Navisworks.Interop.ComApi">
+      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.Interop.ComApi.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Autodesk.Navisworks.Interop.ComApiAutomation">
+      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.Interop.ComApiAutomation.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="navisworks.gui.roamer">
+      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\navisworks.gui.roamer.dll</HintPath>
+    </Reference>
     <Reference Include="netstandard" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows" />
@@ -60,6 +87,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Helpers\AppConfig.cs" />
     <Compile Include="Helpers\BindingProxy.cs" />
     <Compile Include="Helpers\Converters\BooleanOrConverter.cs" />
     <Compile Include="Helpers\Converters\IsHitVisibilityConverter.cs" />
@@ -69,6 +97,7 @@
     <Compile Include="Helpers\Extensions\TreeViewItemExtensions.cs" />
     <Compile Include="Helpers\Extensions\Utility.cs" />
     <Compile Include="Helpers\PasswordHelper.cs" />
+    <Compile Include="HolooneAddin.cs" />
     <Compile Include="Services\Interfaces\IHoloNavigationService.cs" />
     <Compile Include="Services\HoloNavigationService.cs" />
     <Compile Include="ViewModels\Anchor\AnchorViewModel.cs" />
@@ -152,10 +181,6 @@
     <Compile Include="Views\Settings\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
@@ -163,6 +188,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </None>
+    <Page Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Resources\Styles\Colors.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -335,15 +364,13 @@
     </PackageReference>
     <PackageReference Include="MaterialDesignExtensions">
       <Version>3.3.0</Version>
+      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="MaterialDesignThemes">
       <Version>4.2.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Windows.SDK.Contracts">
       <Version>10.0.18362.2005</Version>
-    </PackageReference>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.2</Version>
     </PackageReference>
     <PackageReference Include="System.ValueTuple">
       <Version>4.5.0</Version>
@@ -371,6 +398,8 @@
     <Resource Include="Resources\Images\anchors.png" />
     <Resource Include="Resources\Images\export.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Images\holo_one_logo.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

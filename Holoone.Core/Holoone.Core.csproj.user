@@ -3,4 +3,8 @@
   <PropertyGroup>
     <ProjectView>ProjectFiles</ProjectView>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <StartAction>Program</StartAction>
+    <StartProgram>E:\Program Files\Autodesk\Navisworks Simulate 2019\Roamer.exe</StartProgram>
+  </PropertyGroup>
 </Project>

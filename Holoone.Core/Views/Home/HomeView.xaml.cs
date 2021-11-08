@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Holoone.Core.Views.Home
+namespace HolooneNavis.Views.Home
 {
     /// <summary>
     /// Interaction logic for HomeView.xaml

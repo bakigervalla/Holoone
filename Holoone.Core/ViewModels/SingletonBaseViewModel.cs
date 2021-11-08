@@ -1,11 +1,11 @@
 ﻿using Caliburn.Micro;
 using Holoone.Api.Models;
-using Holoone.Core.Services.Interfaces;
+using HolooneNavis.Services.Interfaces;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Holoone.Core.ViewModels
+namespace HolooneNavis.ViewModels
 {
     public class SingletonBaseViewModel : Conductor<object>
     {

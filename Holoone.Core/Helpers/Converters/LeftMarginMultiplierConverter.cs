@@ -1,4 +1,4 @@
-﻿using Holoone.Core.Helpers.Extensions;
+﻿using HolooneNavis.Helpers.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -9,7 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace Holoone.Core.Helpers.Converters
+namespace HolooneNavis.Helpers.Converters
 {
     public class LeftMarginMultiplierConverter : IValueConverter
     {

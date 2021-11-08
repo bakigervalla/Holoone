@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Holoone.Core.Helpers.Extensions
+namespace HolooneNavis.Helpers.Extensions
 {
     public static class TreeViewItemExtensions
     {

@@ -1,25 +1,31 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
-                    xmlns:converters="clr-namespace:Holoone.Core.Helpers.Converters"
+                    xmlns:converters="clr-namespace:HolooneNavis.Helpers.Converters"
                      xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes"
+                    xmlns:local="clr-namespace:HolooneNavis"
                     xmlns:mdth="http://materialdesigninxaml.net/winfx/xaml/themes"
                     >
 
     <ResourceDictionary.MergedDictionaries>
 
-        <!--<ResourceDictionary Source="pack://application:,,,/VBS.UI;component/Resources/Icons.xaml"></ResourceDictionary>-->
-        <!--<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+        <!--<ResourceDictionary>
+            <local:Bootstrapper x:Key="bootstrapper"/>
+        </ResourceDictionary>-->
+
+        <!--<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.LightBlue.xaml" />-->
-        <!-- Other MaterialDesign resource stuff -->
-        <!--<ResourceDictionary Source="pack://application:,,,/MaterialDesignExtensions;component/Themes/Generic.xaml" />-->
-        <!-- Custom Styles -->
-        <!--
-        <ResourceDictionary Source="pack://application:,,,/Holoone.Core;component/Resources/Styles/Colors.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Holoone.Core;component/Resources/Styles/Buttons.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Holoone.Core;component/Resources/Styles/ScrollBar.xaml"></ResourceDictionary>
-        <ResourceDictionary Source="pack://application:,,,/Holoone.Core;component/Resources/Styles/ToolTip.xaml"></ResourceDictionary>-->
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.LightBlue.xaml" />
+        --><!-- Other MaterialDesign resource stuff --><!--
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignExtensions;component/Themes/Generic.xaml" />
+
+        --><!-- Custom Styles --><!--
+        <ResourceDictionary Source="pack://application:,,,/HolooneNavis;component/Resources/Styles/Colors.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/HolooneNavis;component/Resources/Styles/Buttons.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/HolooneNavis;component/Resources/Styles/ScrollBar.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="pack://application:,,,/HolooneNavis;component/Resources/Styles/ToolTip.xaml"></ResourceDictionary>
+        <ResourceDictionary Source="pack://application:,,,/HolooneNavis;component/Resources/Styles/TreeView.xaml" />-->
 
     </ResourceDictionary.MergedDictionaries>
 

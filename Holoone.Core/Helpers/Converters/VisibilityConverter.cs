@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Markup;
 
-namespace Holoone.Core.Helpers.Converters
+namespace HolooneNavis.Helpers.Converters
 {
     public class VisibilityConverter : MarkupExtension, IValueConverter
     {

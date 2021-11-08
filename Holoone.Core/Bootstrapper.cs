@@ -4,30 +4,32 @@ using Hanssens.Net;
 using Holoone.Api.Services;
 using Holoone.Api.Services.Interfaces;
 using Holoone.Api.Services.MicrosoftGraph;
-using Holoone.Core.Services;
-using Holoone.Core.Services.Interfaces;
-using Holoone.Core.ViewModels;
-using Holoone.Core.ViewModels.Anchor;
-using Holoone.Core.ViewModels.Export;
-using Holoone.Core.ViewModels.Export.BIM;
-using Holoone.Core.ViewModels.Export.Default;
-using Holoone.Core.ViewModels.Home;
-using Holoone.Core.ViewModels.Login;
-using Holoone.Core.ViewModels.Settings;
+using HolooneNavis.Services;
+using HolooneNavis.Services.Interfaces;
+using HolooneNavis.ViewModels;
+using HolooneNavis.ViewModels.Anchor;
+using HolooneNavis.ViewModels.Export;
+using HolooneNavis.ViewModels.Export.BIM;
+using HolooneNavis.ViewModels.Export.Default;
+using HolooneNavis.ViewModels.Home;
+using HolooneNavis.ViewModels.Login;
+using HolooneNavis.ViewModels.Settings;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Windows;
 
-namespace Holoone.Core
+namespace HolooneNavis
 {
     public class Bootstrapper : BootstrapperBase
     {
-        private SimpleContainer _container = new SimpleContainer();
+        public SimpleContainer _container = new SimpleContainer();
 
         public Bootstrapper()
         {
             Initialize();
         }
+
 
         protected override void Configure()
         {
@@ -40,7 +42,7 @@ namespace Holoone.Core
             _container.Singleton<IHoloNavigationService, HoloNavigationService>();
             _container.Singleton<ILocalStorage, LocalStorage>();
             _container.Singleton<IMicrosoftGraphService, MicrosoftGraphService>();
-            _container.Singleton<IExportService, ExportService>(); 
+            _container.Singleton<IExportService, ExportService>();
 
             _container.PerRequest<ShellViewModel>();
             _container.PerRequest<HomeViewModel>();
@@ -52,14 +54,14 @@ namespace Holoone.Core
             _container.PerRequest<ExportViewModel>();
             _container.PerRequest<ExportDefaultViewModel>();
             _container.PerRequest<ExportBIMViewModel>();
-        }
 
+            //DisplayRootViewFor<ShellViewModel>();
+        }
 
         protected override void OnStartup(object obj, System.Windows.StartupEventArgs e)
         {
             DisplayRootViewFor<ShellViewModel>();
         }
-
 
         protected override object GetInstance(Type serviceType, string key)
         {

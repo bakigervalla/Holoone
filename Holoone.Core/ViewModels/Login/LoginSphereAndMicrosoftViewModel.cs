@@ -2,9 +2,9 @@
 using Holoone.Api.Helpers.Constants;
 using Holoone.Api.Models;
 using Holoone.Api.Services.Interfaces;
-using Holoone.Core.Helpers.Extensions;
-using Holoone.Core.Services.Interfaces;
-using Holoone.Core.ViewModels.Home;
+using HolooneNavis.Helpers.Extensions;
+using HolooneNavis.Services.Interfaces;
+using HolooneNavis.ViewModels.Home;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Windows.Security.ExchangeActiveSyncProvisioning;
 
-namespace Holoone.Core.ViewModels.Login
+namespace HolooneNavis.ViewModels.Login
 {
     public class LoginSphereAndMicrosoftViewModel : BaseViewModel
     {

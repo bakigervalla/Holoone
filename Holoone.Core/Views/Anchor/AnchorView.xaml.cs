@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Holoone.Core.Views.Anchor
+namespace HolooneNavis.Views.Anchor
 {
     /// <summary>
     /// Interaction logic for AnchorView.xaml

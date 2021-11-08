@@ -1,8 +1,8 @@
 ﻿using Caliburn.Micro;
-using Holoone.Core.Services.Interfaces;
+using HolooneNavis.Services.Interfaces;
 using System.Threading.Tasks;
 
-namespace Holoone.Core.Services
+namespace HolooneNavis.Services
 {
     public class HoloNavigationService : Conductor<IScreen>, IHoloNavigationService
     {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace Holoone.Core.Helpers.Converters
+namespace HolooneNavis.Helpers.Converters
 {
     public class BooleanOrConverter : IMultiValueConverter
     {
