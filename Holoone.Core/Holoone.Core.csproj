@@ -43,6 +43,10 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AdWindows, Version=2017.11.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\AdWindows.dll</HintPath>
+    </Reference>
     <Reference Include="Autodesk.Navisworks.Api">
       <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.Api.dll</HintPath>
     </Reference>
@@ -63,7 +67,8 @@
       <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.Interop.ComApiAutomation.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="navisworks.gui.roamer">
+    <Reference Include="navisworks.gui.roamer, Version=16.0.1326.55, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\navisworks.gui.roamer.dll</HintPath>
     </Reference>
     <Reference Include="netstandard" />
@@ -102,7 +107,7 @@
     <Compile Include="Helpers\Extensions\Utility.cs" />
     <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="HolooneAddin.cs" />
-    <Compile Include="Item.cs" />
+    <Compile Include="ViewModels\Item.cs" />
     <Compile Include="Services\Interfaces\IHoloNavigationService.cs" />
     <Compile Include="Services\HoloNavigationService.cs" />
     <Compile Include="Services\Interfaces\INavisService.cs" />
@@ -191,10 +196,15 @@
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
+    <None Include="HolooneNavis.HolooneAddin.name" />
     <None Include="Resources\Styles\App.xaml.OLd">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </None>
+    <Page Include="HolooneNavis.HolooneAddin.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -387,12 +397,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Holoone.Api\Holoone.Api.csproj">
-      <Project>{45706951-170f-4706-b69f-4cd2fda72994}</Project>
-      <Name>Holoone.Api</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\Images\holo_one_logo.png" />
   </ItemGroup>
   <ItemGroup>
@@ -407,6 +411,19 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\holo_one_logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Holoone.Api\Holoone.Api.csproj">
+      <Project>{45706951-170f-4706-b69f-4cd2fda72994}</Project>
+      <Name>Holoone.Api</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="holo_one_logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\holo_16.ico" />
+    <Resource Include="Resources\Images\holo_32.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

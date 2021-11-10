@@ -18,61 +18,57 @@ using System.Windows;
 
 namespace HolooneNavis
 {
-    //[Plugin("Holoone.NavisAddin", "Holoone", DisplayName = "Holoone plugin", ToolTip = "")]
-    //[RibbonTab("Holoone.Ribon", DisplayName = "Holoone")]
-    // [AddInPlugin(AddInLocation.AddIn, CallCanExecute = 0, CanToggle = true, Icon = "holoone_logo.ico", LargeIcon = "holoone_logo.ico", LoadForCanExecute = true, Shortcut = "", ShortcutWindowTypes = "")]
-    //[RibbonLayout("AddinRibbon.xaml")]
-    //[RibbonTab("ID_HolooneTab", DisplayName = "Holoone")]
-    //[Command("ID_HolooneButton_1", Icon = "holoone_logo.png", LargeIcon = "holoone_logo.png", ToolTip = "Holoone Navisworks Addin")]
-
-    [AddInPlugin(AddInLocation.AddIn,
-        CanToggle = true,
-        LoadForCanExecute = true,
-        CallCanExecute = CallCanExecute.Always,
-        Icon = @"holoone_logo.png",
-        LargeIcon = @"holoone_logo.png",
-        Shortcut = "Ctrl+Shift+H",
-        ShortcutWindowTypes = "")]
-    [Plugin("HolooneNavis.HolooneAddin", "HOLO", DisplayName = "Holoone", ToolTip = "", SupportsIsSelfEnabled = true)]
-    public class HolooneAddin : AddInPlugin
+    [Plugin("HolooneNavis.HolooneAddin", "Holo-one", DisplayName = "Holo-one")]
+    [Strings("HolooneNavis.HolooneAddin.name")]
+    [RibbonLayout("HolooneNavis.HolooneAddin.xaml")]
+    [RibbonTab("ID_CustomTab_1", DisplayName = "Holo-one")]
+    [Command("ID_Button_1", Icon = "holo_16.ico", LargeIcon = "holo_32.ico", ToolTip = "Holo-one Navisworks addin")]
+    public class HolooneAddin : CommandHandlerPlugin
     {
-        public static readonly string Path_Plugin = Path.GetDirectoryName(typeof(HolooneAddin).Assembly.Location);
+        // public static readonly string Path_Plugin = Path.GetDirectoryName(typeof(HolooneAddin).Assembly.Location);
 
-        public override int Execute(params string[] parameters)
+        public override int ExecuteCommand(string commandId, params string[] parameters)
         {
             try
             {
-                if (Autodesk.Navisworks.Api.Application.IsAutomated)
+
+                switch (commandId)
                 {
-                    throw new InvalidOperationException("Invalid when running using Automation");
+                    case "ID_Button_1":
+                        {
+                            if (Autodesk.Navisworks.Api.Application.IsAutomated)
+                            {
+                                throw new InvalidOperationException("Invalid when running using Automation");
+                            }
+
+                            // Assembly resolver
+                            AppDomain.CurrentDomain.AssemblyResolve += ForceLibraryLoad;
+
+                            //MergeDefaultAppConfig();
+
+                            EnsureApplicationResources();
+
+                            var bootstraper = new Bootstrapper();
+
+                            var windowManager = IoC.Get<IWindowManager>();
+                            var shellViewModel = (Screen)IoC.Get<ShellViewModel>();
+                            var result = windowManager.ShowWindowAsync(shellViewModel, null);
+
+                            ////Get the ViewModel for the screen from Container
+                            //ShellViewModel relayListViewModel = bootstraper._container.GetInstance<ShellViewModel>();
+                            //IWindowManager windowManager = bootstraper._container.GetInstance<IWindowManager>();
+                            //windowManager.ShowWindowAsync(relayListViewModel);
+
+                            //// Open Plugin Dialog that will run the Main Plugin 
+                            //OpenPluginWindow dialog = new OpenPluginWindow();
+                            //dialog.Topmost = true;
+                            //dialog.ShowDialog();
+
+                            //var view = new ShellView(); //shellViewModel.GetView() as Window;
+                            //view.Show();
+                            break;
+                        }
                 }
-
-                // Assembly resolver
-                AppDomain.CurrentDomain.AssemblyResolve += ForceLibraryLoad;
-
-                //MergeDefaultAppConfig();
-
-                EnsureApplicationResources();
-
-                var bootstraper = new Bootstrapper();
-
-                var windowManager = IoC.Get<IWindowManager>();
-                var shellViewModel = (Screen)IoC.Get<ShellViewModel>();
-                var result = windowManager.ShowWindowAsync(shellViewModel, null);
-
-                ////Get the ViewModel for the screen from Container
-                //ShellViewModel relayListViewModel = bootstraper._container.GetInstance<ShellViewModel>();
-                //IWindowManager windowManager = bootstraper._container.GetInstance<IWindowManager>();
-                //windowManager.ShowWindowAsync(relayListViewModel);
-
-                //// Open Plugin Dialog that will run the Main Plugin 
-                //OpenPluginWindow dialog = new OpenPluginWindow();
-                //dialog.Topmost = true;
-                //dialog.ShowDialog();
-
-                //var view = new ShellView(); //shellViewModel.GetView() as Window;
-                //view.Show();
-
             }
             catch (Exception ex)
             {
@@ -93,7 +89,7 @@ namespace HolooneNavis
         {
             Application.Current.Resources.MergedDictionaries.Clear();
             // merge in your application resources
-            Application.Current.Resources.MergedDictionaries.Add( Application.LoadComponent(
+            Application.Current.Resources.MergedDictionaries.Add(Application.LoadComponent(
                     new Uri("HolooneNavis;component/Resources/Styles/Style.xaml", UriKind.Relative)) as System.Windows.ResourceDictionary);
             Application.Current.Resources.MergedDictionaries.Add(Application.LoadComponent(
                     new Uri("MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml", UriKind.Relative)) as System.Windows.ResourceDictionary);

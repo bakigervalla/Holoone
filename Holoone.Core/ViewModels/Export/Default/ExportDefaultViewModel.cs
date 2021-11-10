@@ -121,8 +121,10 @@ namespace HolooneNavis.ViewModels.Export.Default
 
         public void GetSelectedModelItemAsync(ModelItem model)
         {
-            SelectedFiles.Add(model.Model.SourceFileName);
-            var rootitm = model.Model.RootItem;
+            if (model.Model == null || string.IsNullOrEmpty(model.Model.SourceFileName) || !File.Exists(model.Model.SourceFileName))
+                SelectedFiles.Add(Autodesk.Navisworks.Api.Application.ActiveDocument.FileName);
+            else
+                SelectedFiles.Add(model.Model.SourceFileName);
         }
 
         public async Task GetFoldersAsync()
@@ -191,7 +193,7 @@ namespace HolooneNavis.ViewModels.Export.Default
         public async Task ExportAsync()
         {
             try
-              {
+            {
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
                 var requestParams = new RequestProcessingParams
