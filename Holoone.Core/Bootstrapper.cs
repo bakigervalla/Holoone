@@ -1,6 +1,8 @@
 ﻿using Caliburn.Micro;
+using Flurl.Http;
 using Flurl.Http.Configuration;
 using Hanssens.Net;
+using Holoone.Api.Helpers.Constants;
 using Holoone.Api.Services;
 using Holoone.Api.Services.Interfaces;
 using Holoone.Api.Services.MicrosoftGraph;
@@ -43,6 +45,8 @@ namespace HolooneNavis
             _container.Singleton<ILocalStorage, LocalStorage>();
             _container.Singleton<IMicrosoftGraphService, MicrosoftGraphService>();
             _container.Singleton<IExportService, ExportService>();
+
+            _container.Singleton<INavisService, NavisService>();
 
             _container.PerRequest<ShellViewModel>();
             _container.PerRequest<HomeViewModel>();

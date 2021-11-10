@@ -95,7 +95,7 @@
 
         </Grid>
 
-        <Button Grid.Row="2" x:Name="NavigateToFoldersPage" Width="240" HorizontalAlignment="Center" VerticalAlignment="Center">Select Destination</Button>
+        <Button Grid.Row="2" x:Name="NavigateToNavisSelectionPage" Width="240" HorizontalAlignment="Center" VerticalAlignment="Center">Select Model</Button>
     </Grid>
     
 </UserControl>

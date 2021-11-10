@@ -4,8 +4,7 @@
                     xmlns:converters="clr-namespace:HolooneNavis.Helpers.Converters"
                      xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes"
                     xmlns:local="clr-namespace:HolooneNavis"
-                    xmlns:mdth="http://materialdesigninxaml.net/winfx/xaml/themes"
-                    >
+                    xmlns:mdth="http://materialdesigninxaml.net/winfx/xaml/themes">
 
     <ResourceDictionary.MergedDictionaries>
 
@@ -32,6 +31,7 @@
     <converters:BooleanOrConverter x:Key="BooleanOrConverter" />
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <converters:IsHitVisibilityConverter x:Key="IsHitVisibilityConverter" />
+    <converters:ModelItemDisplayNameConverter x:Key="ModelItemDisplayNameConverter" />
 
     <DropShadowEffect x:Key="NoShadow" BlurRadius="35" ShadowDepth="13" Direction="270" 
                       Color="{StaticResource MaterialDesignShadow}" Opacity="1" RenderingBias="Performance" po:Freeze="True" />

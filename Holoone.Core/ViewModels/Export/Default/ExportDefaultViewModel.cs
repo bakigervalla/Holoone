@@ -1,4 +1,6 @@
-﻿using Caliburn.Micro;
+﻿using Autodesk.Navisworks.Api;
+using Autodesk.Navisworks.Api.DocumentParts;
+using Caliburn.Micro;
 using Holoone.Api.Models;
 using Holoone.Api.Services;
 using Holoone.Api.Services.Interfaces;
@@ -24,20 +26,23 @@ namespace HolooneNavis.ViewModels.Export.Default
     public class ExportDefaultViewModel : BaseViewModel
     {
         private readonly IExportService _exportService;
+        private readonly INavisService _navisService;
         private readonly IEventAggregator _eventAggregator;
 
         public ExportDefaultViewModel(
             IHoloNavigationService navigationService,
             IExportService exportService,
+            INavisService navisService,
             IEventAggregator eventAggregator
             )
         {
             _exportService = exportService;
+            _navisService = navisService;
             _eventAggregator = eventAggregator;
 
             try
             {
-                TraverseTreeParallelForEach(@"e:\Users\BGERVALLA\Downloads\Autodesk\Navisworks");
+                // TraverseTreeParallelForEach(@"e:\Users\BGERVALLA\Downloads\Autodesk\Navisworks");
             }
             catch (Exception ex)
             {
@@ -54,6 +59,14 @@ namespace HolooneNavis.ViewModels.Export.Default
         private IEnumerable<MediaFile> _mediaFiles;
         public IEnumerable<MediaFile> MediaFiles { get => _mediaFiles; set { _mediaFiles = value; NotifyOfPropertyChange(nameof(MediaFiles)); } }
 
+        //private IEnumerable<OFile> _selectedFiles;
+        //public IEnumerable<OFile> SelectedFiles { get => _selectedFiles; set { _selectedFiles = value; NotifyOfPropertyChange(nameof(SelectedFiles)); } }
+
+        private ModelItemCollection _navisItems;
+        public ModelItemCollection NavisItems { get => _navisItems; set { _navisItems = value; NotifyOfPropertyChange(nameof(NavisItems)); } }
+
+        public IList<string> SelectedFiles { get; set; }
+
         private MediaFile _selectedFolder;
         public MediaFile SelectedFolder { get => _selectedFolder; set { _selectedFolder = value; NotifyOfPropertyChange(nameof(SelectedFolder)); } }
 
@@ -64,22 +77,53 @@ namespace HolooneNavis.ViewModels.Export.Default
         public string _state = "Selection";
         public string State { get => _state; set { _state = value; NotifyOfPropertyChange("State"); } }
 
-        public void NavigateToFoldersPage()
+        public void NavigateToNavisSelectionPage()
         {
-            State = "FolderSelection";
+            State = "NavisSelection";
 
-            Task.Run(async () => await GetFoldersAsync());
+            QueryNavisModel().AsResult();
+
+            SelectedFiles = new List<string>();
         }
 
-        public void NavigateToExportPage()
+        public void NavigateToFoldersPage()
         {
-            if (SelectedFolder == null)
-                MessageBox.Show("Please select a folder for export.");
-            else
-                State = "ExportData";
+            if (SelectedFiles.Count == 0)
+            {
+                MessageBox.Show("Please, select a model");
+                return;
+            }
+
+            State = "FolderSelection";
+
+            GetFoldersAsync().AsResult();
         }
 
         #endregion
+
+        private async Task QueryNavisModel()
+        {
+            try
+            {
+                await _eventAggregator.PublishOnUIThreadAsync(true);
+
+                NavisItems = await _navisService.GetModel();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                await _eventAggregator.PublishOnUIThreadAsync(false);
+            }
+        }
+
+        public void GetSelectedModelItemAsync(ModelItem model)
+        {
+            SelectedFiles.Add(model.Model.SourceFileName);
+            var rootitm = model.Model.RootItem;
+        }
 
         public async Task GetFoldersAsync()
         {
@@ -147,7 +191,7 @@ namespace HolooneNavis.ViewModels.Export.Default
         public async Task ExportAsync()
         {
             try
-            {
+              {
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
                 var requestParams = new RequestProcessingParams
@@ -157,20 +201,26 @@ namespace HolooneNavis.ViewModels.Export.Default
 
                 string processingArgs = JsonConvert.SerializeObject(requestParams);
 
-                var files = GetSelectedFiles();
+                //var files = GetSelectedFiles();
 
-                foreach (var file in files)
+                //if (files == null || files.Count() == 0)
+                //{
+                //    MessageBox.Show("Please select the model to be exported.");
+                //    return;
+                //}
+
+                foreach (var file in SelectedFiles)
                 {
                     var valParts = new NameValueCollection
                     {
-                        { "display_name", Path.GetFileNameWithoutExtension(file.path) },
+                        { "display_name", Path.GetFileNameWithoutExtension(file) },
                         { "parent_folder", SelectedFolder.Id == 0 ? "null" : SelectedFolder.Id.ToString() },
-                        { "file_extension", Path.GetExtension(file.path).Replace(".", "") },
+                        { "file_extension", Path.GetExtension(file).Replace(".", "") },
                     };
 
                     var valColl = new NameValueCollection
                     {
-                        { file.path, "" }
+                        { file, "" }
                     };
 
                     await _exportService.ExportModelFormCompositionAsync(Instance.UserLogin, valParts, valColl, ProcessingParams);

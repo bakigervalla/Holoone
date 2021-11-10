@@ -42,7 +42,7 @@ namespace Holoone.Api.Services
             _flurlClient = flurlClientFac.Get(RequestConstants.BaseUrl);
         }
 
-        // version 1 (Not working)
+        // Obsolete (Not working)
         public async Task<IFlurlResponse> ExportModelAsync(UserLogin user, MediaItem mediaItem, string filePath)
         {
             _flurlClient.BaseUrl = RequestConstants.BaseUrl;
@@ -77,7 +77,7 @@ namespace Holoone.Api.Services
                     itm.Key,
                     itm.Value);
 
-                   //  formDataStream.Write(encoding.GetBytes(postData), 0, encoding.GetByteCount(postData));
+                    //  formDataStream.Write(encoding.GetBytes(postData), 0, encoding.GetByteCount(postData));
 
                 }
 
@@ -106,7 +106,14 @@ namespace Holoone.Api.Services
             // }
         }
 
-        // version 2
+        /// <summary>
+        /// Export by file path
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="values"></param>
+        /// <param name="files"></param>
+        /// <param name="processingParams"></param>
+        /// <returns></returns>
         public async Task<string> ExportModelFormCompositionAsync(UserLogin user, NameValueCollection values, NameValueCollection files, ProcessingParams processingParams)
         {
             string encodedCredentials = System.Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1")
@@ -144,7 +151,7 @@ namespace Holoone.Api.Services
 
             // add procesing parameters
             var processingArgs = processingParams.GetProperties();
-            var items = processingArgs.SelectMany(x=> x.AllKeys.SelectMany(x.GetValues, (k, v) => new { key = k, value = v }));
+            var items = processingArgs.SelectMany(x => x.AllKeys.SelectMany(x.GetValues, (k, v) => new { key = k, value = v }));
 
             foreach (var item in items)
             {
@@ -195,13 +202,86 @@ namespace Holoone.Api.Services
             };
         }
 
+        ///
+        public async Task<string> ExportModelFormCompositionAsync(UserLogin user, NameValueCollection values, IDictionary<string, byte[]> files, ProcessingParams processingParams)
+        {
+            string encodedCredentials = System.Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1")
+                                           .GetBytes(user.Username + ":" + user.Password));
+
+            string url = RequestConstants.BaseUrl + "media/add/file/";
+
+            string boundary = "----------------------------" + DateTime.Now.Ticks.ToString("x");
+            // The first boundary
+            byte[] boundaryBytes = System.Text.Encoding.UTF8.GetBytes("\r\n--" + boundary + "\r\n");
+            // The last boundary
+            byte[] trailer = System.Text.Encoding.UTF8.GetBytes("\r\n--" + boundary + "--\r\n");
+            // The first time it itereates, we need to make sure it doesn't put too many new paragraphs down or it completely messes up poor webbrick
+            byte[] boundaryBytesF = System.Text.Encoding.ASCII.GetBytes("--" + boundary + "\r\n");
+
+            // Create the request and set parameters
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.ContentType = "multipart/form-data; boundary=" + boundary;
+            request.Headers.Add("Authorization", "Basic " + encodedCredentials);
+
+            request.ContentType = "multipart/form-data; boundary=" + boundary;
+            request.Method = "POST";
+            request.KeepAlive = true;
+
+            // Get request stream
+            Stream requestStream = request.GetRequestStream();
+
+            foreach (string key in values.Keys)
+            {
+                // Write item to stream
+                byte[] formItemBytes = System.Text.Encoding.UTF8.GetBytes(string.Format("Content-Disposition: form-data; name=\"{0}\";\r\n\r\n{1}", key, values[key]));
+                requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
+                requestStream.Write(formItemBytes, 0, formItemBytes.Length);
+            }
+
+            // add procesing parameters
+            var processingArgs = processingParams.GetProperties();
+            var items = processingArgs.SelectMany(x => x.AllKeys.SelectMany(x.GetValues, (k, v) => new { key = k, value = v }));
+
+            foreach (var item in items)
+            {
+                if (string.IsNullOrEmpty(item.key) || string.IsNullOrEmpty(item.value))
+                    break;
+
+                // Write item to stream
+                byte[] formItemBytes = System.Text.Encoding.UTF8.GetBytes(string.Format("Content-Disposition: form-data; name=\"{0}\";\r\n\r\n{1}", item.key, item.value));
+                requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
+                requestStream.Write(formItemBytes, 0, formItemBytes.Length);
+            }
+
+            foreach (var file in files)
+            {
+                string fileName = file.Key;
+                byte[] formItemBytes = System.Text.Encoding.UTF8.GetBytes(
+                    string.Format("Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\nContent-Type: application/octet-stream\r\n\r\n", "file", fileName));
+                requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
+                requestStream.Write(formItemBytes, 0, formItemBytes.Length);
+
+                // Write file content to stream, byte by byte
+                requestStream.Write(file.Value, 0, file.Value.Length);
+            }
+
+            // Write trailer and close stream
+            requestStream.Write(trailer, 0, trailer.Length);
+            requestStream.Close();
+
+            using (StreamReader reader = new StreamReader(request.GetResponse().GetResponseStream()))
+            {
+                return await reader.ReadToEndAsync();
+            };
+        }
+
         public async Task<IFlurlResponse> GetCompanyMediaFolderContent(UserLogin user, int folderId = 0)
         {
             _flurlClient.BaseUrl = RequestConstants.BaseUrl;
 
             string url = "media/";
-            
-            if(folderId != 0)
+
+            if (folderId != 0)
                 url += $"/?folder_pk={folderId}";
 
             return await _flurlClient.Request(url)

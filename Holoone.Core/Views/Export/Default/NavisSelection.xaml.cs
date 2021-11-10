@@ -18,9 +18,9 @@ namespace HolooneNavis.Views.Export.Default.ExportDefault
     /// <summary>
     /// Interaction logic for ExportDataView.xaml
     /// </summary>
-    public partial class ExportData : UserControl
+    public partial class NavisSelection : UserControl
     {
-        public ExportData()
+        public NavisSelection()
         {
             InitializeComponent();
         }

@@ -49,7 +49,7 @@ namespace Holoone.Api.Services
 
             string response = await _flurlClient.Request("integration/microsoft-graph/authorize/?request_type=sign_up&origin=app")
                                     // .WithHeaders(new { Content_Type = "application/x-www-form-urlencoded" })
-                                    // .WithHeader(RequestConstants.UserAgent, RequestConstants.UserAgentValue)
+                                    .WithHeader(RequestConstants.UserAgent, RequestConstants.UserAgentValue)
                                     .GetStringAsync();
 
             var url = response.GetTextBetween("redirect_uri=", "\",").HtmlDecode().DecodeUrlString();

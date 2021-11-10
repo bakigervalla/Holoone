@@ -59,7 +59,7 @@
             </TreeView.ItemTemplate>
         </TreeView>
 
-        <Button Grid.Row="3" x:Name="NavigateToExportPage" HorizontalAlignment="Center" Width="240" VerticalAlignment="Center">Continue to Export</Button>
+        <Button Grid.Row="3" x:Name="ExportAsync" HorizontalAlignment="Center" Width="240" VerticalAlignment="Center">Export</Button>
 
     </Grid>
 

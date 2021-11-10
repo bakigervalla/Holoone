@@ -39,6 +39,9 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autodesk.Navisworks.Api">
       <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.Api.dll</HintPath>
@@ -92,14 +95,18 @@
     <Compile Include="Helpers\Converters\BooleanOrConverter.cs" />
     <Compile Include="Helpers\Converters\IsHitVisibilityConverter.cs" />
     <Compile Include="Helpers\Converters\LeftMarginMultiplierConverter.cs" />
+    <Compile Include="Helpers\Converters\ModelItemDisplayNameConverter.cs" />
     <Compile Include="Helpers\Converters\OpacityConverter.cs" />
     <Compile Include="Helpers\Converters\VisibilityConverter.cs" />
     <Compile Include="Helpers\Extensions\TreeViewItemExtensions.cs" />
     <Compile Include="Helpers\Extensions\Utility.cs" />
     <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="HolooneAddin.cs" />
+    <Compile Include="Item.cs" />
     <Compile Include="Services\Interfaces\IHoloNavigationService.cs" />
     <Compile Include="Services\HoloNavigationService.cs" />
+    <Compile Include="Services\Interfaces\INavisService.cs" />
+    <Compile Include="Services\NavisService.cs" />
     <Compile Include="ViewModels\Anchor\AnchorViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\Export\BIM\ExportBIMViewModel.cs" />
@@ -151,8 +158,8 @@
     <Compile Include="Views\Export\BIM\New\ExportBIMNewView.xaml.cs">
       <DependentUpon>ExportBIMNewView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Export\Default\ExportData.xaml.cs">
-      <DependentUpon>ExportData.xaml</DependentUpon>
+    <Compile Include="Views\Export\Default\NavisSelection.xaml.cs">
+      <DependentUpon>NavisSelection.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Export\Default\ExportDefaultView.xaml.cs">
       <DependentUpon>ExportDefaultView.xaml</DependentUpon>
@@ -272,7 +279,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Export\Default\ExportData.xaml">
+    <Page Include="Views\Export\Default\NavisSelection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

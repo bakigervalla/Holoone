@@ -17,6 +17,8 @@ namespace Holoone.Api.Services.Interfaces
 
         Task<string> ExportModelFormCompositionAsync(UserLogin user, NameValueCollection values, NameValueCollection files, ProcessingParams processingParams);
 
+        Task<string> ExportModelFormCompositionAsync(UserLogin user, NameValueCollection values, IDictionary<string, byte[]> files, ProcessingParams processingParams);
+
         Task<IFlurlResponse> GetCompanyMediaFolderContent(UserLogin user, int folderId = 0);
     }
 }

@@ -1,5 +1,8 @@
 ﻿using Autodesk.Navisworks.Api.Plugins;
 using Caliburn.Micro;
+using Flurl.Http;
+using Flurl.Http.Configuration;
+using Holoone.Api.Helpers.Constants;
 using HolooneNavis;
 using HolooneNavis.ViewModels;
 using HolooneNavis.Views;
@@ -7,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,7 +50,7 @@ namespace HolooneNavis
                 // Assembly resolver
                 AppDomain.CurrentDomain.AssemblyResolve += ForceLibraryLoad;
 
-                MergeDefaultAppConfig();
+                //MergeDefaultAppConfig();
 
                 EnsureApplicationResources();
 
@@ -56,17 +60,15 @@ namespace HolooneNavis
                 var shellViewModel = (Screen)IoC.Get<ShellViewModel>();
                 var result = windowManager.ShowWindowAsync(shellViewModel, null);
 
-
                 ////Get the ViewModel for the screen from Container
                 //ShellViewModel relayListViewModel = bootstraper._container.GetInstance<ShellViewModel>();
                 //IWindowManager windowManager = bootstraper._container.GetInstance<IWindowManager>();
                 //windowManager.ShowWindowAsync(relayListViewModel);
 
-
-                //////////////// Open Plugin Dialog that will run the Main Plugin 
-                //////////////OpenPluginWindow dialog = new OpenPluginWindow();
-                //////////////dialog.Topmost = true;
-                //////////////dialog.ShowDialog();
+                //// Open Plugin Dialog that will run the Main Plugin 
+                //OpenPluginWindow dialog = new OpenPluginWindow();
+                //dialog.Topmost = true;
+                //dialog.ShowDialog();
 
                 //var view = new ShellView(); //shellViewModel.GetView() as Window;
                 //view.Show();

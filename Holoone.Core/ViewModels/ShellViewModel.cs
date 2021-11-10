@@ -31,7 +31,7 @@ namespace HolooneNavis.ViewModels
             IEventAggregator eventAggregator)
         {
             _localeStorage = localeStorage;
-            eventAggregator.Subscribe(this);
+            eventAggregator.SubscribeOnPublishedThread(this);
 
             ShowHomePage();
         }
@@ -56,7 +56,7 @@ namespace HolooneNavis.ViewModels
 
         public async Task HandleAsync(bool message, CancellationToken cancellationToken)
         {
-            IsBusy = message;
+            await Task.Run(() => IsBusy = message);
         }
 
         //public async Task ShowHomeScreenAsync()
