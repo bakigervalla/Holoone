@@ -419,9 +419,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="holo_one_logo.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\Images\holo_16.ico" />
     <Resource Include="Resources\Images\holo_32.ico" />
   </ItemGroup>

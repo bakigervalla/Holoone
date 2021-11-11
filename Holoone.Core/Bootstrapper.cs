@@ -40,12 +40,12 @@ namespace HolooneNavis
             _container.Singleton<IWindowManager, WindowManager>();
             _container.Singleton<IEventAggregator, EventAggregator>();
             _container.Singleton<ILoginService, LoginService>();
+            _container.Singleton<IExportService, ExportService>();
             _container.Singleton<IFlurlClientFactory, DefaultFlurlClientFactory>();
             _container.Singleton<IHoloNavigationService, HoloNavigationService>();
             _container.Singleton<ILocalStorage, LocalStorage>();
             _container.Singleton<IMicrosoftGraphService, MicrosoftGraphService>();
-            _container.Singleton<IExportService, ExportService>();
-
+            
             _container.Singleton<INavisService, NavisService>();
 
             _container.PerRequest<ShellViewModel>();

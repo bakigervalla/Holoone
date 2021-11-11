@@ -1,19 +1,9 @@
 ﻿using Autodesk.Navisworks.Api.Plugins;
 using Caliburn.Micro;
-using Flurl.Http;
-using Flurl.Http.Configuration;
-using Holoone.Api.Helpers.Constants;
-using HolooneNavis;
 using HolooneNavis.ViewModels;
-using HolooneNavis.Views;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net.Http;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace HolooneNavis
@@ -31,7 +21,6 @@ namespace HolooneNavis
         {
             try
             {
-
                 switch (commandId)
                 {
                     case "ID_Button_1":
@@ -121,7 +110,7 @@ namespace HolooneNavis
         {
             var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-            string[] assemblies = new string[] { "Newtonsoft.Json.dll", "LocalStorage.dll", "Microsoft.Xaml.Behaviors.dll" };
+            string[] assemblies = new string[] { "Newtonsoft.Json.dll", "LocalStorage.dll", "Microsoft.Xaml.Behaviors.dll", "Holoone.Api.dll" };
 
             foreach (string assembly in assemblies)
                 Assembly.LoadFrom(Path.Combine(assemblyPath, assembly));
@@ -136,4 +125,73 @@ namespace HolooneNavis
     }
 
 
-}
+    //[Plugin("HolooneNavis.HolooneAddin", "HOLO", DisplayName = "Holoone", ToolTip = "", SupportsIsSelfEnabled = true)]
+    //public class HolooneAddin : AddInPlugin
+    //{
+    //    public override int Execute(params string[] parameters)
+    //    {
+    //        if (Autodesk.Navisworks.Api.Application.IsAutomated)
+    //        {
+    //            throw new InvalidOperationException("Invalid when running using Automation");
+    //        }
+
+    //        // Assembly resolver
+    //        AppDomain.CurrentDomain.AssemblyResolve += ForceLibraryLoad;
+    //        EnsureApplicationResources();
+    //        var bootstraper = new Bootstrapper();
+    //        var windowManager = IoC.Get<IWindowManager>();
+    //        var shellViewModel = (Screen)IoC.Get<ShellViewModel>();
+    //        var result = windowManager.ShowWindowAsync(shellViewModel, null);
+
+    //        return 0;
+    //    }
+
+    //    private void EnsureApplicationResources()
+    //    {
+    //        Application.Current.Resources.MergedDictionaries.Clear();
+    //        // merge in your application resources
+    //        Application.Current.Resources.MergedDictionaries.Add(Application.LoadComponent(
+    //                new Uri("HolooneNavis;component/Resources/Styles/Style.xaml", UriKind.Relative)) as System.Windows.ResourceDictionary);
+    //        Application.Current.Resources.MergedDictionaries.Add(Application.LoadComponent(
+    //                new Uri("MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml", UriKind.Relative)) as System.Windows.ResourceDictionary);
+    //        Application.Current.Resources.MergedDictionaries.Add(Application.LoadComponent(
+    //                new Uri("MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml", UriKind.Relative)) as System.Windows.ResourceDictionary);
+    //        Application.Current.Resources.MergedDictionaries.Add(Application.LoadComponent(
+    //                new Uri("MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml", UriKind.Relative)) as System.Windows.ResourceDictionary);
+    //        Application.Current.Resources.MergedDictionaries.Add(Application.LoadComponent(
+    //                new Uri("MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.LightBlue.xaml", UriKind.Relative)) as System.Windows.ResourceDictionary);
+
+    //        Application.Current.Resources.MergedDictionaries.Add(Application.LoadComponent(
+    //    new Uri("MaterialDesignExtensions;component/Themes/Generic.xaml", UriKind.Relative)) as System.Windows.ResourceDictionary);
+    //        Application.Current.Resources.MergedDictionaries.Add(Application.LoadComponent(
+    //    new Uri("HolooneNavis;component/Resources/Styles/Colors.xaml", UriKind.Relative)) as System.Windows.ResourceDictionary);
+    //        Application.Current.Resources.MergedDictionaries.Add(Application.LoadComponent(
+    //    new Uri("HolooneNavis;component/Resources/Styles/Buttons.xaml", UriKind.Relative)) as System.Windows.ResourceDictionary);
+    //        Application.Current.Resources.MergedDictionaries.Add(Application.LoadComponent(
+    //    new Uri("HolooneNavis;component/Resources/Styles/ScrollBar.xaml", UriKind.Relative)) as System.Windows.ResourceDictionary);
+    //        Application.Current.Resources.MergedDictionaries.Add(Application.LoadComponent(
+    //    new Uri("HolooneNavis;component/Resources/Styles/ToolTip.xaml", UriKind.Relative)) as System.Windows.ResourceDictionary);
+    //        Application.Current.Resources.MergedDictionaries.Add(Application.LoadComponent(
+    //    new Uri("HolooneNavis;component/Resources/Styles/TreeView.xaml", UriKind.Relative)) as System.Windows.ResourceDictionary);
+    //    }
+
+    //    /// <summary>
+    //    /// Force loading of libs by creating a dummy object once
+    //    /// </summary>
+    //    private Assembly ForceLibraryLoad(object sender, ResolveEventArgs args)
+    //    {
+    //        var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+    //        string[] assemblies = new string[] { "Newtonsoft.Json.dll", "LocalStorage.dll", "Microsoft.Xaml.Behaviors.dll" };
+
+    //        foreach (string assembly in assemblies)
+    //            Assembly.LoadFrom(Path.Combine(assemblyPath, assembly));
+
+    //        return null;
+    //        //// For Revit 2017, force loading of System.Windows.Interactivity
+    //        //// otherwise, an error will happen when trying to reference interactivity from XAML
+    //        //// see https://stackoverflow.com/questions/13514027/could-not-load-file-or-assembly-system-windows-interactivity
+    //        //EventTrigger t = new EventTrigger();
+    //    }
+
+    }
