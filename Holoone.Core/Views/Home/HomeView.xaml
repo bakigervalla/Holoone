@@ -19,8 +19,8 @@
 
             <Button x:Name="ShowLoginPage" IsEnabled="{Binding UserLogin.IsLoggedIn, Converter={conv:IsHitVisibilityConverter}, ConverterParameter=Inverted}">Login</Button>
             <Button x:Name="ShowAnchorPage" Margin="0 10" IsEnabled="{Binding UserLogin.IsLoggedIn}">Anchors</Button>
-            <Button x:Name="ShowExportPage" IsEnabled="{Binding UserLogin.IsLoggedIn}">Export</Button>
-            <!--<Button x:Name="ShowExportPage" >Export</Button>-->
+            <!--<Button x:Name="ShowExportPage" IsEnabled="{Binding UserLogin.IsLoggedIn}">Export</Button>-->
+            <Button x:Name="ShowExportPage" >Export</Button>
         </StackPanel>
 
     </Grid>

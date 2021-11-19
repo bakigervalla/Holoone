@@ -107,6 +107,8 @@
     <Compile Include="Helpers\Extensions\Utility.cs" />
     <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="HolooneAddin.cs" />
+    <Compile Include="ViewModels\Export\BIM\Existing\ExportBIMExistingViewModel.cs" />
+    <Compile Include="ViewModels\Export\BIM\New\ExportBIMNewViewModel.cs" />
     <Compile Include="ViewModels\Item.cs" />
     <Compile Include="Services\Interfaces\IHoloNavigationService.cs" />
     <Compile Include="Services\HoloNavigationService.cs" />
@@ -139,29 +141,32 @@
     <Compile Include="Views\Export\BIM\Default\ExportBIMDefaultView.xaml.cs">
       <DependentUpon>ExportBIMDefaultView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Export\BIM\ExportBIMLandingView.xaml.cs">
-      <DependentUpon>ExportBIMLandingView.xaml</DependentUpon>
+    <Compile Include="Views\Export\BIM\ExportBIMView.xaml.cs">
+      <DependentUpon>ExportBIMView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Export\BIM\Modify\ExportBIMModifyAddLayerView.xaml.cs">
-      <DependentUpon>ExportBIMModifyAddLayerView.xaml</DependentUpon>
+    <Compile Include="Views\Export\BIM\Existing\AddLayerView.xaml.cs">
+      <DependentUpon>AddLayerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Export\BIM\Modify\ExportBIMModifySelectionView.xaml.cs">
-      <DependentUpon>ExportBIMModifySelectionView.xaml</DependentUpon>
+    <Compile Include="Views\Export\BIM\Existing\SelectModelView.xaml.cs">
+      <DependentUpon>SelectModelView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Export\BIM\Modify\ExportBIMModifySelectLayerView.xaml.cs">
-      <DependentUpon>ExportBIMModifySelectLayerView.xaml</DependentUpon>
+    <Compile Include="Views\Export\BIM\Existing\SelectLayerView.xaml.cs">
+      <DependentUpon>SelectLayerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Export\BIM\Modify\ExportBIMModifyView.xaml.cs">
-      <DependentUpon>ExportBIMModifyView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Export\BIM\New\ExportBIMNewLayersView.xaml.cs">
-      <DependentUpon>ExportBIMNewLayersView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Export\BIM\New\ExportBIMNewSelectionView.xaml.cs">
-      <DependentUpon>ExportBIMNewSelectionView.xaml</DependentUpon>
+    <Compile Include="Views\Export\BIM\Existing\ExportBIMExistingView.xaml.cs">
+      <DependentUpon>ExportBIMExistingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Export\BIM\New\ExportBIMNewView.xaml.cs">
       <DependentUpon>ExportBIMNewView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Export\BIM\New\SelectModelView.xaml.cs">
+      <DependentUpon>SelectModelView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Export\BIM\New\SelectDestinationView.xaml.cs">
+      <DependentUpon>SelectDestinationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Export\BIM\New\AddLayerView.xaml.cs">
+      <DependentUpon>AddLayerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Export\Default\NavisSelection.xaml.cs">
       <DependentUpon>NavisSelection.xaml</DependentUpon>
@@ -257,35 +262,39 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Export\BIM\ExportBIMLandingView.xaml">
+    <Page Include="Views\Export\BIM\ExportBIMView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Export\BIM\Modify\ExportBIMModifyAddLayerView.xaml">
+    <Page Include="Views\Export\BIM\Existing\AddLayerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Export\BIM\Modify\ExportBIMModifySelectionView.xaml">
+    <Page Include="Views\Export\BIM\Existing\SelectModelView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Export\BIM\Modify\ExportBIMModifySelectLayerView.xaml">
+    <Page Include="Views\Export\BIM\Existing\SelectLayerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Export\BIM\Modify\ExportBIMModifyView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Export\BIM\New\ExportBIMNewLayersView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Export\BIM\New\ExportBIMNewSelectionView.xaml">
+    <Page Include="Views\Export\BIM\Existing\ExportBIMExistingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Export\BIM\New\ExportBIMNewView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Export\BIM\New\SelectModelView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Export\BIM\New\SelectDestinationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Export\BIM\New\AddLayerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace HolooneNavis.Views.Export.BIM.Modify
+namespace HolooneNavis.Views.Export.BIM.Existing
 {
     /// <summary>
-    /// Interaction logic for ExportBIMModifyView.xaml
+    /// Interaction logic for ExportBIMExistingView.xaml
     /// </summary>
-    public partial class ExportBIMModifyView : UserControl
+    public partial class ExportBIMExistingView : UserControl
     {
-        public ExportBIMModifyView()
+        public ExportBIMExistingView()
         {
             InitializeComponent();
         }

@@ -12,6 +12,8 @@ using HolooneNavis.ViewModels;
 using HolooneNavis.ViewModels.Anchor;
 using HolooneNavis.ViewModels.Export;
 using HolooneNavis.ViewModels.Export.BIM;
+using HolooneNavis.ViewModels.Export.BIM.Existing;
+using HolooneNavis.ViewModels.Export.BIM.New;
 using HolooneNavis.ViewModels.Export.Default;
 using HolooneNavis.ViewModels.Home;
 using HolooneNavis.ViewModels.Login;
@@ -58,6 +60,8 @@ namespace HolooneNavis
             _container.PerRequest<ExportViewModel>();
             _container.PerRequest<ExportDefaultViewModel>();
             _container.PerRequest<ExportBIMViewModel>();
+            _container.PerRequest<ExportBIMNewViewModel>();
+            _container.PerRequest<ExportBIMExistingViewModel>();
 
             //DisplayRootViewFor<ShellViewModel>();
         }

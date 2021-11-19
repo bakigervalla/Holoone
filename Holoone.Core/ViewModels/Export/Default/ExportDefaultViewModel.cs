@@ -1,5 +1,4 @@
 ﻿using Autodesk.Navisworks.Api;
-using Autodesk.Navisworks.Api.DocumentParts;
 using Caliburn.Micro;
 using Holoone.Api.Models;
 using Holoone.Api.Services;
@@ -8,18 +7,12 @@ using HolooneNavis.Services.Interfaces;
 using HolooneNavis.ViewModels.Home;
 using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Data;
-using Windows.Storage;
-using Windows.Storage.Streams;
 
 namespace HolooneNavis.ViewModels.Export.Default
 {
@@ -194,6 +187,12 @@ namespace HolooneNavis.ViewModels.Export.Default
         {
             try
             {
+                if(SelectedFolder == null)
+                {
+                    MessageBox.Show("Please, select a destination folder");
+                    return;
+                }
+
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
                 var requestParams = new RequestProcessingParams
