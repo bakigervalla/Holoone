@@ -61,6 +61,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Helpers\Constants\RequestConstants.cs" />
+    <Compile Include="Helpers\Converters\BoolConverter.cs" />
     <Compile Include="Helpers\Extensions\GetPropertyInfo.cs" />
     <Compile Include="Helpers\Extensions\Utility.cs" />
     <Compile Include="Models\BaseModel.cs" />

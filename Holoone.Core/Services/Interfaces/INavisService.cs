@@ -10,5 +10,7 @@ namespace HolooneNavis.Services.Interfaces
     public interface INavisService
     {
         Task<ModelItemCollection> GetModel();
+        Task<ModelItemCollection> GetLayers();
+        void HideUnselectedItems();
     }
 }

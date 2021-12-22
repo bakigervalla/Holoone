@@ -46,7 +46,8 @@
 
           
 
-             <!--first col--> 
+             <!--first col-->
+            <TextBox Text="{Binding ProcessingParams.ModelType}" Visibility="Collapsed" />
             <CheckBox Content="Overlay" IsChecked="{Binding ProcessingParams.Overlay }" />
             <CheckBox Grid.Row="1" Content="Decimate model" IsChecked="{Binding ProcessingParams.DecimateModel }" />
             <CheckBox Grid.Row="2" Content="Remove hidden" IsChecked="{Binding ProcessingParams.RemoveHiddenObjects }" />
@@ -55,24 +56,21 @@
             
             <!--second col--> 
             <Label Grid.Column="1" Content="Up vector" />
-            <ComboBox Grid.Column="2" Margin="0,0,10,0"
-                Text="{Binding ProcessingParams.UpVectorDefinition}">
-                <ComboBoxItem Content="Yes" />
-                <ComboBoxItem Content="No" />
+            <ComboBox Grid.Column="2" Margin="0,0,10,0" SelectedValuePath="Tag" SelectedValue="{Binding ProcessingParams.UpVectorDefinition, Mode=TwoWay}">
+                <ComboBoxItem Content="Yes" Tag="y" />
+                <ComboBoxItem Content="No" Tag="n" />
             </ComboBox>
 
             <Label Grid.Column="1" Grid.Row="1" Content="Coordinate" />
-            <ComboBox Grid.Column="2" Grid.Row="1" Margin="0,0,10,0"
-                Text="{Binding ProcessingParams.CoordinateSystem}">
-                <ComboBoxItem Content="Left-handed" IsSelected="True" />
-                <ComboBoxItem Content="Right-handed" />
+            <ComboBox Grid.Column="2" Grid.Row="1" Margin="0,0,10,0" SelectedValuePath="Tag" SelectedValue="{Binding ProcessingParams.CoordinateSystem, Mode=TwoWay}">
+                <ComboBoxItem Content="Left-handed" IsSelected="True" Tag="left_hand" />
+                <ComboBoxItem Content="Right-handed" Tag="right_hand" />
             </ComboBox>
 
             <Label Grid.Column="1" Grid.Row="2" Content="Size" />
-            <ComboBox Grid.Column="2" Grid.Row="2" Margin="0,0,10,0"
-                Text="{Binding ProcessingParams.LifeOrTableTopSize}">
-                <ComboBoxItem Content="Tabletop size" IsSelected="True" />
-                <ComboBoxItem Content="Life-size" />
+            <ComboBox Grid.Column="2" Grid.Row="2" Margin="0,0,10,0" SelectedValuePath="Tag" SelectedValue="{Binding ProcessingParams.LifeOrTableTopSize, Mode=TwoWay}">
+                <ComboBoxItem Content="Tabletop size" IsSelected="True" Tag="tabletop" />
+                <ComboBoxItem Content="Life-size" Tag="life_size" />
             </ComboBox>
 
             <Label Grid.Column="1" Grid.Row="3" Content="Heirarchy" />

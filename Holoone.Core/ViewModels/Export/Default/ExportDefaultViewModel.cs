@@ -114,10 +114,7 @@ namespace HolooneNavis.ViewModels.Export.Default
 
         public void GetSelectedModelItemAsync(ModelItem model)
         {
-            if (model.Model == null || string.IsNullOrEmpty(model.Model.SourceFileName) || !File.Exists(model.Model.SourceFileName))
-                SelectedFiles.Add(Autodesk.Navisworks.Api.Application.ActiveDocument.FileName);
-            else
-                SelectedFiles.Add(model.Model.SourceFileName);
+            SelectedFiles.Add(Autodesk.Navisworks.Api.Application.ActiveDocument.FileName);
         }
 
         public async Task GetFoldersAsync()
@@ -187,7 +184,7 @@ namespace HolooneNavis.ViewModels.Export.Default
         {
             try
             {
-                if(SelectedFolder == null)
+                if (SelectedFolder == null)
                 {
                     MessageBox.Show("Please, select a destination folder");
                     return;
@@ -195,20 +192,8 @@ namespace HolooneNavis.ViewModels.Export.Default
 
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
-                var requestParams = new RequestProcessingParams
-                {
-                    ProcessingParams = ProcessingParams
-                };
-
-                string processingArgs = JsonConvert.SerializeObject(requestParams);
-
-                //var files = GetSelectedFiles();
-
-                //if (files == null || files.Count() == 0)
-                //{
-                //    MessageBox.Show("Please select the model to be exported.");
-                //    return;
-                //}
+                // hide the unselected items.
+                _navisService.HideUnselectedItems();
 
                 foreach (var file in SelectedFiles)
                 {
@@ -217,6 +202,7 @@ namespace HolooneNavis.ViewModels.Export.Default
                         { "display_name", Path.GetFileNameWithoutExtension(file) },
                         { "parent_folder", SelectedFolder.Id == 0 ? "null" : SelectedFolder.Id.ToString() },
                         { "file_extension", Path.GetExtension(file).Replace(".", "") },
+                        { "processing_params", JsonConvert.SerializeObject(ProcessingParams) },
                     };
 
                     var valColl = new NameValueCollection

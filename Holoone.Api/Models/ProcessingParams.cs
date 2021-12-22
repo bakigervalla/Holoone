@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Holoone.Api.Helpers.Converters;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,45 +12,51 @@ namespace Holoone.Api.Models
     {
         [JsonProperty("processing_params")]
         public ProcessingParams ProcessingParams { get; set; }
-    } 
+    }
+
     public class ProcessingParams
     {
+        [JsonProperty("model_type")]
+        public string ModelType { get; set; } = "default";
+
         [JsonProperty("up_vector_definition")]
-        public string UpVectorDefinition { get; set; } = "Yes";
+        public string UpVectorDefinition { get; set; } = "y";
 
         [JsonProperty("coordinate_system_orientation")]
-        public string CoordinateSystem { get; set; } = "Left-handed";
+        public string CoordinateSystem { get; set; } = "left_hand";
 
         [JsonProperty("model_size")]
-        public string LifeOrTableTopSize { get; set; } = "Tabletop size";
+        public string LifeOrTableTopSize { get; set; } = "tabletop";
 
-        [JsonProperty("hierarchy_cutoff")]
-        public int LevelOfHeirarchy { get; set; } = 1;
-
+        [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("model_overlay")]
         public bool Overlay { get; set; }
 
+        [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("optimize_model")]
         public bool DecimateModel { get; set; } = true;
 
+        [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("remove_hidden_geometry")]
         public bool RemoveHiddenObjects { get; set; }
 
+        [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("merge_geometry")]
         public bool MergeGeometry { get; set; } = true;
 
+        [JsonConverter(typeof(BoolConverter))]
+        [JsonProperty("hierarchy_cutoff")]
+        public bool LevelOfHeirarchy { get; set; } = true;
+
+        [JsonConverter(typeof(BoolConverter))]
+        [JsonProperty("extract_metadata")]
+        public bool ExtractMetadata { get; set; }
+
+        [JsonConverter(typeof(BoolConverter))]
         [JsonProperty("blocking_collider")]
         public bool BlockingCollider { get; set; }
 
-
-        [JsonIgnore]
-        // [JsonProperty("model_type")]
-        public string ModelType { get; set; }
-
-        [JsonIgnore]
-        // [JsonProperty("extract_metadata")]
-        public short ExtractMetadata { get; set; }
-
+        [JsonConverter(typeof(BoolConverter))]
         [JsonIgnore]
         // [JsonProperty("is_primary")]
         public bool IsPrimary { get; set; }

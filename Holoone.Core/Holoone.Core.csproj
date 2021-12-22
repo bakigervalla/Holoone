@@ -97,6 +97,7 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Helpers\AppConfig.cs" />
     <Compile Include="Helpers\BindingProxy.cs" />
+    <Compile Include="Helpers\Converters\BoolConverter.cs" />
     <Compile Include="Helpers\Converters\BooleanOrConverter.cs" />
     <Compile Include="Helpers\Converters\IsHitVisibilityConverter.cs" />
     <Compile Include="Helpers\Converters\LeftMarginMultiplierConverter.cs" />
@@ -106,7 +107,11 @@
     <Compile Include="Helpers\Extensions\TreeViewItemExtensions.cs" />
     <Compile Include="Helpers\Extensions\Utility.cs" />
     <Compile Include="Helpers\PasswordHelper.cs" />
+    <Compile Include="Helpers\Util.cs" />
     <Compile Include="HolooneAddin.cs" />
+    <Compile Include="Models\ItemTree.cs" />
+    <Compile Include="Models\ItemData.cs" />
+    <Compile Include="Models\RvtProperties.cs" />
     <Compile Include="ViewModels\Export\BIM\Existing\ExportBIMExistingViewModel.cs" />
     <Compile Include="ViewModels\Export\BIM\New\ExportBIMNewViewModel.cs" />
     <Compile Include="ViewModels\Item.cs" />
