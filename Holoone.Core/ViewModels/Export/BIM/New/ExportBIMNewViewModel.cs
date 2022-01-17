@@ -2,11 +2,14 @@
 using Caliburn.Micro;
 using Holoone.Api.Models;
 using Holoone.Api.Services.Interfaces;
+using HolooneNavis.Models;
 using HolooneNavis.Services.Interfaces;
 using HolooneNavis.ViewModels.Home;
+using HolooneNavis.Views.Export.BIM;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
@@ -32,6 +35,8 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
             _exportService = exportService;
             _navisService = navisService;
             _eventAggregator = eventAggregator;
+
+            QueryNavisModel().AsResult();
         }
 
         #region navigation
@@ -50,14 +55,14 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
 
         public void NavigateToDestinationPage()
         {
-            if (SelectedFiles.Count == 0)
+            if (string.IsNullOrEmpty(BIMModel.ModelName))
             {
-                MessageBox.Show("Please, select a model");
+                MessageBox.Show("Model is empty. Please add a model name and layers.");
                 return;
             }
 
             State = "SelectDestination";
-            
+
             GetFoldersAsync().AsResult();
         }
 
@@ -76,11 +81,37 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
         private IEnumerable<MediaFile> _mediaFiles;
         public IEnumerable<MediaFile> MediaFiles { get => _mediaFiles; set { _mediaFiles = value; NotifyOfPropertyChange(nameof(MediaFiles)); } }
 
+        private BIMModel _bimModel = new();
+        public BIMModel BIMModel { get => _bimModel; set { _bimModel = value; NotifyOfPropertyChange(nameof(BIMModel)); } }
+
+        private ObservableCollection<BIMLayer> _bimLayers = new ObservableCollection<BIMLayer>();
+        public ObservableCollection<BIMLayer> BIMLayers { get => _bimLayers; set { _bimLayers = value; NotifyOfPropertyChange(nameof(BIMLayers)); } }
+
+        public ModelItem SelectedModelItem { get; set; }
         #endregion
 
-        public async Task AddLayerAsync()
+        public void AddNewLayer()
         {
+            BIMLayers.Add(new BIMLayer { Name = "", Select = false });
+        }
 
+        public void AttachModelItem(BIMLayer bimLayer)
+        {
+            var window = new ModelSelectionWindow() { DataContext = this };
+
+            if (window.ShowDialog() ?? true)
+            {
+                bimLayer.ModelItem = SelectedModelItem;
+            }
+
+        }
+
+        public void SaveBIMModelAndLayers()
+        {
+            // save new model
+            BIMModel.BIMLayers = BIMLayers;
+            // navigate to destination folders
+            NavigateToDestinationPage();
         }
 
         private async Task QueryNavisModel()
@@ -101,22 +132,13 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
             }
         }
 
-        public void GetSelectedModelItemAsync(ModelItem model)
-        {
-            if (model.Model == null || string.IsNullOrEmpty(model.Model.SourceFileName) || !File.Exists(model.Model.SourceFileName))
-                SelectedFiles.Add(Autodesk.Navisworks.Api.Application.ActiveDocument.FileName);
-            else
-                SelectedFiles.Add(model.Model.SourceFileName);
-        }
-
-
         public async Task GetFoldersAsync()
         {
             try
             {
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
-                var response = await _exportService.GetCompanyMediaFolderContent(UserLogin, 0);
+                var response = await _exportService.GetCompanyMediaFolderContent(Instance.UserLogin, 0);
 
                 if (response.ResponseMessage.IsSuccessStatusCode)
                 {
@@ -185,7 +207,8 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
 
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
-    
+                _navisService.CreateNewBIMModelDocument(BIMLayers);
+
                 foreach (var file in SelectedFiles)
                 {
                     var valParts = new NameValueCollection

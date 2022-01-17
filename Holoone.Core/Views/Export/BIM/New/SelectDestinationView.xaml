@@ -57,7 +57,7 @@
             </TreeView.ItemTemplate>
         </TreeView>
 
-        <Button Grid.Row="3" x:Name="ExportAsync" HorizontalAlignment="Center" Width="240" VerticalAlignment="Center">Submit</Button>
+        <Button Grid.Row="3" x:Name="ExportAsync" HorizontalAlignment="Center" Width="240" VerticalAlignment="Center">Export</Button>
         
     </Grid>
 </UserControl>

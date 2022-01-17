@@ -1,0 +1,50 @@
+﻿<Window x:Class="HolooneNavis.Views.Export.BIM.ModelSelectionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HolooneNavis.Views.Export.BIM"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:cal="http://www.caliburnproject.org"
+        xmlns:conv="clr-namespace:HolooneNavis.Helpers.Converters"
+        mc:Ignorable="d"
+        Title="Model Selection" Height="400" Width="300" WindowStartupLocation="CenterScreen" WindowStyle="None">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <TreeView Grid.ColumnSpan="2" Name="treeView" Margin="0" ItemsSource="{Binding NavisItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  HorizontalAlignment="Stretch">
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource HoloFolderTreeViewItemStyle}" />
+            </TreeView.ItemContainerStyle>
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <Border Background="Transparent">
+                        <TextBlock Text="{Binding Path=PropertyCategories, Converter={conv:ModelItemDisplayNameConverter}}" 
+                                   VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="6 3 0 0" MouseLeftButtonUp="TextBlock_MouseLeftButtonUp"
+                                   Tag="{Binding }">
+                             <!--<i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseLeftButtonUp">
+                                <cal:ActionMessage MethodName="GetSelectedModelItemAsync">
+                                    <cal:Parameter Value="{Binding }" />
+                                </cal:ActionMessage>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>-->
+                        </TextBlock>
+                    </Border>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+
+        <Button Grid.Row="1" HorizontalAlignment="Center" IsCancel="True" Width="80" VerticalAlignment="Center">Cancel</Button>
+        <Button Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Click="Button_Click" Width="80" VerticalAlignment="Center">OK</Button>
+
+    </Grid>
+</Window>

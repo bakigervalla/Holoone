@@ -213,7 +213,7 @@ namespace Holoone.Api.Services
 
             return await _flurlClient.Request(url)
                    .WithBasicAuth(user.Username, user.Password)
-                   // .WithHeader("Content-Type", "application/x-www-form-urlencoded")
+                   .WithHeader("Content-Type", "application/json")
                    .GetAsync();
         }
 

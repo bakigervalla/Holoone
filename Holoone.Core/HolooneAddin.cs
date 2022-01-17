@@ -1,4 +1,5 @@
-﻿using Autodesk.Navisworks.Api.Plugins;
+﻿using Autodesk.Navisworks.Api.Controls;
+using Autodesk.Navisworks.Api.Plugins;
 using Caliburn.Micro;
 using HolooneNavis.ViewModels;
 using System;
@@ -16,11 +17,11 @@ namespace HolooneNavis
     public class HolooneAddin : CommandHandlerPlugin
     {
         // public static readonly string Path_Plugin = Path.GetDirectoryName(typeof(HolooneAddin).Assembly.Location);
-
         public override int ExecuteCommand(string commandId, params string[] parameters)
         {
             try
             {
+
                 switch (commandId)
                 {
                     case "ID_Button_1":
@@ -41,7 +42,7 @@ namespace HolooneNavis
 
                             var windowManager = IoC.Get<IWindowManager>();
                             var shellViewModel = (Screen)IoC.Get<ShellViewModel>();
-                            var result = windowManager.ShowWindowAsync(shellViewModel, null);
+                            var result = windowManager.ShowDialogAsync(shellViewModel, null);
 
                             ////Get the ViewModel for the screen from Container
                             //ShellViewModel relayListViewModel = bootstraper._container.GetInstance<ShellViewModel>();

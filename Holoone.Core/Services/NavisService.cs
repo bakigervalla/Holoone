@@ -1,4 +1,5 @@
 ﻿using Autodesk.Navisworks.Api;
+using Autodesk.Navisworks.Api.Controls;
 using Autodesk.Navisworks.Api.DocumentParts;
 using HolooneNavis.Models;
 using HolooneNavis.Services.Interfaces;
@@ -27,14 +28,14 @@ namespace HolooneNavis.Services
 
                 Model model = models.First;
                 ModelItem rootItem = model.RootItem;
-                
+
                 items.Add(rootItem);
 
                 return items;
             });
         }
 
-        public void HideUnselectedItems()
+        public void HideUnselectedItems(string input)
         {
             ModelItemCollection hidden = new ModelItemCollection();
             //create a store for the visible items
@@ -61,8 +62,118 @@ namespace HolooneNavis.Services
             {
                 hidden.Remove(toShow);
             }
+
+
+            // CreateNewDocument(input);
+            SetNewDoc();
+
+            //Document nwDoc;
+            //using (var docControl = new DocumentControl())
+            //{
+            //    // Set the control as the primary document
+            //    docControl.SetAsMainDocument();
+            //    nwDoc = docControl.Document;
+            //}
+
+            //nwDoc.CurrentSelection.CopyFrom(newCollection);
+            //nwDoc.PublishFile(@"e:\Users\BGERVALLA\Downloads\baki_1.nwd", new PublishProperties { Author = "baki" });
+
+            //Assign the ModelItemCollection to the selection
+            //* Autodesk.Navisworks.Api.Application.ActiveDocument.CurrentSelection.CopyFrom(newCollection);
+
+
             //hide the remaining items
-            Autodesk.Navisworks.Api.Application.ActiveDocument.Models.SetHidden(hidden, true);
+            //* Autodesk.Navisworks.Api.Application.ActiveDocument.Models.SetHidden(hidden, true);
+        }
+
+        private void SetNewDoc()
+        {
+            Document oDoc = Autodesk.Navisworks.Api.Application.ActiveDocument;
+
+            try
+            {
+                ////sorting the names of the models             
+                //IEnumerable<Model> oNewSortedModels = oDoc.Models.OrderBy(per => per.RootItem.DisplayName);
+                //List<string> fileArray = new List<string>();
+                //foreach (Model oEachModel in oNewSortedModels)
+                //{
+                //    fileArray.Add(oEachModel.FileName);
+                //}
+
+                //Create a new ModelItemCollection
+                ModelItemCollection newCollection = new ModelItemCollection();
+                //iterate over the selected Items
+                foreach (ModelItem item in Autodesk.Navisworks.Api.Application.ActiveDocument.CurrentSelection.SelectedItems)
+                {
+                    //Add the children of the selected item to a new collection
+                    newCollection.AddRange(item.Children);
+                }
+
+                var nc = newCollection.ToList();
+
+                //delete all files.
+                oDoc.Clear();
+
+                //foreach (Model oEachModel in oDoc.Models)
+                //{
+                //    // State.DeleteSelectedFiles failed to delete 
+                //    // all files at one time. 
+                //    // so have to delete them one by one.
+                //    ModelItemCollection oMC = new ModelItemCollection();
+                //    oMC.Add(oEachModel.RootItem);
+                //    oDoc.CurrentSelection.CopyFrom(oMC);
+                //    // ComBridge.State.DeleteSelectedFiles();
+                //    oDoc.Clear();
+                //}
+
+                //append them again with the new order
+                oDoc.CurrentSelection.AddRange(nc);
+                // oDoc.Append(fileArray);
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private int CreateNewDocument(string fileName)
+        {
+            Document oDoc = Autodesk.Navisworks.Api.Application.ActiveDocument;
+
+            try
+            {
+                //sorting the names of the models             
+                IEnumerable<Model> oNewSortedModels = oDoc.Models.OrderBy(per => per.RootItem.DisplayName);
+                List<string> fileArray = new List<string>();
+                foreach (Model oEachModel in oNewSortedModels)
+                {
+                    if (oEachModel.FileName == fileName)
+                        fileArray.Add(oEachModel.FileName);
+                }
+
+                //delete all files.
+                var rs = oDoc.Models.FirstOrDefault();
+
+                foreach (Model oEachModel in oDoc.Models)
+                {
+                    // State.DeleteSelectedFiles failed to delete 
+                    // all files at one time. 
+                    // so have to delete them one by one.
+                    ModelItemCollection oMC = new ModelItemCollection();
+                    oMC.Add(oEachModel.RootItem);
+                    oDoc.CurrentSelection.CopyFrom(oMC);
+                    Autodesk.Navisworks.Api.ComApi.ComApiBridge.State.DeleteSelectedFiles();
+                }
+
+                //append them again with the new order
+                oDoc.AppendFiles(fileArray);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return 0;
         }
 
         public Task<ModelItemCollection> GetLayers()
@@ -129,6 +240,31 @@ namespace HolooneNavis.Services
                 }
             }
             return null;
+        }
+
+        public void CreateNewBIMModelDocument(IList<BIMLayer> bimLayers)
+        {
+            ModelItemCollection modelCollection = new ModelItemCollection();
+
+            foreach (var item in bimLayers)
+            {
+                modelCollection.AddRange(item.ModelItem.Descendants);
+            }
+
+            Document nwDoc;
+            using (var docControl = new DocumentControl())
+            {
+                // Set the control as the primary document
+                nwDoc = docControl.Document;
+                nwDoc.CurrentSelection.CopyFrom(modelCollection);
+            }
+
+            nwDoc.PublishFile(Path.Combine(Path.GetTempPath(), DateTime.Now.ToString("yyyyMMddHHmmss"), ".nwd"), new PublishProperties { Author = "Holoone" });
+        }
+
+        public ModelItem GetModelItem()
+        {
+            throw new NotImplementedException();
         }
 
         //IEnumerable<ModelItem> modelItems = rootItem.DescendantsAndSelf;

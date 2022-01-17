@@ -78,6 +78,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -109,9 +110,11 @@
     <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Helpers\Util.cs" />
     <Compile Include="HolooneAddin.cs" />
+    <Compile Include="Models\BIMModel.cs" />
     <Compile Include="Models\ItemTree.cs" />
     <Compile Include="Models\ItemData.cs" />
     <Compile Include="Models\RvtProperties.cs" />
+    <Compile Include="Services\NavisWorks.cs" />
     <Compile Include="ViewModels\Export\BIM\Existing\ExportBIMExistingViewModel.cs" />
     <Compile Include="ViewModels\Export\BIM\New\ExportBIMNewViewModel.cs" />
     <Compile Include="ViewModels\Item.cs" />
@@ -160,6 +163,9 @@
     </Compile>
     <Compile Include="Views\Export\BIM\Existing\ExportBIMExistingView.xaml.cs">
       <DependentUpon>ExportBIMExistingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Export\BIM\ModelSelectionWindow.xaml.cs">
+      <DependentUpon>ModelSelectionWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Export\BIM\New\ExportBIMNewView.xaml.cs">
       <DependentUpon>ExportBIMNewView.xaml</DependentUpon>
@@ -284,6 +290,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Export\BIM\Existing\ExportBIMExistingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Export\BIM\ModelSelectionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

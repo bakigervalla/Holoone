@@ -1,4 +1,5 @@
 ﻿using Autodesk.Navisworks.Api;
+using HolooneNavis.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace HolooneNavis.Services.Interfaces
     {
         Task<ModelItemCollection> GetModel();
         Task<ModelItemCollection> GetLayers();
-        void HideUnselectedItems();
+        void HideUnselectedItems(string input);
+        void CreateNewBIMModelDocument(IList<BIMLayer> bimLayers);
     }
 }

@@ -2,6 +2,7 @@
 using Caliburn.Micro;
 using Holoone.Api.Models;
 using Holoone.Api.Services;
+using Holoone.Api.Services.Export;
 using Holoone.Api.Services.Interfaces;
 using HolooneNavis.Services.Interfaces;
 using HolooneNavis.ViewModels.Home;
@@ -192,8 +193,13 @@ namespace HolooneNavis.ViewModels.Export.Default
 
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
+                // NavisWorks.NwdPublish(SelectedFiles[0], @"e:\Users\BGERVALLA\Downloads\");
+                
+
                 // hide the unselected items.
-                _navisService.HideUnselectedItems();
+                _navisService.HideUnselectedItems(SelectedFiles[0]);
+
+
 
                 foreach (var file in SelectedFiles)
                 {

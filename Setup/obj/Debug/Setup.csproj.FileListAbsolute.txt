@@ -1,0 +1,17 @@
+E:\Program Files\Projects\Holoone\Setup\bin\Debug\Setup.exe.config
+E:\Program Files\Projects\Holoone\Setup\bin\Debug\Setup.exe
+E:\Program Files\Projects\Holoone\Setup\bin\Debug\Setup.pdb
+E:\Program Files\Projects\Holoone\Setup\bin\Debug\BootstrapperCore.dll
+E:\Program Files\Projects\Holoone\Setup\bin\Debug\Microsoft.Deployment.WindowsInstaller.dll
+E:\Program Files\Projects\Holoone\Setup\bin\Debug\WixSharp.dll
+E:\Program Files\Projects\Holoone\Setup\bin\Debug\WixSharp.Msi.dll
+E:\Program Files\Projects\Holoone\Setup\bin\Debug\WixSharp.UI.dll
+E:\Program Files\Projects\Holoone\Setup\bin\Debug\BootstrapperCore.xml
+E:\Program Files\Projects\Holoone\Setup\bin\Debug\Microsoft.Deployment.WindowsInstaller.xml
+E:\Program Files\Projects\Holoone\Setup\bin\Debug\WixSharp.xml
+E:\Program Files\Projects\Holoone\Setup\bin\Debug\WixSharp.Msi.xml
+E:\Program Files\Projects\Holoone\Setup\bin\Debug\WixSharp.UI.xml
+E:\Program Files\Projects\Holoone\Setup\obj\Debug\Setup.csproj.CoreCompileInputs.cache
+E:\Program Files\Projects\Holoone\Setup\obj\Debug\Setup.csproj.CopyComplete
+E:\Program Files\Projects\Holoone\Setup\obj\Debug\Setup.exe
+E:\Program Files\Projects\Holoone\Setup\obj\Debug\Setup.pdb
