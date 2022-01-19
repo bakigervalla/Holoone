@@ -206,4 +206,18 @@
         </Setter>
     </Style>
 
+    <ControlTemplate x:Key="ButtonTemplate" TargetType="Button">
+        <Grid Margin="{TemplateBinding Margin}"
+          Height="{TemplateBinding Height}"
+          Width="{TemplateBinding Width}">
+            <Ellipse x:Name="ButtonEllipse"
+                    Height="{TemplateBinding Height}" Width="{TemplateBinding Width}"
+                    Fill="LightBlue">
+            </Ellipse>
+            <ContentPresenter Content="{TemplateBinding Content}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center" />
+        </Grid>
+    </ControlTemplate>
+
 </ResourceDictionary>

@@ -35,8 +35,7 @@
                 <TextBox Text="{Binding BIMModel.ModelName}" Margin="0,0,20,10"
                          IsHitTestVisible="True" materialDesign:HintAssist.Hint="Model Name" IsEnabled="True" IsReadOnly="False" />
                 <ItemsControl ItemsSource="{Binding BIMLayers}"
-                              VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxHeight="240"
-                              Margin="0,0,20,0">
+                              VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxHeight="240">
                     <ItemsControl.Template>
                         <ControlTemplate>
                             <ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}">
@@ -51,10 +50,12 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="30" />
                                     <ColumnDefinition Width="30" />
+                                    <ColumnDefinition Width="30" />
                                 </Grid.ColumnDefinitions>
                                 <TextBox Text="{Binding Name}" materialDesign:HintAssist.Hint="Layer Name" VerticalAlignment="Center" Margin="0,2,0,2"/>
-                                <CheckBox Grid.Column="1" IsChecked="{Binding Select}" HorizontalAlignment="Center" Margin="0" />
-                                <Button Grid.Column="2" HorizontalAlignment="Center" Margin="0">
+                                <RadioButton Grid.Column="1" GroupName="DefaultSelectGroup" IsChecked="{Binding IsDefault}" HorizontalAlignment="Center" Margin="0" />
+                                <Button Grid.Column="2" HorizontalAlignment="Center" Margin="0" Template="{StaticResource ButtonTemplate}"
+                                        Height="24" Width="24" Cursor="Hand">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="Click">
                                             <cal:ActionMessage MethodName="AttachModelItem">
@@ -62,21 +63,31 @@
                                             </cal:ActionMessage>
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
-                                </Button>
-                                <!--<materialDesign:PackIcon>
+                                    <materialDesign:PackIcon x:Name="IconName">
                                         <materialDesign:PackIcon.Style>
                                             <Style TargetType="materialDesign:PackIcon">
-                                                <Setter Property="Foreground" Value="Green"/>
-                                                <Setter Property="Kind" Value=""/>
+                                                <Setter Property="Kind" Value="Plus" />
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ModelItem, RelativeSource={RelativeSource AncestorType=TreeViewItem}}" Value="{x:Null}">
-                                                        <Setter Property="Foreground" Value="#CCC"/>
-                                                    </DataTrigger>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding IsSet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Value="true" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <Setter Property="Kind" Value="Check" />
+                                                    </MultiDataTrigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </materialDesign:PackIcon.Style>
-                                    </materialDesign:PackIcon>-->
-
+                                    </materialDesign:PackIcon>
+                                </Button>
+                                <materialDesign:PackIcon Grid.Column="3" Kind="Close" Cursor="Hand" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                                            <cal:ActionMessage MethodName="RemoveModelItem">
+                                                <cal:Parameter Value="{Binding}" />
+                                            </cal:ActionMessage>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </materialDesign:PackIcon>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

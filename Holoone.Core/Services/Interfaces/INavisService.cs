@@ -13,6 +13,7 @@ namespace HolooneNavis.Services.Interfaces
         Task<ModelItemCollection> GetModel();
         Task<ModelItemCollection> GetLayers();
         void HideUnselectedItems(string input);
-        void CreateNewBIMModelDocument(IList<BIMLayer> bimLayers);
+        List<string> CreateNewBIMModelDocument(IList<BIMLayer> bimLayers);
+        int CreateNewDocument(string fileName, string selected);
     }
 }

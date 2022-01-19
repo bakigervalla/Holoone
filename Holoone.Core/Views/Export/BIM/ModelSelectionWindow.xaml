@@ -8,8 +8,8 @@
         xmlns:cal="http://www.caliburnproject.org"
         xmlns:conv="clr-namespace:HolooneNavis.Helpers.Converters"
         mc:Ignorable="d"
-        Title="Model Selection" Height="400" Width="300" WindowStartupLocation="CenterScreen" WindowStyle="None">
-    <Grid Margin="20">
+        Title="Model Selection" Height="450" Width="300" WindowStartupLocation="CenterScreen" WindowStyle="None">
+    <Grid Margin="20,20,20,5">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="50" />

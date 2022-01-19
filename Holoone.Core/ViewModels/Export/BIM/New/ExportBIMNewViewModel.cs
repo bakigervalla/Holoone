@@ -48,8 +48,6 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
         {
             State = "SelectModel";
 
-            QueryNavisModel().AsResult();
-
             SelectedFiles = new List<string>();
         }
 
@@ -88,20 +86,38 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
         public ObservableCollection<BIMLayer> BIMLayers { get => _bimLayers; set { _bimLayers = value; NotifyOfPropertyChange(nameof(BIMLayers)); } }
 
         public ModelItem SelectedModelItem { get; set; }
+
         #endregion
 
         public void AddNewLayer()
         {
-            BIMLayers.Add(new BIMLayer { Name = "", Select = false });
+            if (BIMLayers.Count == 0)
+                BIMLayers.Add(new BIMLayer { Name = "", IsDefault = true });
+            else
+                BIMLayers.Add(new BIMLayer { Name = "", IsDefault = false });
+        }
+
+        public void RemoveModelItem(BIMLayer bimLayer)
+        {
+            BIMLayers.Remove(bimLayer);
+
+            if (bimLayer.IsDefault)
+            {
+               var layer = BIMLayers.FirstOrDefault();
+                if (layer != null)
+                    layer.IsDefault = true;
+            }
         }
 
         public void AttachModelItem(BIMLayer bimLayer)
         {
-            var window = new ModelSelectionWindow() { DataContext = this };
+            ModelSelectionWindow window = new ModelSelectionWindow() { DataContext = this };
 
             if (window.ShowDialog() ?? true)
             {
                 bimLayer.ModelItem = SelectedModelItem;
+                bimLayer.IsDefault = true;
+                bimLayer.IsSet = true;
             }
 
         }
@@ -207,28 +223,28 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
 
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
-                _navisService.CreateNewBIMModelDocument(BIMLayers);
+                var filePaths = _navisService.CreateNewBIMModelDocument(BIMLayers);
 
-                foreach (var file in SelectedFiles)
+                foreach (var path in filePaths)
                 {
                     var valParts = new NameValueCollection
                     {
-                        { "display_name", Path.GetFileNameWithoutExtension(file) },
+                        { "display_name", Path.GetFileNameWithoutExtension(path) },
                         { "parent_folder", SelectedFolder.Id == 0 ? "null" : SelectedFolder.Id.ToString() },
-                        { "file_extension", Path.GetExtension(file).Replace(".", "") },
+                        { "file_extension", Path.GetExtension(path).Replace(".", "") },
                     };
 
                     var valColl = new NameValueCollection
                     {
-                        { file, "" }
+                        { path, ""}
                     };
 
                     await _exportService.ExportModelFormCompositionAsync(Instance.UserLogin, valParts, valColl, null);
-
-                    MessageBox.Show("Uploaded successfully.");
-
-                    await NavigationService.GoTo<HomeViewModel>();
                 }
+
+                MessageBox.Show("Uploaded successfully.");
+
+                await NavigationService.GoTo<HomeViewModel>();
             }
             catch (Exception ex)
             {

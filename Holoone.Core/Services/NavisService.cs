@@ -1,6 +1,8 @@
 ﻿using Autodesk.Navisworks.Api;
 using Autodesk.Navisworks.Api.Controls;
 using Autodesk.Navisworks.Api.DocumentParts;
+using Autodesk.Navisworks.Api.Plugins;
+using Autodesk.Navisworks.Internal.ApiImplementation;
 using HolooneNavis.Models;
 using HolooneNavis.Services.Interfaces;
 using System;
@@ -136,7 +138,7 @@ namespace HolooneNavis.Services
             }
         }
 
-        private int CreateNewDocument(string fileName)
+        public int CreateNewDocument(string fileName, string selected)
         {
             Document oDoc = Autodesk.Navisworks.Api.Application.ActiveDocument;
 
@@ -151,19 +153,39 @@ namespace HolooneNavis.Services
                         fileArray.Add(oEachModel.FileName);
                 }
 
+                Document nwDoc;
+                var path = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".nwd");
+
                 //delete all files.
                 var rs = oDoc.Models.FirstOrDefault();
 
                 foreach (Model oEachModel in oDoc.Models)
                 {
-                    // State.DeleteSelectedFiles failed to delete 
-                    // all files at one time. 
-                    // so have to delete them one by one.
-                    ModelItemCollection oMC = new ModelItemCollection();
-                    oMC.Add(oEachModel.RootItem);
-                    oDoc.CurrentSelection.CopyFrom(oMC);
-                    Autodesk.Navisworks.Api.ComApi.ComApiBridge.State.DeleteSelectedFiles();
+                    var items = oEachModel.RootItem.Children;
+                    foreach (var item in items)
+                    {
+                        if (item.DisplayName == selected)
+                        {
+                            // State.DeleteSelectedFiles failed to delete 
+                            // all files at one time. 
+                            // so have to delete them one by one.
+                            ModelItemCollection oMC = new ModelItemCollection();
+                            oMC.Add(item); // oEachModel.RootItem);
+                            oDoc.CurrentSelection.CopyFrom(oMC);
+                            try
+                            {
+                                Autodesk.Navisworks.Api.ComApi.ComApiBridge.State.DeleteSelectedFiles();
+                            }
+                            catch (Exception e)
+                            {
+
+                            }
+                            break;
+                        }
+                    }
                 }
+
+                oDoc.PublishFile(path, new PublishProperties { Author = "Holoone" });
 
                 //append them again with the new order
                 oDoc.AppendFiles(fileArray);
@@ -242,63 +264,61 @@ namespace HolooneNavis.Services
             return null;
         }
 
-        public void CreateNewBIMModelDocument(IList<BIMLayer> bimLayers)
+        public List<string> CreateNewBIMModelDocument(IList<BIMLayer> bimLayers)
         {
             ModelItemCollection modelCollection = new ModelItemCollection();
+            List<string> filePaths = new List<string>();
+            string path = string.Empty;
 
-            foreach (var item in bimLayers)
+            var collection = bimLayers.Select(x => x.ModelItem);
+
+            HideModelItems(collection);
+
+            PluginRecord FBXPluginrecord = Application.Plugins.FindPlugin("NativeExportPluginAdaptor_LcFbxExporterPlugin_Export.Navisworks");
+
+            if (FBXPluginrecord != null)
             {
-                modelCollection.AddRange(item.ModelItem.Descendants);
+                if (!FBXPluginrecord.IsLoaded)
+                {
+                    FBXPluginrecord.LoadPlugin();
+                }
+
+                //save path of the FBX
+                string[] pa = { @"e:\Users\BGERVALLA\Downloads\Autodesk\Navisworks\Navis Drawings\mytest1.fbx" };
+
+                NativeExportPluginAdaptor FBXplugin = FBXPluginrecord.LoadedPlugin as NativeExportPluginAdaptor;
+
+                FBXplugin.Execute(pa);
+
+                // convert fbx to nwd (1. open or append fbx file, publish/save fbx/document to nwd format)
+
             }
 
-            Document nwDoc;
-            using (var docControl = new DocumentControl())
-            {
-                // Set the control as the primary document
-                nwDoc = docControl.Document;
-                nwDoc.CurrentSelection.CopyFrom(modelCollection);
-            }
+            return filePaths;
+        }
 
-            nwDoc.PublishFile(Path.Combine(Path.GetTempPath(), DateTime.Now.ToString("yyyyMMddHHmmss"), ".nwd"), new PublishProperties { Author = "Holoone" });
+        private void HideModelItems(IEnumerable<ModelItem> modelCollection)
+        {
+            Document oDoc = Application.ActiveDocument;
+
+            //Add all the items that are visible to the visible collection
+            var childItems = oDoc.Models.RootItems.SelectMany(x => x.Children);
+
+            var visible = from a in childItems.SelectMany(x=> x.DescendantsAndSelf)
+                           join b in modelCollection on a.DisplayName equals b.DisplayName
+                           select a;
+            var hidden = childItems.SelectMany(x => x.DescendantsAndSelf).Except(modelCollection);
+
+            //Assign the ModelItemCollection to the selection
+            Application.ActiveDocument.CurrentSelection.CopyFrom(visible);
+
+            //hide the remaining items
+            Application.ActiveDocument.Models.SetHidden(hidden, true);
         }
 
         public ModelItem GetModelItem()
         {
             throw new NotImplementedException();
         }
-
-        //IEnumerable<ModelItem> modelItems = rootItem.DescendantsAndSelf;
-
-        //Guid PlaceholderGuid = new Guid("00000000-0000-0000-0000-000000000000");
-
-        //        foreach (ModelItem mi in modelItems)
-        //            if (mi.InstanceGuid != PlaceholderGuid)
-        //                items.Add(mi);
-
-        // ModelItemEnumerableCollection rootItems = models.RootItems;
-
-
-        //return rootItem.DescendantsAndSelf.Where(x => x.ClassDisplayName.Equals("File", StringComparison.OrdinalIgnoreCase))
-        //    .Select(c => new Item
-        //    {
-        //        DisplayName = c.DisplayName,
-        //        FilePath = c.DisplayName,
-        //        Children = c.Children.Select(f => new Item { DisplayName = f.DisplayName, FilePath = f.DisplayName }).ToList()
-        //    }).ToList();
-
-        //IList<Item> result = new List<Item>();
-
-        //foreach (ModelItem modelItem in modelItems)
-        //{
-        //    result.Add(new Item
-        //    {
-        //        DisplayName = modelItem.DisplayName,
-        //        FilePath = "",
-        //        Children = modelItem.Children.Select(x => new Item { DisplayName = x.DisplayName, FilePath = "" }).ToList()
-        //    });
-        //}
-
-        //return result;
-
     }
 }

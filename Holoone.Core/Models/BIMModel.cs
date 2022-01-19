@@ -1,4 +1,5 @@
 ﻿using Autodesk.Navisworks.Api;
+using Holoone.Api.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,19 +15,21 @@ namespace HolooneNavis.Models
         {
             BIMLayers = new ObservableCollection<BIMLayer>();
         }
-        private string _modelName;
         public string ModelName { get; set; }
-        private ObservableCollection<BIMLayer> _bimLayers;
         public ObservableCollection<BIMLayer> BIMLayers { get; set; }
     }
 
-    public class BIMLayer
+    public class BIMLayer : BaseModel
     {
         public string Name { get; set; }
 
-        public ModelItem ModelItem { get; set; }
+        private ModelItem _modelItem { get; set; }
+        public ModelItem ModelItem { get => _modelItem; set { _modelItem = value; RaisePropertyChanged(nameof(ModelItem)); } }
 
-        public bool Select { get; set; }
-        public bool IsSet { get => ModelItem != null; }
+        private bool _isDefault;
+        public bool IsDefault { get => _isDefault; set { _isDefault = value; RaisePropertyChanged(nameof(IsDefault)); } }
+
+        private bool _isSet;
+        public bool IsSet { get => _isSet; set { _isSet = value; RaisePropertyChanged(nameof(IsSet)); } }
     }
 }
