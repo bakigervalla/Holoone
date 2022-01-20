@@ -68,6 +68,10 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
 
         #region properties
 
+        private NoneType _noneType = new NoneType();
+        public NoneType NoneType { get => _noneType; set { _noneType = value; NotifyOfPropertyChange(nameof(NoneType)); } }
+
+
         private ModelItemCollection _navisItems;
         public ModelItemCollection NavisItems { get => _navisItems; set { _navisItems = value; NotifyOfPropertyChange(nameof(NavisItems)); } }
 
@@ -103,7 +107,7 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
 
             if (bimLayer.IsDefault)
             {
-               var layer = BIMLayers.FirstOrDefault();
+                var layer = BIMLayers.FirstOrDefault();
                 if (layer != null)
                     layer.IsDefault = true;
             }
@@ -116,10 +120,8 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
             if (window.ShowDialog() ?? true)
             {
                 bimLayer.ModelItem = SelectedModelItem;
-                bimLayer.IsDefault = true;
                 bimLayer.IsSet = true;
             }
-
         }
 
         public void SaveBIMModelAndLayers()
@@ -223,24 +225,29 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
 
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
-                var filePaths = _navisService.CreateNewBIMModelDocument(BIMLayers);
+                //* BIMLayers = new ObservableCollection<BIMLayer>(_navisService.ExportToFBX(BIMLayers));
 
-                foreach (var path in filePaths)
-                {
-                    var valParts = new NameValueCollection
+                BIMLayers = new ObservableCollection<BIMLayer>(_navisService.ExportToNWD(BIMLayers));
+
+                var valParts = new NameValueCollection
                     {
-                        { "display_name", Path.GetFileNameWithoutExtension(path) },
+                        { "model_name", BIMModel.ModelName },
+                        { "primary_layer_index", BIMLayers.ToList().FindIndex(x=> x.IsDefault).ToString() },
+                        { "primary_layer_id", "0" },
+                        { "previous_primary_layer_id", "" },
                         { "parent_folder", SelectedFolder.Id == 0 ? "null" : SelectedFolder.Id.ToString() },
-                        { "file_extension", Path.GetExtension(path).Replace(".", "") },
+                        //{ "model_type", "bim" },
+                        { "nonetype", JsonConvert.SerializeObject(NoneType) },
                     };
 
-                    var valColl = new NameValueCollection
-                    {
-                        { path, ""}
-                    };
+                NameValueCollection valColl = new NameValueCollection();
 
-                    await _exportService.ExportModelFormCompositionAsync(Instance.UserLogin, valParts, valColl, null);
+                foreach (var layer in BIMLayers)
+                {
+                    valColl.Add(layer.FilePath, "");
                 }
+
+                await _exportService.ExportModelFormCompositionAsync(Instance.UserLogin, valParts, valColl, null, "media/bim/add/", "layers");
 
                 MessageBox.Show("Uploaded successfully.");
 
@@ -252,6 +259,13 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
             }
             finally
             {
+                try
+                {
+                    foreach (var layer in BIMLayers)
+                        File.Delete(layer.FilePath);
+                }
+                catch { }
+
                 await _eventAggregator.PublishOnUIThreadAsync(false);
             }
         }

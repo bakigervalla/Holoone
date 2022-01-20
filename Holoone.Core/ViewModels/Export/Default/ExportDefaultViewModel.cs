@@ -216,7 +216,7 @@ namespace HolooneNavis.ViewModels.Export.Default
                         { file, "" }
                     };
 
-                    await _exportService.ExportModelFormCompositionAsync(Instance.UserLogin, valParts, valColl, ProcessingParams);
+                    await _exportService.ExportModelFormCompositionAsync(Instance.UserLogin, valParts, valColl, ProcessingParams, "media/add/file/", "file");
 
                     MessageBox.Show("Uploaded successfully.");
 

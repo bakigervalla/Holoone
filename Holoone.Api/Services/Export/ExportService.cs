@@ -114,12 +114,13 @@ namespace Holoone.Api.Services
         /// <param name="files"></param>
         /// <param name="processingParams"></param>
         /// <returns></returns>
-        public async Task<string> ExportModelFormCompositionAsync(UserLogin user, NameValueCollection values, NameValueCollection files, ProcessingParams processingParams)
+        public async Task<string> ExportModelFormCompositionAsync(UserLogin user, NameValueCollection values, NameValueCollection files,
+            ProcessingParams processingParams, string urlPath, string formDataName)
         {
             string encodedCredentials = System.Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1")
                                            .GetBytes(user.Username + ":" + user.Password));
 
-            string url = RequestConstants.BaseUrl + "media/add/file/";
+            string url = RequestConstants.BaseUrl + urlPath;
 
             string boundary = "----------------------------" + DateTime.Now.Ticks.ToString("x");
             // The first boundary
@@ -150,22 +151,26 @@ namespace Holoone.Api.Services
             }
 
             // add procesing parameters
-            var processingArgs = processingParams.GetProperties();
-            var items = processingArgs.SelectMany(x => x.AllKeys.SelectMany(x.GetValues, (k, v) => new { key = k, value = v }));
-
-            foreach (var item in items)
+            if (processingParams != null)
             {
-                if (string.IsNullOrEmpty(item.key) || string.IsNullOrEmpty(item.value))
-                    break;
+                var processingArgs = processingParams.GetProperties();
+                var items = processingArgs.SelectMany(x => x.AllKeys.SelectMany(x.GetValues, (k, v) => new { key = k, value = v }));
 
-                // Write item to stream
-                byte[] formItemBytes = System.Text.Encoding.UTF8.GetBytes(string.Format("Content-Disposition: form-data; name=\"{0}\";\r\n\r\n{1}", item.key, item.value));
-                requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
-                requestStream.Write(formItemBytes, 0, formItemBytes.Length);
+                foreach (var item in items)
+                {
+                    if (string.IsNullOrEmpty(item.key) || string.IsNullOrEmpty(item.value))
+                        break;
+
+                    // Write item to stream
+                    byte[] formItemBytes = System.Text.Encoding.UTF8.GetBytes(string.Format("Content-Disposition: form-data; name=\"{0}\";\r\n\r\n{1}", item.key, item.value));
+                    requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
+                    requestStream.Write(formItemBytes, 0, formItemBytes.Length);
+                }
             }
 
             if (files != null)
             {
+                int indx = 0;
                 foreach (string key in files.Keys)
                 {
                     if (File.Exists(key))
@@ -173,8 +178,15 @@ namespace Holoone.Api.Services
                         string fileName = System.IO.Path.GetFileName(key);
                         int bytesRead = 0;
                         byte[] buffer = new byte[2048];
-                        byte[] formItemBytes = System.Text.Encoding.UTF8.GetBytes(
-                            string.Format("Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\nContent-Type: application/octet-stream\r\n\r\n", "file", fileName));
+                        byte[] formItemBytes = new byte[2048];
+
+                        if (formDataName == "layers")
+                            formItemBytes = System.Text.Encoding.UTF8.GetBytes(
+                                string.Format("Content-Disposition: form-data; name=\"layers[{0}]\"; filename=\"{1}\"\r\nContent-Type: application/octet-stream\r\n\r\n", indx++, fileName));
+                        else if (formDataName == "file")
+                            formItemBytes = System.Text.Encoding.UTF8.GetBytes(
+                            string.Format("Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\nContent-Type: application/octet-stream\r\n\r\n", formDataName, fileName));
+
                         requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
                         requestStream.Write(formItemBytes, 0, formItemBytes.Length);
 

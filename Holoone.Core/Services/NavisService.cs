@@ -37,107 +37,151 @@ namespace HolooneNavis.Services
             });
         }
 
-        public void HideUnselectedItems(string input)
+        public IList<BIMLayer> ExportToNWD(IList<BIMLayer> bimLayers)
         {
-            ModelItemCollection hidden = new ModelItemCollection();
-            //create a store for the visible items
-            ModelItemCollection visible = new ModelItemCollection();
+            Document oDoc = Application.ActiveDocument;
+            DocumentModels models = oDoc.Models;
+
+            IEnumerable<ModelItem> visible,
+                hidden;
+            string basePath = Path.Combine(Path.GetTempPath(), "HolooneNavis");
+            IEnumerable<ModelItem> allModelItems = bimLayers.Select(x => x.ModelItem);
+
+            if (!Directory.Exists(basePath))
+                Directory.CreateDirectory(basePath);
 
             //Add all the items that are visible to the visible collection
-            foreach (ModelItem item in Autodesk.Navisworks.Api.Application.ActiveDocument.CurrentSelection.SelectedItems)
+            var childItems = oDoc.Models.RootItems.SelectMany(x => x.Children);
+
+            foreach (var layer in bimLayers.Where(x => x.ModelItem != null && !string.IsNullOrEmpty(x.Name)))
             {
-                if (item.AncestorsAndSelf != null)
-                    visible.AddRange(item.AncestorsAndSelf);
-                if (item.Descendants != null)
-                    visible.AddRange(item.Descendants);
-            }
-            //mark as invisible all the siblings of the visible items as well as the visible items
-            foreach (ModelItem toShow in visible)
-            {
-                if (toShow.Parent != null)
+                visible = childItems.Where(x => x.DisplayName == layer.ModelItem.DisplayName).SelectMany(x => x.DescendantsAndSelf);
+                hidden = childItems.Where(x => x.DisplayName != layer.ModelItem.DisplayName).SelectMany(x => x.DescendantsAndSelf);
+
+                //Assign the ModelItemCollection to the selection
+                Application.ActiveDocument.CurrentSelection.CopyFrom(visible);
+
+                //hide the remaining items
+                Application.ActiveDocument.Models.SetHidden(hidden, true);
+
+                layer.FilePath = Path.Combine(basePath, layer.Name + ".nwd");
+
+                //Save the Navisworks file
+                oDoc.PublishFile(layer.FilePath, GetPublishProperties(layer.Name));
+
+                oDoc.CurrentSelection.Clear();
+
+                foreach (Model model in models)
                 {
-                    hidden.AddRange(toShow.Parent.Children);
+                    ModelItem rootItem = model.RootItem;
+                    ModelItemEnumerableCollection modelItems = rootItem.DescendantsAndSelf;
+                    oDoc.Models.SetHidden(modelItems, false);
                 }
             }
-            //remove the visible items from the collection
-            foreach (ModelItem toShow in visible)
-            {
-                hidden.Remove(toShow);
-            }
 
-
-            // CreateNewDocument(input);
-            SetNewDoc();
-
-            //Document nwDoc;
-            //using (var docControl = new DocumentControl())
-            //{
-            //    // Set the control as the primary document
-            //    docControl.SetAsMainDocument();
-            //    nwDoc = docControl.Document;
-            //}
-
-            //nwDoc.CurrentSelection.CopyFrom(newCollection);
-            //nwDoc.PublishFile(@"e:\Users\BGERVALLA\Downloads\baki_1.nwd", new PublishProperties { Author = "baki" });
-
-            //Assign the ModelItemCollection to the selection
-            //* Autodesk.Navisworks.Api.Application.ActiveDocument.CurrentSelection.CopyFrom(newCollection);
-
-
-            //hide the remaining items
-            //* Autodesk.Navisworks.Api.Application.ActiveDocument.Models.SetHidden(hidden, true);
+            return bimLayers;
         }
 
-        private void SetNewDoc()
+        private PublishProperties GetPublishProperties(string title)
         {
-            Document oDoc = Autodesk.Navisworks.Api.Application.ActiveDocument;
-
-            try
+            var returnProperties = new PublishProperties
             {
-                ////sorting the names of the models             
-                //IEnumerable<Model> oNewSortedModels = oDoc.Models.OrderBy(per => per.RootItem.DisplayName);
-                //List<string> fileArray = new List<string>();
-                //foreach (Model oEachModel in oNewSortedModels)
-                //{
-                //    fileArray.Add(oEachModel.FileName);
-                //}
+                AllowResave = true,
+                Author = "Holo-one",
+                Comments = "Navisworks export nwd format",
+                Copyright = "Holo-one 2022",
+                Keywords = "Navisworks, Export, NWD, Holo-one",
+                PublishDate = DateTime.Now,
+                Publisher = "Holo-one Navis Plugin",
+                Title = title
+            };
 
-                //Create a new ModelItemCollection
-                ModelItemCollection newCollection = new ModelItemCollection();
-                //iterate over the selected Items
-                foreach (ModelItem item in Autodesk.Navisworks.Api.Application.ActiveDocument.CurrentSelection.SelectedItems)
-                {
-                    //Add the children of the selected item to a new collection
-                    newCollection.AddRange(item.Children);
-                }
-
-                var nc = newCollection.ToList();
-
-                //delete all files.
-                oDoc.Clear();
-
-                //foreach (Model oEachModel in oDoc.Models)
-                //{
-                //    // State.DeleteSelectedFiles failed to delete 
-                //    // all files at one time. 
-                //    // so have to delete them one by one.
-                //    ModelItemCollection oMC = new ModelItemCollection();
-                //    oMC.Add(oEachModel.RootItem);
-                //    oDoc.CurrentSelection.CopyFrom(oMC);
-                //    // ComBridge.State.DeleteSelectedFiles();
-                //    oDoc.Clear();
-                //}
-
-                //append them again with the new order
-                oDoc.CurrentSelection.AddRange(nc);
-                // oDoc.Append(fileArray);
-            }
-            catch (Exception ex)
-            {
-
-            }
+            return returnProperties;
         }
 
+        public IList<BIMLayer> ExportToFBX(IList<BIMLayer> bimLayers)
+        {
+            PluginRecord FBXPluginrecord = Application.Plugins.FindPlugin("NativeExportPluginAdaptor_LcFbxExporterPlugin_Export.Navisworks");
+
+            if (FBXPluginrecord != null)
+            {
+                if (!FBXPluginrecord.IsLoaded)
+                {
+                    FBXPluginrecord.LoadPlugin();
+                }
+
+                NativeExportPluginAdaptor FBXplugin = FBXPluginrecord.LoadedPlugin as NativeExportPluginAdaptor;
+
+                //ModelItemCollection modelCollection = new ModelItemCollection();
+                //List<string> filePaths = new List<string>();
+                //string path = string.Empty;
+
+                //var collection = bimLayers.Select(x => x.ModelItem);
+
+                ExportFBX(bimLayers, FBXplugin);
+            }
+
+            return bimLayers;
+        }
+
+        private void ExportFBX(IList<BIMLayer> bimLayers, NativeExportPluginAdaptor FBXplugin)
+        {
+            Document oDoc = Application.ActiveDocument;
+            DocumentModels models = oDoc.Models;
+
+            IEnumerable<ModelItem> visible,
+                hidden;
+            string basePath = Path.Combine(Path.GetTempPath(), "HolooneNavis");
+            IEnumerable<ModelItem> allModelItems = bimLayers.Select(x => x.ModelItem);
+
+            if (!Directory.Exists(basePath))
+                Directory.CreateDirectory(basePath);
+
+            //var visible = from a in childItems.SelectMany(x => x.DescendantsAndSelf)
+            //              join b in modelCollection on a.DisplayName equals b.DisplayName
+            //              select a;
+            //var hidden = childItems.SelectMany(x => x.DescendantsAndSelf).Except(modelCollection);
+
+
+            //Add all the items that are visible to the visible collection
+            var childItems = oDoc.Models.RootItems.SelectMany(x => x.Children);
+
+            foreach (var layer in bimLayers.Where(x => x.ModelItem != null && !string.IsNullOrEmpty(x.Name)))
+            {
+                visible = childItems.Where(x => x.DisplayName == layer.ModelItem.DisplayName).SelectMany(x => x.DescendantsAndSelf);
+                hidden = childItems.Where(x => x.DisplayName != layer.ModelItem.DisplayName).SelectMany(x => x.DescendantsAndSelf);
+
+                //Assign the ModelItemCollection to the selection
+                Application.ActiveDocument.CurrentSelection.CopyFrom(visible);
+
+                //hide the remaining items
+                Application.ActiveDocument.Models.SetHidden(hidden, true);
+
+                layer.FilePath = Path.Combine(basePath, layer.Name + ".fbx");
+
+                FBXplugin.Execute(layer.FilePath);
+
+                oDoc.CurrentSelection.Clear();
+
+                foreach (Model model in models)
+                {
+                    ModelItem rootItem = model.RootItem;
+                    ModelItemEnumerableCollection modelItems = rootItem.DescendantsAndSelf;
+                    oDoc.Models.SetHidden(modelItems, false);
+                }
+
+                // 
+            }
+
+        }
+
+
+        /// <summary>
+        /// OBSOLETE
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="selected"></param>
+        /// <returns></returns>
         public int CreateNewDocument(string fileName, string selected)
         {
             Document oDoc = Autodesk.Navisworks.Api.Application.ActiveDocument;
@@ -198,6 +242,118 @@ namespace HolooneNavis.Services
             return 0;
         }
 
+        /// <summary>
+        /// OBSOLETE
+        /// </summary>
+        /// <param name="input"></param>
+        public void HideUnselectedItems(string input)
+        {
+            ModelItemCollection hidden = new ModelItemCollection();
+            //create a store for the visible items
+            ModelItemCollection visible = new ModelItemCollection();
+
+            //Add all the items that are visible to the visible collection
+            foreach (ModelItem item in Autodesk.Navisworks.Api.Application.ActiveDocument.CurrentSelection.SelectedItems)
+            {
+                if (item.AncestorsAndSelf != null)
+                    visible.AddRange(item.AncestorsAndSelf);
+                if (item.Descendants != null)
+                    visible.AddRange(item.Descendants);
+            }
+            //mark as invisible all the siblings of the visible items as well as the visible items
+            foreach (ModelItem toShow in visible)
+            {
+                if (toShow.Parent != null)
+                {
+                    hidden.AddRange(toShow.Parent.Children);
+                }
+            }
+            //remove the visible items from the collection
+            foreach (ModelItem toShow in visible)
+            {
+                hidden.Remove(toShow);
+            }
+
+
+            // CreateNewDocument(input);
+            SetNewDoc();
+
+            //Document nwDoc;
+            //using (var docControl = new DocumentControl())
+            //{
+            //    // Set the control as the primary document
+            //    docControl.SetAsMainDocument();
+            //    nwDoc = docControl.Document;
+            //}
+
+            //nwDoc.CurrentSelection.CopyFrom(newCollection);
+            //nwDoc.PublishFile(@"e:\Users\BGERVALLA\Downloads\baki_1.nwd", new PublishProperties { Author = "baki" });
+
+            //Assign the ModelItemCollection to the selection
+            //* Autodesk.Navisworks.Api.Application.ActiveDocument.CurrentSelection.CopyFrom(newCollection);
+
+
+            //hide the remaining items
+            //* Autodesk.Navisworks.Api.Application.ActiveDocument.Models.SetHidden(hidden, true);
+        }
+
+        /// <summary>
+        /// OBSOLETE
+        /// </summary>
+        private void SetNewDoc()
+        {
+            Document oDoc = Autodesk.Navisworks.Api.Application.ActiveDocument;
+
+            try
+            {
+                ////sorting the names of the models             
+                //IEnumerable<Model> oNewSortedModels = oDoc.Models.OrderBy(per => per.RootItem.DisplayName);
+                //List<string> fileArray = new List<string>();
+                //foreach (Model oEachModel in oNewSortedModels)
+                //{
+                //    fileArray.Add(oEachModel.FileName);
+                //}
+
+                //Create a new ModelItemCollection
+                ModelItemCollection newCollection = new ModelItemCollection();
+                //iterate over the selected Items
+                foreach (ModelItem item in Autodesk.Navisworks.Api.Application.ActiveDocument.CurrentSelection.SelectedItems)
+                {
+                    //Add the children of the selected item to a new collection
+                    newCollection.AddRange(item.Children);
+                }
+
+                var nc = newCollection.ToList();
+
+                //delete all files.
+                oDoc.Clear();
+
+                //foreach (Model oEachModel in oDoc.Models)
+                //{
+                //    // State.DeleteSelectedFiles failed to delete 
+                //    // all files at one time. 
+                //    // so have to delete them one by one.
+                //    ModelItemCollection oMC = new ModelItemCollection();
+                //    oMC.Add(oEachModel.RootItem);
+                //    oDoc.CurrentSelection.CopyFrom(oMC);
+                //    // ComBridge.State.DeleteSelectedFiles();
+                //    oDoc.Clear();
+                //}
+
+                //append them again with the new order
+                oDoc.CurrentSelection.AddRange(nc);
+                // oDoc.Append(fileArray);
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        /// <summary>
+        /// OBSOLETE
+        /// </summary>
+        /// <returns></returns>
         public Task<ModelItemCollection> GetLayers()
         {
             string path = @$"e:\Users\BGERVALLA\Downloads\Navis\NwGeoPrimitives-main\{Guid.NewGuid().ToString()}.txt";
@@ -262,63 +418,6 @@ namespace HolooneNavis.Services
                 }
             }
             return null;
-        }
-
-        public List<string> CreateNewBIMModelDocument(IList<BIMLayer> bimLayers)
-        {
-            ModelItemCollection modelCollection = new ModelItemCollection();
-            List<string> filePaths = new List<string>();
-            string path = string.Empty;
-
-            var collection = bimLayers.Select(x => x.ModelItem);
-
-            HideModelItems(collection);
-
-            PluginRecord FBXPluginrecord = Application.Plugins.FindPlugin("NativeExportPluginAdaptor_LcFbxExporterPlugin_Export.Navisworks");
-
-            if (FBXPluginrecord != null)
-            {
-                if (!FBXPluginrecord.IsLoaded)
-                {
-                    FBXPluginrecord.LoadPlugin();
-                }
-
-                //save path of the FBX
-                string[] pa = { @"e:\Users\BGERVALLA\Downloads\Autodesk\Navisworks\Navis Drawings\mytest1.fbx" };
-
-                NativeExportPluginAdaptor FBXplugin = FBXPluginrecord.LoadedPlugin as NativeExportPluginAdaptor;
-
-                FBXplugin.Execute(pa);
-
-                // convert fbx to nwd (1. open or append fbx file, publish/save fbx/document to nwd format)
-
-            }
-
-            return filePaths;
-        }
-
-        private void HideModelItems(IEnumerable<ModelItem> modelCollection)
-        {
-            Document oDoc = Application.ActiveDocument;
-
-            //Add all the items that are visible to the visible collection
-            var childItems = oDoc.Models.RootItems.SelectMany(x => x.Children);
-
-            var visible = from a in childItems.SelectMany(x=> x.DescendantsAndSelf)
-                           join b in modelCollection on a.DisplayName equals b.DisplayName
-                           select a;
-            var hidden = childItems.SelectMany(x => x.DescendantsAndSelf).Except(modelCollection);
-
-            //Assign the ModelItemCollection to the selection
-            Application.ActiveDocument.CurrentSelection.CopyFrom(visible);
-
-            //hide the remaining items
-            Application.ActiveDocument.Models.SetHidden(hidden, true);
-        }
-
-        public ModelItem GetModelItem()
-        {
-            throw new NotImplementedException();
         }
     }
 }
