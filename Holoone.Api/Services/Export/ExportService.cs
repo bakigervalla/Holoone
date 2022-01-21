@@ -42,70 +42,6 @@ namespace Holoone.Api.Services
             _flurlClient = flurlClientFac.Get(RequestConstants.BaseUrl);
         }
 
-        // Obsolete (Not working)
-        public async Task<IFlurlResponse> ExportModelAsync(UserLogin user, MediaItem mediaItem, string filePath)
-        {
-            _flurlClient.BaseUrl = RequestConstants.BaseUrl;
-
-            //using (FileStream fs = File.Open(filePath, FileMode.Open))
-            //{
-            string jsonFormData = JsonConvert.SerializeObject(mediaItem);
-            string jsonProcessingParams = JsonConvert.SerializeObject(mediaItem.RequestProcessingParams);
-
-            //return await _flurlClient.Request("media/add/file/")
-            //       .WithBasicAuth("baki.test@holo-one.com", "g6hN!(3#")
-            //       // .WithHeader("Content-Type", "application/x-www-form-urlencoded")
-            //       .PostMultipartAsync(mp => mp
-            //                                .AddFile("file", fs, "Baki_file")
-            //                                .AddJson("formdata", new { json })
-            //       )
-            //       .ReceiveJson<IFlurlResponse>();
-
-            try
-            {
-
-                string postData = string.Empty;
-                Encoding encoding = Encoding.UTF8;
-                string formDataBoundary = String.Format("----------{0:N}", Guid.NewGuid());
-                string contentType = "multipart/form-data; boundary=" + formDataBoundary;
-                byte[] formData;
-
-                foreach (var itm in mediaItem.FormData)
-                {
-                    postData = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"{1}\"\r\n\r\n{2}",
-                    formDataBoundary,
-                    itm.Key,
-                    itm.Value);
-
-                    //  formDataStream.Write(encoding.GetBytes(postData), 0, encoding.GetByteCount(postData));
-
-                }
-
-                var resp = await _flurlClient.Request("media/add/file/")
-                    .WithBasicAuth("baki.test@holo-one.com", "g6hN!(3#")
-                    .PostMultipartAsync(mp => mp
-                        // .AddJson("mode", "formdata")                // individual string
-                        // .AddJson("formdata", jsonFormData)
-                        // .AddJson("processing_params", jsonProcessingParams)
-                        .AddJson("formdata", postData)
-                        .AddStringParts("file_extension", "png")
-                        .AddFile("file", filePath)                    // local file path
-                                                                      // .AddStringParts(new { a = 1, b = 2 })         // multiple strings
-                                                                      //.AddFile("file2", stream, "foo.txt")        // file stream
-                                                                      // .AddJson("formdata", new { foo = "x" })         // json
-                                                                      // .AddUrlEncoded("urlEnc", new { bar = "y" }) // URL-encoded                      
-                                                                      // .Add(content)
-                        );
-
-                return resp;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            // }
-        }
-
         /// <summary>
         /// Export by file path
         /// </summary>
@@ -182,7 +118,7 @@ namespace Holoone.Api.Services
 
                         if (formDataName == "layers")
                             formItemBytes = System.Text.Encoding.UTF8.GetBytes(
-                                string.Format("Content-Disposition: form-data; name=\"layers[{0}]\"; filename=\"{1}\"\r\nContent-Type: application/octet-stream\r\n\r\n", indx++, fileName));
+                                string.Format("Content-Disposition: form-data; name=\"layers[]\"; filename=\"{0}\"\r\nContent-Type: application/octet-stream\r\n\r\n", fileName));
                         else if (formDataName == "file")
                             formItemBytes = System.Text.Encoding.UTF8.GetBytes(
                             string.Format("Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\nContent-Type: application/octet-stream\r\n\r\n", formDataName, fileName));
@@ -229,5 +165,75 @@ namespace Holoone.Api.Services
                    .GetAsync();
         }
 
+
+        /// <summary>
+        /// OBSOLETE
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="mediaItem"></param>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public async Task<IFlurlResponse> ExportModelAsync(UserLogin user, MediaItem mediaItem, string filePath)
+        {
+            _flurlClient.BaseUrl = RequestConstants.BaseUrl;
+
+            //using (FileStream fs = File.Open(filePath, FileMode.Open))
+            //{
+            string jsonFormData = JsonConvert.SerializeObject(mediaItem);
+            string jsonProcessingParams = JsonConvert.SerializeObject(mediaItem.RequestProcessingParams);
+
+            //return await _flurlClient.Request("media/add/file/")
+            //       .WithBasicAuth("baki.test@holo-one.com", "g6hN!(3#")
+            //       // .WithHeader("Content-Type", "application/x-www-form-urlencoded")
+            //       .PostMultipartAsync(mp => mp
+            //                                .AddFile("file", fs, "Baki_file")
+            //                                .AddJson("formdata", new { json })
+            //       )
+            //       .ReceiveJson<IFlurlResponse>();
+
+            try
+            {
+
+                string postData = string.Empty;
+                Encoding encoding = Encoding.UTF8;
+                string formDataBoundary = String.Format("----------{0:N}", Guid.NewGuid());
+                string contentType = "multipart/form-data; boundary=" + formDataBoundary;
+                byte[] formData;
+
+                foreach (var itm in mediaItem.FormData)
+                {
+                    postData = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"{1}\"\r\n\r\n{2}",
+                    formDataBoundary,
+                    itm.Key,
+                    itm.Value);
+
+                    //  formDataStream.Write(encoding.GetBytes(postData), 0, encoding.GetByteCount(postData));
+
+                }
+
+                var resp = await _flurlClient.Request("media/add/file/")
+                    .WithBasicAuth("baki.test@holo-one.com", "g6hN!(3#")
+                    .PostMultipartAsync(mp => mp
+                        // .AddJson("mode", "formdata")                // individual string
+                        // .AddJson("formdata", jsonFormData)
+                        // .AddJson("processing_params", jsonProcessingParams)
+                        .AddJson("formdata", postData)
+                        .AddStringParts("file_extension", "png")
+                        .AddFile("file", filePath)                    // local file path
+                                                                      // .AddStringParts(new { a = 1, b = 2 })         // multiple strings
+                                                                      //.AddFile("file2", stream, "foo.txt")        // file stream
+                                                                      // .AddJson("formdata", new { foo = "x" })         // json
+                                                                      // .AddUrlEncoded("urlEnc", new { bar = "y" }) // URL-encoded                      
+                                                                      // .Add(content)
+                        );
+
+                return resp;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            // }
+        }
     }
 }

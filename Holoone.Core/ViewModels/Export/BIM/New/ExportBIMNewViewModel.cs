@@ -68,10 +68,6 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
 
         #region properties
 
-        private NoneType _noneType = new NoneType();
-        public NoneType NoneType { get => _noneType; set { _noneType = value; NotifyOfPropertyChange(nameof(NoneType)); } }
-
-
         private ModelItemCollection _navisItems;
         public ModelItemCollection NavisItems { get => _navisItems; set { _navisItems = value; NotifyOfPropertyChange(nameof(NavisItems)); } }
 
@@ -233,11 +229,7 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
                     {
                         { "model_name", BIMModel.ModelName },
                         { "primary_layer_index", BIMLayers.ToList().FindIndex(x=> x.IsDefault).ToString() },
-                        { "primary_layer_id", "0" },
-                        { "previous_primary_layer_id", "" },
                         { "parent_folder", SelectedFolder.Id == 0 ? "null" : SelectedFolder.Id.ToString() },
-                        //{ "model_type", "bim" },
-                        { "nonetype", JsonConvert.SerializeObject(NoneType) },
                     };
 
                 NameValueCollection valColl = new NameValueCollection();
