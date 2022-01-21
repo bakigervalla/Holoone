@@ -193,13 +193,8 @@ namespace HolooneNavis.ViewModels.Export.Default
 
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
-                // NavisWorks.NwdPublish(SelectedFiles[0], @"e:\Users\BGERVALLA\Downloads\");
-                
-
                 // hide the unselected items.
                 _navisService.HideUnselectedItems(SelectedFiles[0]);
-
-
 
                 foreach (var file in SelectedFiles)
                 {
@@ -221,36 +216,6 @@ namespace HolooneNavis.ViewModels.Export.Default
                     MessageBox.Show("Uploaded successfully.");
 
                     await NavigationService.GoTo<HomeViewModel>();
-
-
-                    #region "flurAPI not in use"
-                    /*
-                        var requestParams = new RequestProcessingParams
-                        {
-                            ProcessingParams = ProcessingParams
-                        };
-
-                        string processingArgs = JsonConvert.SerializeObject(requestParams);
-
-                        var mediaItem = new MediaItem
-                        {
-                            Mode = "formdata",
-                            RequestProcessingParams = requestParams,
-                            FormData = new List<FormData>
-                        {
-                            // new FormData { Key = "file", Src = file.path, Type = "file" },
-                            new FormData { Key = "display_name", Value = "Baki File", Type = "text" },
-                            new FormData { Key = "parent_folder", Value="5820", Type = "text" },
-                            new FormData { Key = "file_extension", Value = System.IO.Path.GetExtension(file.path), Type = "text" },
-                            //* new FormData { Key = "processing_params", Value = processingArgs, Type = "text" },
-                        }
-                        };
-
-                        //VERSION 1:
-                        var result = await _exportService.ExportModelAsync(Instance.UserLogin, mediaItem, file.path);
-                    */
-                    #endregion
-
                 }
             }
             catch (Exception ex)
@@ -262,7 +227,6 @@ namespace HolooneNavis.ViewModels.Export.Default
                 await _eventAggregator.PublishOnUIThreadAsync(false);
             }
         }
-
 
         public List<Folder> Folders { get; set; } = new List<Folder>();
         private IEnumerable<OFile> GetSelectedFiles()

@@ -69,7 +69,6 @@
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\MediaFile.cs" />
     <Compile Include="Models\MediaItem.cs" />
-    <Compile Include="Models\NoneType.cs" />
     <Compile Include="Models\ProcessingParams.cs" />
     <Compile Include="Services\Export\ExportService.cs" />
     <Compile Include="Services\Export\IExportService.cs" />

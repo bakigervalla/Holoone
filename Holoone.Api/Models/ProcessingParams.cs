@@ -57,8 +57,8 @@ namespace Holoone.Api.Models
         public bool BlockingCollider { get; set; }
 
         [JsonConverter(typeof(BoolConverter))]
-        // [JsonIgnore]
-        [JsonProperty("is_primary")]
+        [JsonIgnore]
+        //[JsonProperty("is_primary")]
         public bool IsPrimary { get; set; }
     }
 }
