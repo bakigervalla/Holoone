@@ -15,3 +15,4 @@ E:\Program Files\Projects\Holoone\Setup\obj\Debug\Setup.csproj.CoreCompileInputs
 E:\Program Files\Projects\Holoone\Setup\obj\Debug\Setup.csproj.CopyComplete
 E:\Program Files\Projects\Holoone\Setup\obj\Debug\Setup.exe
 E:\Program Files\Projects\Holoone\Setup\obj\Debug\Setup.pdb
+E:\Program Files\Projects\Holoone\Setup\obj\Debug\Setup.csprojAssemblyReference.cache

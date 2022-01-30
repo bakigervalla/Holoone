@@ -69,7 +69,11 @@ namespace Holoone.Api.Services
             // Create the request and set parameters
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.ContentType = "multipart/form-data; boundary=" + boundary;
-            request.Headers.Add("Authorization", "Basic " + encodedCredentials);
+            //request.Headers.Add("Authorization", "Basic " + encodedCredentials);
+            if (user.LoginType == "LCP")
+                request.Headers.Add("Bearer", user.Token);
+            else
+                request.Headers.Add("Authorization", "Token " + user.Token);
 
             request.ContentType = "multipart/form-data; boundary=" + boundary;
             request.Method = "POST";
@@ -106,7 +110,6 @@ namespace Holoone.Api.Services
 
             if (files != null)
             {
-                int indx = 0;
                 foreach (string key in files.Keys)
                 {
                     if (File.Exists(key))
@@ -150,7 +153,7 @@ namespace Holoone.Api.Services
             };
         }
 
-        public async Task<IFlurlResponse> GetCompanyMediaFolderContent(UserLogin user, int folderId = 0)
+        public async Task<IList<MediaFile>> GetCompanyMediaFolderContent(UserLogin user, int folderId = 0)
         {
             _flurlClient.BaseUrl = RequestConstants.BaseUrl;
 
@@ -159,11 +162,57 @@ namespace Holoone.Api.Services
             if (folderId != 0)
                 url += $"/?folder_pk={folderId}";
 
-            return await _flurlClient.Request(url)
-                   .WithBasicAuth(user.Username, user.Password)
-                   .WithHeader("Content-Type", "application/json")
-                   .GetAsync();
+            var response = await _flurlClient.Request(url)
+                                .WithBasicAuth(user.Username, user.Password)
+                                .WithHeader("Content-Type", "application/json")
+                                .GetAsync();
+
+            return response.ResponseMessage.IsSuccessStatusCode
+                    ? await response.GetJsonAsync<IList<MediaFile>>()
+                    : null;
         }
+
+        //public async Task<IList<MediaFile>> GetCompanyMediaFolderContent(UserLogin user, int folderId = 0)
+        //{
+        //    _flurlClient.BaseUrl = RequestConstants.BaseUrl;
+
+        //    string url = "media/";
+
+        //    if (folderId != 0)
+        //        url += $"/?folder_pk={folderId}";
+
+        //    var fc = new FlurlClient().WithHeader("User-Agent", "Keep/1.0");
+        //    fc.BaseUrl = RequestConstants.BaseUrl;
+
+        //    string response;
+
+        //    if (user.LoginType == "LCP")
+        //        fc.WithHeader("Bearer", string.Format("Token {0}", user.Token));
+        //    else
+        //        fc.WithHeader("Authorization", string.Format("Token {0}", user.Token));
+
+        //    response = await _flurlClient.Request(url)
+        //                        .WithHeader("Content-Type", "application/json")
+        //                        .WithClient(fc)
+        //                        .WithHeader("Bearer", user.Token)
+        //                        .GetJsonAsync();
+        //    else
+        //        response = await _flurlClient.Request(url)
+        //                       .WithHeader("Content-Type", "application/json")
+        //                       .WithClient(fc)
+        //                       .WithHeader("Authorization", $"Token {user.Token}")
+        //                       .GetStringAsync();
+
+        //    response = await _flurlClient.Request(url)
+        //                        .WithOAuthBearerToken(user.Token)
+        //                        .WithHeader("Content-Type", "application/json")
+        //                        .GetJsonAsync();
+
+        //    return JsonConvert.DeserializeObject<IList<MediaFile>>(response);
+        //    //return response.ResponseMessage.IsSuccessStatusCode
+        //    //        ? await response.GetJsonListAsync.GetJsonAsync<IList<MediaFile>>()
+        //    //        : null;
+        //}
 
 
         /// <summary>
@@ -177,19 +226,8 @@ namespace Holoone.Api.Services
         {
             _flurlClient.BaseUrl = RequestConstants.BaseUrl;
 
-            //using (FileStream fs = File.Open(filePath, FileMode.Open))
-            //{
             string jsonFormData = JsonConvert.SerializeObject(mediaItem);
             string jsonProcessingParams = JsonConvert.SerializeObject(mediaItem.RequestProcessingParams);
-
-            //return await _flurlClient.Request("media/add/file/")
-            //       .WithBasicAuth("baki.test@holo-one.com", "g6hN!(3#")
-            //       // .WithHeader("Content-Type", "application/x-www-form-urlencoded")
-            //       .PostMultipartAsync(mp => mp
-            //                                .AddFile("file", fs, "Baki_file")
-            //                                .AddJson("formdata", new { json })
-            //       )
-            //       .ReceiveJson<IFlurlResponse>();
 
             try
             {
@@ -206,25 +244,14 @@ namespace Holoone.Api.Services
                     formDataBoundary,
                     itm.Key,
                     itm.Value);
-
-                    //  formDataStream.Write(encoding.GetBytes(postData), 0, encoding.GetByteCount(postData));
-
                 }
 
                 var resp = await _flurlClient.Request("media/add/file/")
-                    .WithBasicAuth("baki.test@holo-one.com", "g6hN!(3#")
-                    .PostMultipartAsync(mp => mp
-                        // .AddJson("mode", "formdata")                // individual string
-                        // .AddJson("formdata", jsonFormData)
-                        // .AddJson("processing_params", jsonProcessingParams)
+                        .WithOAuthBearerToken(user.Token)
+                        .PostMultipartAsync(mp => mp
                         .AddJson("formdata", postData)
                         .AddStringParts("file_extension", "png")
-                        .AddFile("file", filePath)                    // local file path
-                                                                      // .AddStringParts(new { a = 1, b = 2 })         // multiple strings
-                                                                      //.AddFile("file2", stream, "foo.txt")        // file stream
-                                                                      // .AddJson("formdata", new { foo = "x" })         // json
-                                                                      // .AddUrlEncoded("urlEnc", new { bar = "y" }) // URL-encoded                      
-                                                                      // .Add(content)
+                        .AddFile("file", filePath)
                         );
 
                 return resp;
@@ -233,7 +260,6 @@ namespace Holoone.Api.Services
             {
                 throw ex;
             }
-            // }
         }
     }
 }

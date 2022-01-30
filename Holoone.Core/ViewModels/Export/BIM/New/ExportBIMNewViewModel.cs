@@ -152,11 +152,10 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
             {
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
-                var response = await _exportService.GetCompanyMediaFolderContent(Instance.UserLogin, 0);
+                MediaFiles = await _exportService.GetCompanyMediaFolderContent(Instance.UserLogin, 0);
 
-                if (response.ResponseMessage.IsSuccessStatusCode)
+                if (MediaFiles != null)
                 {
-                    MediaFiles = await response.GetJsonAsync<IList<MediaFile>>();
                     MediaFiles = MediaFiles.Where(x => x.MediaFileType == "folder").ToList();
                     MediaFiles = MediaFiles.Prepend(new MediaFile { Id = 0, DisplayName = "Root Folder" });
                 }
@@ -186,13 +185,11 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
 
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
-                var response = await _exportService.GetCompanyMediaFolderContent(UserLogin, mediaFile.Id);
+                var result = await _exportService.GetCompanyMediaFolderContent(UserLogin, mediaFile.Id);
 
-                if (response.ResponseMessage.IsSuccessStatusCode)
+                if (result != null)
                 {
-                    var result = await response.GetJsonAsync<IList<MediaFile>>();
                     mediaFile.SubFolders = result.Where(x => x.MediaFileType == "folder").ToList();
-
                     SelectedFolder = mediaFile;
                 }
                 else

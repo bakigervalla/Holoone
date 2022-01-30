@@ -117,9 +117,46 @@ namespace Holoone.Api.Services
             //    return request.Response.IsSuccess;
         }
 
-        public Task<UserPermissions> LoginWithThinkReality(string id)
+
+        // PCP Login
+        public async Task<string> LCPLoginGenerateAuthCode(string regionUrl, string deviceId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _flurlClient.BaseUrl = regionUrl;
+
+                dynamic request = await _flurlClient.Request("core/integration/thinkreality/generate-auth-code/")
+                                 .SetQueryParam("device_id", deviceId)
+                                 .GetJsonAsync();
+
+                return request.temp_auth_token;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public async Task<LCPLogin> LCPLoginPolling(string regionUrl, string deviceId, string authCode)
+        {
+            try
+            {
+                _flurlClient.BaseUrl = regionUrl;
+
+                var request = await _flurlClient.Request("core/integration/thinkreality/check-login-state/")
+                                        .PostJsonAsync(new
+                                        {
+                                            auth_code = authCode,
+                                            device_id = deviceId
+                                        })
+                                        .ReceiveJson<LCPLogin>();
+
+                return request;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
     }
 }

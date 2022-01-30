@@ -4,11 +4,13 @@ using Holoone.Api.Models;
 using Holoone.Api.Services;
 using Holoone.Api.Services.Export;
 using Holoone.Api.Services.Interfaces;
+using HolooneNavis.Models;
 using HolooneNavis.Services.Interfaces;
 using HolooneNavis.ViewModels.Home;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
@@ -53,16 +55,14 @@ namespace HolooneNavis.ViewModels.Export.Default
         private IEnumerable<MediaFile> _mediaFiles;
         public IEnumerable<MediaFile> MediaFiles { get => _mediaFiles; set { _mediaFiles = value; NotifyOfPropertyChange(nameof(MediaFiles)); } }
 
-        //private IEnumerable<OFile> _selectedFiles;
-        //public IEnumerable<OFile> SelectedFiles { get => _selectedFiles; set { _selectedFiles = value; NotifyOfPropertyChange(nameof(SelectedFiles)); } }
-
         private ModelItemCollection _navisItems;
         public ModelItemCollection NavisItems { get => _navisItems; set { _navisItems = value; NotifyOfPropertyChange(nameof(NavisItems)); } }
 
-        public IList<string> SelectedFiles { get; set; }
-
         private MediaFile _selectedFolder;
         public MediaFile SelectedFolder { get => _selectedFolder; set { _selectedFolder = value; NotifyOfPropertyChange(nameof(SelectedFolder)); } }
+
+        private ObservableCollection<BIMLayer> _bimLayers = new ObservableCollection<BIMLayer>();
+        public ObservableCollection<BIMLayer> BIMLayers { get => _bimLayers; set { _bimLayers = value; NotifyOfPropertyChange(nameof(BIMLayers)); } }
 
         #endregion
 
@@ -76,13 +76,11 @@ namespace HolooneNavis.ViewModels.Export.Default
             State = "NavisSelection";
 
             QueryNavisModel().AsResult();
-
-            SelectedFiles = new List<string>();
         }
 
         public void NavigateToFoldersPage()
         {
-            if (SelectedFiles.Count == 0)
+            if (BIMLayers.Count == 0)
             {
                 MessageBox.Show("Please, select a model");
                 return;
@@ -115,7 +113,8 @@ namespace HolooneNavis.ViewModels.Export.Default
 
         public void GetSelectedModelItemAsync(ModelItem model)
         {
-            SelectedFiles.Add(Autodesk.Navisworks.Api.Application.ActiveDocument.FileName);
+            BIMLayers.Clear();
+            BIMLayers.Add(new BIMLayer { Name = model.DisplayName, ModelItem = model });
         }
 
         public async Task GetFoldersAsync()
@@ -124,11 +123,10 @@ namespace HolooneNavis.ViewModels.Export.Default
             {
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
-                var response = await _exportService.GetCompanyMediaFolderContent(Instance.UserLogin, 0);
+                MediaFiles = await _exportService.GetCompanyMediaFolderContent(Instance.UserLogin, 0);
 
-                if (response.ResponseMessage.IsSuccessStatusCode)
+                if (MediaFiles != null)
                 {
-                    MediaFiles = await response.GetJsonAsync<IList<MediaFile>>();
                     MediaFiles = MediaFiles.Where(x => x.MediaFileType == "folder").ToList();
                     MediaFiles = MediaFiles.Prepend(new MediaFile { Id = 0, DisplayName = "Root Folder" });
                 }
@@ -158,13 +156,11 @@ namespace HolooneNavis.ViewModels.Export.Default
 
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
-                var response = await _exportService.GetCompanyMediaFolderContent(Instance.UserLogin, mediaFile.Id);
+                var result = await _exportService.GetCompanyMediaFolderContent(Instance.UserLogin, mediaFile.Id);
 
-                if (response.ResponseMessage.IsSuccessStatusCode)
+                if (result != null)
                 {
-                    var result = await response.GetJsonAsync<IList<MediaFile>>();
                     mediaFile.SubFolders = result.Where(x => x.MediaFileType == "folder").ToList();
-
                     SelectedFolder = mediaFile;
                 }
                 else
@@ -193,30 +189,30 @@ namespace HolooneNavis.ViewModels.Export.Default
 
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
-                // hide the unselected items.
-                _navisService.HideUnselectedItems(SelectedFiles[0]);
+                BIMLayers = new ObservableCollection<BIMLayer>(_navisService.ExportToNWD(BIMLayers));
 
-                foreach (var file in SelectedFiles)
+                foreach (var layer in BIMLayers)
                 {
                     var valParts = new NameValueCollection
                     {
-                        { "display_name", Path.GetFileNameWithoutExtension(file) },
+                        { "display_name", Path.GetFileNameWithoutExtension(layer.FilePath) },
                         { "parent_folder", SelectedFolder.Id == 0 ? "null" : SelectedFolder.Id.ToString() },
-                        { "file_extension", Path.GetExtension(file).Replace(".", "") },
+                        { "file_extension", Path.GetExtension(layer.FilePath).Replace(".", "") },
                         { "processing_params", JsonConvert.SerializeObject(ProcessingParams) },
                     };
 
                     var valColl = new NameValueCollection
                     {
-                        { file, "" }
+                        { layer.FilePath, "" }
                     };
 
                     await _exportService.ExportModelFormCompositionAsync(Instance.UserLogin, valParts, valColl, ProcessingParams, "media/add/file/", "file");
-
-                    MessageBox.Show("Uploaded successfully.");
-
-                    await NavigationService.GoTo<HomeViewModel>();
                 }
+
+                MessageBox.Show("Uploaded successfully.");
+
+                await NavigationService.GoTo<HomeViewModel>();
+
             }
             catch (Exception ex)
             {
@@ -224,6 +220,13 @@ namespace HolooneNavis.ViewModels.Export.Default
             }
             finally
             {
+                try
+                {
+                    foreach (var layer in BIMLayers)
+                        File.Delete(layer.FilePath);
+                }
+                catch { }
+
                 await _eventAggregator.PublishOnUIThreadAsync(false);
             }
         }

@@ -1,8 +1,6 @@
 ﻿using Caliburn.Micro;
-using Flurl.Http;
 using Flurl.Http.Configuration;
 using Hanssens.Net;
-using Holoone.Api.Helpers.Constants;
 using Holoone.Api.Services;
 using Holoone.Api.Services.Interfaces;
 using Holoone.Api.Services.MicrosoftGraph;
@@ -21,7 +19,6 @@ using HolooneNavis.ViewModels.Settings;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Windows;
 
 namespace HolooneNavis
 {
@@ -33,7 +30,6 @@ namespace HolooneNavis
         {
             Initialize();
         }
-
 
         protected override void Configure()
         {

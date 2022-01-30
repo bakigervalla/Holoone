@@ -16,6 +16,9 @@ namespace Holoone.Api.Services.Interfaces
         Task<MicrosoftGraphResponse> LoginWithMicrosoftAsync(LoginCredentials loginCredentials);
 
         Task<IFlurlResponse> UpdateMicrosoftGraphTokenAsync(string graphToken, DateTimeOffset expiryOn);
-        Task<UserPermissions> LoginWithThinkReality(string id);
+
+        Task<string> LCPLoginGenerateAuthCode(string regionUrl, string deviceId);
+
+        Task<LCPLogin> LCPLoginPolling(string regionUrl, string deviceId, string authCode);
     }
 }

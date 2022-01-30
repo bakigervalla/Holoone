@@ -45,10 +45,6 @@
           <File Id="Holoone.Api.dll.config_1230893856" Source="install\Holoone.Api.dll.config" />
         </Component>
 
-        <Component Id="Component.HolooneNavis202d20Copy.dll_930462293" Guid="b5af2152-9f97-4b14-aa75-e2e27a4f277f" Win64="yes">
-          <File Id="HolooneNavis202d20Copy.dll_930462293" Source="install\HolooneNavis - Copy.dll" />
-        </Component>
-
         <Component Id="Component.HolooneNavis.dll_1611569625" Guid="b5af2152-9f97-4b14-aa75-e2e2fb4cfcae" Win64="yes">
           <File Id="HolooneNavis.dll_1611569625" Source="install\HolooneNavis.dll" />
         </Component>
@@ -232,10 +228,6 @@
           <File Id="Holoone.Api.dll.config_885662891" Source="install\Holoone.Api.dll.config" />
         </Component>
 
-        <Component Id="Component.HolooneNavis202d20Copy.dll_431407712" Guid="b5af2152-9f97-4b14-aa75-e2e285cf8548" Win64="yes">
-          <File Id="HolooneNavis202d20Copy.dll_431407712" Source="install\HolooneNavis - Copy.dll" />
-        </Component>
-
         <Component Id="Component.HolooneNavis.dll_2557474272" Guid="b5af2152-9f97-4b14-aa75-e2e2ec49b829" Win64="yes">
           <File Id="HolooneNavis.dll_2557474272" Source="install\HolooneNavis.dll" />
         </Component>
@@ -384,6 +376,189 @@
 
         </Directory>
       </Directory>
+
+      <Directory Id="TARGETDIR2" Name="ABSOLUTEPATH2">
+
+        <Component Id="Component.AdWindows.dll_1040274147" Guid="b5af2152-9f97-4b14-aa75-e2e2e0e241d4" Win64="yes">
+          <File Id="AdWindows.dll_1040274147" Source="install\AdWindows.dll" />
+        </Component>
+
+        <Component Id="Component.Caliburn.Micro.Core.dll_3457851852" Guid="b5af2152-9f97-4b14-aa75-e2e2f87f06e3" Win64="yes">
+          <File Id="Caliburn.Micro.Core.dll_3457851852" Source="install\Caliburn.Micro.Core.dll" />
+        </Component>
+
+        <Component Id="Component.Caliburn.Micro.Platform.Core.dll_2988977586" Guid="b5af2152-9f97-4b14-aa75-e2e2ff50efc5" Win64="yes">
+          <File Id="Caliburn.Micro.Platform.Core.dll_2988977586" Source="install\Caliburn.Micro.Platform.Core.dll" />
+        </Component>
+
+        <Component Id="Component.Caliburn.Micro.Platform.dll_1726992186" Guid="b5af2152-9f97-4b14-aa75-e2e2f8904a5f" Win64="yes">
+          <File Id="Caliburn.Micro.Platform.dll_1726992186" Source="install\Caliburn.Micro.Platform.dll" />
+        </Component>
+
+        <Component Id="Component.Flurl.dll_136233065" Guid="b5af2152-9f97-4b14-aa75-e2e208b87ed9" Win64="yes">
+          <File Id="Flurl.dll_136233065" Source="install\Flurl.dll" />
+        </Component>
+
+        <Component Id="Component.Flurl.Http.dll_3650159370" Guid="b5af2152-9f97-4b14-aa75-e2e2c1c2a4ed" Win64="yes">
+          <File Id="Flurl.Http.dll_3650159370" Source="install\Flurl.Http.dll" />
+        </Component>
+
+        <Component Id="Component.Holoone.Api.dll_490743697" Guid="b5af2152-9f97-4b14-aa75-e2e28b037208" Win64="yes">
+          <File Id="Holoone.Api.dll_490743697" Source="install\Holoone.Api.dll" />
+        </Component>
+
+        <Component Id="Component.Holoone.Api.dll.config_1931053270" Guid="b5af2152-9f97-4b14-aa75-e2e212141687" Win64="yes">
+          <File Id="Holoone.Api.dll.config_1931053270" Source="install\Holoone.Api.dll.config" />
+        </Component>
+
+        <Component Id="Component.HolooneNavis.dll_1884273133" Guid="b5af2152-9f97-4b14-aa75-e2e2c13519c5" Win64="yes">
+          <File Id="HolooneNavis.dll_1884273133" Source="install\HolooneNavis.dll" />
+        </Component>
+
+        <Component Id="Component.HolooneNavis.dll.config_1880101097" Guid="b5af2152-9f97-4b14-aa75-e2e278ad08c1" Win64="yes">
+          <File Id="HolooneNavis.dll.config_1880101097" Source="install\HolooneNavis.dll.config" />
+        </Component>
+
+        <Component Id="Component.Janus.Data.v3.dll_3195656436" Guid="b5af2152-9f97-4b14-aa75-e2e2bb61c830" Win64="yes">
+          <File Id="Janus.Data.v3.dll_3195656436" Source="install\Janus.Data.v3.dll" />
+        </Component>
+
+        <Component Id="Component.Janus.Windows.Common.v3.dll_3612252748" Guid="b5af2152-9f97-4b14-aa75-e2e2332d9763" Win64="yes">
+          <File Id="Janus.Windows.Common.v3.dll_3612252748" Source="install\Janus.Windows.Common.v3.dll" />
+        </Component>
+
+        <Component Id="Component.Janus.Windows.GridEX.v3.dll_2463277512" Guid="b5af2152-9f97-4b14-aa75-e2e2bbf37551" Win64="yes">
+          <File Id="Janus.Windows.GridEX.v3.dll_2463277512" Source="install\Janus.Windows.GridEX.v3.dll" />
+        </Component>
+
+        <Component Id="Component.Janus.Windows.UI.v3.dll_2432835909" Guid="b5af2152-9f97-4b14-aa75-e2e26ebaf229" Win64="yes">
+          <File Id="Janus.Windows.UI.v3.dll_2432835909" Source="install\Janus.Windows.UI.v3.dll" />
+        </Component>
+
+        <Component Id="Component.lcodpgluerest.dll_419370582" Guid="b5af2152-9f97-4b14-aa75-e2e2cfff3c87" Win64="yes">
+          <File Id="lcodpgluerest.dll_419370582" Source="install\lcodpgluerest.dll" />
+        </Component>
+
+        <Component Id="Component.LocalStorage.dll_1827396579" Guid="b5af2152-9f97-4b14-aa75-e2e269c22346" Win64="yes">
+          <File Id="LocalStorage.dll_1827396579" Source="install\LocalStorage.dll" />
+        </Component>
+
+        <Component Id="Component.ManagedMC3.dll_2621561074" Guid="b5af2152-9f97-4b14-aa75-e2e277ddaf05" Win64="yes">
+          <File Id="ManagedMC3.dll_2621561074" Source="install\ManagedMC3.dll" />
+        </Component>
+
+        <Component Id="Component.MaterialDesignColors.dll_593938163" Guid="b5af2152-9f97-4b14-aa75-e2e2174a6f50" Win64="yes">
+          <File Id="MaterialDesignColors.dll_593938163" Source="install\MaterialDesignColors.dll" />
+        </Component>
+
+        <Component Id="Component.MaterialDesignExtensions.dll_1821470699" Guid="b5af2152-9f97-4b14-aa75-e2e2c3de64c7" Win64="yes">
+          <File Id="MaterialDesignExtensions.dll_1821470699" Source="install\MaterialDesignExtensions.dll" />
+        </Component>
+
+        <Component Id="Component.MaterialDesignThemes.Wpf.dll_509809325" Guid="b5af2152-9f97-4b14-aa75-e2e2a7394f81" Win64="yes">
+          <File Id="MaterialDesignThemes.Wpf.dll_509809325" Source="install\MaterialDesignThemes.Wpf.dll" />
+        </Component>
+
+        <Component Id="Component.Microsoft.Expression.Interactions.dll_2655406624" Guid="b5af2152-9f97-4b14-aa75-e2e235a37d5d" Win64="yes">
+          <File Id="Microsoft.Expression.Interactions.dll_2655406624" Source="install\Microsoft.Expression.Interactions.dll" />
+        </Component>
+
+        <Component Id="Component.Microsoft.Identity.Client.dll_3459947701" Guid="b5af2152-9f97-4b14-aa75-e2e22f1f94cb" Win64="yes">
+          <File Id="Microsoft.Identity.Client.dll_3459947701" Source="install\Microsoft.Identity.Client.dll" />
+        </Component>
+
+        <Component Id="Component.Microsoft.Practices.Prism.dll_3973637671" Guid="b5af2152-9f97-4b14-aa75-e2e289c84b69" Win64="yes">
+          <File Id="Microsoft.Practices.Prism.dll_3973637671" Source="install\Microsoft.Practices.Prism.dll" />
+        </Component>
+
+        <Component Id="Component.Microsoft.Practices.Prism.UnityExtensions.dll_744444143" Guid="b5af2152-9f97-4b14-aa75-e2e2fff92e27" Win64="yes">
+          <File Id="Microsoft.Practices.Prism.UnityExtensions.dll_744444143" Source="install\Microsoft.Practices.Prism.UnityExtensions.dll" />
+        </Component>
+
+        <Component Id="Component.Microsoft.Practices.ServiceLocation.dll_2039404187" Guid="b5af2152-9f97-4b14-aa75-e2e201196bd0" Win64="yes">
+          <File Id="Microsoft.Practices.ServiceLocation.dll_2039404187" Source="install\Microsoft.Practices.ServiceLocation.dll" />
+        </Component>
+
+        <Component Id="Component.Microsoft.Practices.Unity.dll_572994534" Guid="b5af2152-9f97-4b14-aa75-e2e2f41b8920" Win64="yes">
+          <File Id="Microsoft.Practices.Unity.dll_572994534" Source="install\Microsoft.Practices.Unity.dll" />
+        </Component>
+
+        <Component Id="Component.Microsoft.Xaml.Behaviors.dll_656203785" Guid="b5af2152-9f97-4b14-aa75-e2e2cadffe13" Win64="yes">
+          <File Id="Microsoft.Xaml.Behaviors.dll_656203785" Source="install\Microsoft.Xaml.Behaviors.dll" />
+        </Component>
+
+        <Component Id="Component.Newtonsoft.Json.dll_1209986838" Guid="b5af2152-9f97-4b14-aa75-e2e2c7f70758" Win64="yes">
+          <File Id="Newtonsoft.Json.dll_1209986838" Source="install\Newtonsoft.Json.dll" />
+        </Component>
+
+        <Component Id="Component.odviewdll_clr.dll_4257481634" Guid="b5af2152-9f97-4b14-aa75-e2e22912a827" Win64="yes">
+          <File Id="odviewdll_clr.dll_4257481634" Source="install\odviewdll_clr.dll" />
+        </Component>
+
+        <Component Id="Component.Syncfusion.Core.dll_2370145763" Guid="b5af2152-9f97-4b14-aa75-e2e22c9bb456" Win64="yes">
+          <File Id="Syncfusion.Core.dll_2370145763" Source="install\Syncfusion.Core.dll" />
+        </Component>
+
+        <Component Id="Component.Syncfusion.Grid.Wpf.dll_1653837763" Guid="b5af2152-9f97-4b14-aa75-e2e25d8f073c" Win64="yes">
+          <File Id="Syncfusion.Grid.Wpf.dll_1653837763" Source="install\Syncfusion.Grid.Wpf.dll" />
+        </Component>
+
+        <Component Id="Component.Syncfusion.GridCommon.Wpf.dll_857597816" Guid="b5af2152-9f97-4b14-aa75-e2e249876caf" Win64="yes">
+          <File Id="Syncfusion.GridCommon.Wpf.dll_857597816" Source="install\Syncfusion.GridCommon.Wpf.dll" />
+        </Component>
+
+        <Component Id="Component.Syncfusion.Linq.Base.dll_3945592515" Guid="b5af2152-9f97-4b14-aa75-e2e263deca45" Win64="yes">
+          <File Id="Syncfusion.Linq.Base.dll_3945592515" Source="install\Syncfusion.Linq.Base.dll" />
+        </Component>
+
+        <Component Id="Component.Syncfusion.Shared.Wpf.dll_4003842849" Guid="b5af2152-9f97-4b14-aa75-e2e248b2aabc" Win64="yes">
+          <File Id="Syncfusion.Shared.Wpf.dll_4003842849" Source="install\Syncfusion.Shared.Wpf.dll" />
+        </Component>
+
+        <Component Id="Component.Syncfusion.Tools.Wpf.dll_2797892201" Guid="b5af2152-9f97-4b14-aa75-e2e2218acf55" Win64="yes">
+          <File Id="Syncfusion.Tools.Wpf.dll_2797892201" Source="install\Syncfusion.Tools.Wpf.dll" />
+        </Component>
+
+        <Component Id="Component.System.ValueTuple.dll_609144510" Guid="b5af2152-9f97-4b14-aa75-e2e2563b9534" Win64="yes">
+          <File Id="System.ValueTuple.dll_609144510" Source="install\System.ValueTuple.dll" />
+        </Component>
+
+        <Component Id="Component.System.Windows.Interactivity.dll_403074446" Guid="b5af2152-9f97-4b14-aa75-e2e288980fbb" Win64="yes">
+          <File Id="System.Windows.Interactivity.dll_403074446" Source="install\System.Windows.Interactivity.dll" />
+        </Component>
+
+        <Component Id="Component.WPFSpark.dll_2374094544" Guid="b5af2152-9f97-4b14-aa75-e2e2e3a75886" Win64="yes">
+          <File Id="WPFSpark.dll_2374094544" Source="install\WPFSpark.dll" />
+        </Component>
+
+        <Directory Id="TARGETDIR2.en2dUS" Name="en-US">
+
+          <Component Id="Component.AdWindows.resources.dll_1002809675" Guid="b5af2152-9f97-4b14-aa75-e2e2fe87f1e9" Win64="yes">
+            <File Id="AdWindows.resources.dll_1002809675" Source="install\en-US\AdWindows.resources.dll" />
+          </Component>
+
+          <Component Id="Component.HolooneNavis.HolooneAddin.name_3470855556" Guid="b5af2152-9f97-4b14-aa75-e2e2dd5ff74d" Win64="yes">
+            <File Id="HolooneNavis.HolooneAddin.name_3470855556" Source="install\en-US\HolooneNavis.HolooneAddin.name" />
+          </Component>
+
+          <Component Id="Component.HolooneNavis.HolooneAddin.xaml_2661551510" Guid="b5af2152-9f97-4b14-aa75-e2e2e4548baf" Win64="yes">
+            <File Id="HolooneNavis.HolooneAddin.xaml_2661551510" Source="install\en-US\HolooneNavis.HolooneAddin.xaml" />
+          </Component>
+
+        </Directory>
+
+        <Directory Id="TARGETDIR2.Images" Name="Images">
+
+          <Component Id="Component.holo_16.ico_461396885" Guid="b5af2152-9f97-4b14-aa75-e2e26eb7fd87" Win64="yes">
+            <File Id="holo_16.ico_461396885" Source="install\Images\holo_16.ico" />
+          </Component>
+
+          <Component Id="Component.holo_32.ico_1369301121" Guid="b5af2152-9f97-4b14-aa75-e2e225e9dde9" Win64="yes">
+            <File Id="holo_32.ico_1369301121" Source="install\Images\holo_32.ico" />
+          </Component>
+
+        </Directory>
+      </Directory>
     </Directory>
 
     <Icon Id="app_icon.ico" SourceFile="holo_one_logo.ico" />
@@ -396,6 +571,7 @@
     <CustomAction Id="PreventDowngrading" Error="Newer version already installed" />
     <CustomAction Id="Set_DirAbsolutePath" Property="INSTALLDIR" Value="C:\Users\BGERVALLA\AppData\Roaming\Autodesk Navisworks Simulate 2019\Plugins\HolooneNavis" />
     <CustomAction Id="Set_DirAbsolutePath1" Property="TARGETDIR1" Value="C:\Users\BGERVALLA\AppData\Roaming\Autodesk Navisworks Manage 2020\Plugins\HolooneNavis" />
+    <CustomAction Id="Set_DirAbsolutePath2" Property="TARGETDIR2" Value="C:\Users\BGERVALLA\AppData\Roaming\Autodesk Navisworks Simulate 2022\Plugins\HolooneNavis" />
 
     <Property Id="ARPPRODUCTICON" Value="app_icon.ico" />
     <Property Id="INSTALLDIR_ABSOLUTEPATH" Value="C:\Users\BGERVALLA\AppData\Roaming\Autodesk Navisworks Simulate 2019\Plugins\HolooneNavis" />
@@ -409,7 +585,6 @@
       <ComponentRef Id="Component.Flurl.Http.dll_1910608618" />
       <ComponentRef Id="Component.Holoone.Api.dll_3900114813" />
       <ComponentRef Id="Component.Holoone.Api.dll.config_1230893856" />
-      <ComponentRef Id="Component.HolooneNavis202d20Copy.dll_930462293" />
       <ComponentRef Id="Component.HolooneNavis.dll_1611569625" />
       <ComponentRef Id="Component.HolooneNavis.dll.config_3690473161" />
       <ComponentRef Id="Component.Janus.Data.v3.dll_2837361789" />
@@ -453,7 +628,6 @@
       <ComponentRef Id="Component.Flurl.Http.dll_2655182539" />
       <ComponentRef Id="Component.Holoone.Api.dll_2806708874" />
       <ComponentRef Id="Component.Holoone.Api.dll.config_885662891" />
-      <ComponentRef Id="Component.HolooneNavis202d20Copy.dll_431407712" />
       <ComponentRef Id="Component.HolooneNavis.dll_2557474272" />
       <ComponentRef Id="Component.HolooneNavis.dll.config_852863803" />
       <ComponentRef Id="Component.Janus.Data.v3.dll_3966651246" />
@@ -489,6 +663,49 @@
       <ComponentRef Id="Component.HolooneNavis.HolooneAddin.xaml_1977070731" />
       <ComponentRef Id="Component.holo_16.ico_1932616316" />
       <ComponentRef Id="Component.holo_32.ico_1129275904" />
+      <ComponentRef Id="Component.AdWindows.dll_1040274147" />
+      <ComponentRef Id="Component.Caliburn.Micro.Core.dll_3457851852" />
+      <ComponentRef Id="Component.Caliburn.Micro.Platform.Core.dll_2988977586" />
+      <ComponentRef Id="Component.Caliburn.Micro.Platform.dll_1726992186" />
+      <ComponentRef Id="Component.Flurl.dll_136233065" />
+      <ComponentRef Id="Component.Flurl.Http.dll_3650159370" />
+      <ComponentRef Id="Component.Holoone.Api.dll_490743697" />
+      <ComponentRef Id="Component.Holoone.Api.dll.config_1931053270" />
+      <ComponentRef Id="Component.HolooneNavis.dll_1884273133" />
+      <ComponentRef Id="Component.HolooneNavis.dll.config_1880101097" />
+      <ComponentRef Id="Component.Janus.Data.v3.dll_3195656436" />
+      <ComponentRef Id="Component.Janus.Windows.Common.v3.dll_3612252748" />
+      <ComponentRef Id="Component.Janus.Windows.GridEX.v3.dll_2463277512" />
+      <ComponentRef Id="Component.Janus.Windows.UI.v3.dll_2432835909" />
+      <ComponentRef Id="Component.lcodpgluerest.dll_419370582" />
+      <ComponentRef Id="Component.LocalStorage.dll_1827396579" />
+      <ComponentRef Id="Component.ManagedMC3.dll_2621561074" />
+      <ComponentRef Id="Component.MaterialDesignColors.dll_593938163" />
+      <ComponentRef Id="Component.MaterialDesignExtensions.dll_1821470699" />
+      <ComponentRef Id="Component.MaterialDesignThemes.Wpf.dll_509809325" />
+      <ComponentRef Id="Component.Microsoft.Expression.Interactions.dll_2655406624" />
+      <ComponentRef Id="Component.Microsoft.Identity.Client.dll_3459947701" />
+      <ComponentRef Id="Component.Microsoft.Practices.Prism.dll_3973637671" />
+      <ComponentRef Id="Component.Microsoft.Practices.Prism.UnityExtensions.dll_744444143" />
+      <ComponentRef Id="Component.Microsoft.Practices.ServiceLocation.dll_2039404187" />
+      <ComponentRef Id="Component.Microsoft.Practices.Unity.dll_572994534" />
+      <ComponentRef Id="Component.Microsoft.Xaml.Behaviors.dll_656203785" />
+      <ComponentRef Id="Component.Newtonsoft.Json.dll_1209986838" />
+      <ComponentRef Id="Component.odviewdll_clr.dll_4257481634" />
+      <ComponentRef Id="Component.Syncfusion.Core.dll_2370145763" />
+      <ComponentRef Id="Component.Syncfusion.Grid.Wpf.dll_1653837763" />
+      <ComponentRef Id="Component.Syncfusion.GridCommon.Wpf.dll_857597816" />
+      <ComponentRef Id="Component.Syncfusion.Linq.Base.dll_3945592515" />
+      <ComponentRef Id="Component.Syncfusion.Shared.Wpf.dll_4003842849" />
+      <ComponentRef Id="Component.Syncfusion.Tools.Wpf.dll_2797892201" />
+      <ComponentRef Id="Component.System.ValueTuple.dll_609144510" />
+      <ComponentRef Id="Component.System.Windows.Interactivity.dll_403074446" />
+      <ComponentRef Id="Component.WPFSpark.dll_2374094544" />
+      <ComponentRef Id="Component.AdWindows.resources.dll_1002809675" />
+      <ComponentRef Id="Component.HolooneNavis.HolooneAddin.name_3470855556" />
+      <ComponentRef Id="Component.HolooneNavis.HolooneAddin.xaml_2661551510" />
+      <ComponentRef Id="Component.holo_16.ico_461396885" />
+      <ComponentRef Id="Component.holo_32.ico_1369301121" />
     </Feature>
 
     <InstallExecuteSequence>
@@ -498,12 +715,14 @@
 
       <Custom Action="Set_DirAbsolutePath" Before="AppSearch">(NOT Installed) AND (UILevel &lt; 5) AND (INSTALLDIR = ABSOLUTEPATH)</Custom>
       <Custom Action="Set_DirAbsolutePath1" Before="AppSearch">(NOT Installed) AND (UILevel &lt; 5) AND (TARGETDIR1 = ABSOLUTEPATH1)</Custom>
+      <Custom Action="Set_DirAbsolutePath2" Before="AppSearch">(NOT Installed) AND (UILevel &lt; 5) AND (TARGETDIR2 = ABSOLUTEPATH2)</Custom>
     </InstallExecuteSequence>
 
     <InstallUISequence>
       <Custom Action="PreventDowngrading" After="FindRelatedProducts">NEWPRODUCTFOUND</Custom>
       <Custom Action="Set_DirAbsolutePath" Before="AppSearch">(NOT Installed) AND (UILevel = 5) AND (INSTALLDIR = ABSOLUTEPATH)</Custom>
       <Custom Action="Set_DirAbsolutePath1" Before="AppSearch">(NOT Installed) AND (UILevel = 5) AND (TARGETDIR1 = ABSOLUTEPATH1)</Custom>
+      <Custom Action="Set_DirAbsolutePath2" Before="AppSearch">(NOT Installed) AND (UILevel = 5) AND (TARGETDIR2 = ABSOLUTEPATH2)</Custom>
     </InstallUISequence>
 
   </Product>

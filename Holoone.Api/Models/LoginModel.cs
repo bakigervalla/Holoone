@@ -48,11 +48,14 @@ namespace Holoone.Api.Models
         private string _userFullName = "Welcome";
         public string UserFullName { get => _userFullName; set { _userFullName = value; RaisePropertyChanged(); } }
         public string Token { get; set; }
+        public string RefreshToken { get; set; }
 
         public DateTimeOffset TokenExpires { get; set; }
 
         private bool _isLoggedIn;
         public bool IsLoggedIn { get => _isLoggedIn; set { _isLoggedIn = value; RaisePropertyChanged(); } }
+
+        public string LoginType { get; set; }
     }
 
     public class LoginCredentialsGraph: BaseModel
@@ -159,4 +162,21 @@ namespace Holoone.Api.Models
             return $"Employee {Id} {FullName}";
         }
     }
-}
+
+    public class LCPOrganization : BaseModel
+    {
+        [Required(ErrorMessage = "Organization field is required")]
+        [JsonProperty("organization")]
+        public string Organization { get; set; }
+
+    }
+
+    public class LCPLogin
+    {
+        [JsonProperty("access_token")]
+        public string AccessToken { get; set; }
+        [JsonProperty("refresh_token")]
+        public string RefreshToken { get; set; }
+    }
+
+    }

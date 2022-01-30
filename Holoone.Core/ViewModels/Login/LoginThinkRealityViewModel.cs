@@ -1,88 +1,115 @@
-﻿using Holoone.Api.Models;
+﻿using Hanssens.Net;
+using Holoone.Api.Helpers.Constants;
+using Holoone.Api.Models;
 using Holoone.Api.Services.Interfaces;
+using HolooneNavis.Helpers;
 using HolooneNavis.Services.Interfaces;
 using HolooneNavis.ViewModels.Home;
+using HolooneNavis.Views;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace HolooneNavis.ViewModels.Login
 {
     public class LoginThinkRealityViewModel : BaseViewModel
     {
         private readonly ILoginService _apiLoginService;
+        private readonly ILocalStorage _localeStorage;
 
         public LoginThinkRealityViewModel(
             IHoloNavigationService navigationService,
-            ILoginService apiLoginService) //: base(navigationService)
+            ILoginService apiLoginService,
+            ILocalStorage localeStorage)
         {
             _apiLoginService = apiLoginService;
+            _localeStorage = localeStorage;
 
-            LoginCredentials = new LoginCredentials {};
+            LoginCredentials = new LoginCredentials { };
+
+            // BrowserConfig.SetWebBrowserFeatures();
         }
 
+        public LCPOrganization LCPOrganization { get; set; } = new();
 
-        #region --Public properties--
-
-        private IList<UserPermissions> _userPermissions;
-        public IList<UserPermissions> UserPermissions
+        private void NavigateWebView(string Url)
         {
-            get { return _userPermissions; }
-            set { NotifyOfPropertyChange(nameof(UserPermissions)); }
+            var window2 = new BrowserWindow(Url);
+            window2.Show();
         }
 
-        private UserPermissions _userPermission;
-        public UserPermissions UserPermission
+        public async Task PLCLoginAsync()
         {
-            get { return _userPermission; }
-            set { NotifyOfPropertyChange(nameof(UserPermission)); }
+            try
+            {
+                if (LCPOrganization.ValidateObject(LCPOrganization).HasErrors)
+                    return;
+
+                string deviceId = Util.GetDeviceIdentifier(DeviceType.MAC_ADDRESS);
+
+                // Open Browser for loging
+                string hostKey = LoginCredentials.Hosts.Single(x => x.IsChecked).Text;
+                string regionUrl = RequestConstants.LenovoBaseUrls[hostKey];
+
+                // Generate Code
+                string temp_auth_token = await _apiLoginService.LCPLoginGenerateAuthCode(regionUrl, deviceId);
+
+                if (string.IsNullOrEmpty(temp_auth_token))
+                {
+                    MessageBox.Show("Could not generate authentication code");
+                    return;
+                }
+
+                // Open Browser for Login and Account validation
+
+                regionUrl += @$"/core/integration/thinkreality/authorize/?orgID={LCPOrganization.Organization}&origin=external_browser&device_id={deviceId}&auth_code={temp_auth_token}";
+
+                //NavigateWebView(regionUrl);
+                //return;
+
+                Process.Start(regionUrl);
+                Thread.Sleep(2000);
+
+                // Get Token
+                LCPLogin token = null;
+
+                async Task<LCPLogin> loginPolling()
+                {
+                    regionUrl = RequestConstants.LenovoBaseUrls[hostKey];
+                    dynamic result = await _apiLoginService.LCPLoginPolling(regionUrl, deviceId, temp_auth_token);
+
+                    return result;
+                };
+
+                while (token is null)
+                {
+                    token = await loginPolling();
+                    Thread.Sleep(1000);
+                }
+                
+                if(!string.IsNullOrEmpty(token.AccessToken))
+                {
+                    Instance.UserLogin.Username = ""; // LoginCredentials.Username;
+                    Instance.UserLogin.Password = ""; // LoginCredentials.Password;
+                    Instance.UserLogin.UserFullName = "LCP Account"; // LoginCredentials.Username;
+                    Instance.UserLogin.IsLoggedIn = true;
+                    Instance.UserLogin.LoginType = "LCP";
+                    Instance.UserLogin.Token = token.AccessToken;
+                    Instance.UserLogin.RefreshToken = token.RefreshToken;
+
+                    _localeStorage.Store("user_login", Instance.UserLogin);
+
+                    await NavigationService.GoTo<HomeViewModel>();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
-
-        #endregion
-
-        #region --Private helpers--
-
-        //public async Task OnDeleteCommandAsync()
-        //{
-        //    await _apiLoginService.DeleteLoginAsync(UserPermission);
-
-        //    await NavigationService.GoTo<HomeViewModel>();
-        //}
-
-        //public async Task OnAddCommandAsync()
-        //{
-        //    //await _apiLoginService.LoginAsync(UserPermission);
-        //}
-
-        //public async Task ShowLoginSphereMicrosoftAsync()
-        //{
-        //    await ActivateItemAsync(
-        //            new LoginViewModel(
-        //                    NavigationService,
-        //                    IoC.Get<ILoginService>()
-        //                )
-        //        );
-        //}
-
-        //public async Task ShowLoginThinkRealtyAsync()
-        //{
-        //    await ActivateItemAsync(
-        //            new LoginViewModel(
-        //                    NavigationService,
-        //                    IoC.Get<ILoginService>()
-        //                )
-        //        );
-        //}
-
-        //public async Task LoginAsync()
-        //{
-        //    await _apiLoginService.AddLoginAsync(UserPermission);
-        //    await NavigationService.GoTo<HomeViewModel>();
-        //}
-
-        #endregion
-
     }
 }

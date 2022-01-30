@@ -1,15 +1,9 @@
 ﻿using Hanssens.Net;
-using Holoone.Api.Helpers.Constants;
 using Holoone.Api.Models;
 using Holoone.Api.Services.Interfaces;
-using HolooneNavis.Helpers.Extensions;
 using HolooneNavis.Services.Interfaces;
 using HolooneNavis.ViewModels.Home;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Windows.Security.ExchangeActiveSyncProvisioning;
@@ -29,8 +23,7 @@ namespace HolooneNavis.ViewModels.Login
             _apiLoginService = apiLoginService;
             _localeStorage = localeStorage;
 
-            // CRITICAL: remove on deploy
-            LoginCredentials = new LoginCredentials { Username = "baki.test@holo-one.com" };
+            LoginCredentials = new LoginCredentials { };
         }
 
         #region methods
@@ -55,6 +48,7 @@ namespace HolooneNavis.ViewModels.Login
                     Instance.UserLogin.Username = LoginCredentials.Username;
                     Instance.UserLogin.Password = LoginCredentials.Password;
                     Instance.UserLogin.UserFullName = LoginCredentials.Username;
+                    Instance.UserLogin.LoginType = "Sphere";
                     Instance.UserLogin.IsLoggedIn = true;
                     Instance.UserLogin.Token = dynamic.token;
 
@@ -84,6 +78,7 @@ namespace HolooneNavis.ViewModels.Login
                     Instance.UserLogin.Password = response.User.Password;
                     Instance.UserLogin.UserFullName = response.User.UserFullName;
                     Instance.UserLogin.IsLoggedIn = true;
+                    Instance.UserLogin.LoginType = "Microsoft";
                     Instance.UserLogin.Token = response.User.Token;
 
                     _localeStorage.Store("user_login", Instance.UserLogin);

@@ -1,14 +1,11 @@
 ﻿using Autodesk.Navisworks.Api;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HolooneNavis.Models
 {
-  class ItemTree
+    class ItemTree
   {
     List<ItemData> _layers;
 

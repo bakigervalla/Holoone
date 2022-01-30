@@ -8,4 +8,9 @@
     <StartProgram>E:\Program Files\Autodesk\Navisworks Simulate 2019\Roamer.exe</StartProgram>
     <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <StartProgram>E:\Program Files\Autodesk\Navisworks Simulate 2019\Roamer.exe</StartProgram>
+    <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
+    <StartAction>Program</StartAction>
+  </PropertyGroup>
 </Project>

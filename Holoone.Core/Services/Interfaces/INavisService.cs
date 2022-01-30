@@ -12,7 +12,6 @@ namespace HolooneNavis.Services.Interfaces
     {
         Task<ModelItemCollection> GetModel();
         Task<ModelItemCollection> GetLayers();
-        void HideUnselectedItems(string input);
         IList<BIMLayer> ExportToNWD(IList<BIMLayer> bimLayers);
         IList<BIMLayer> ExportToFBX(IList<BIMLayer> bimLayers);
     }
