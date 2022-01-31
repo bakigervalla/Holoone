@@ -4,6 +4,7 @@ using Holoone.Api.Services.Interfaces;
 using HolooneNavis.Services.Interfaces;
 using HolooneNavis.ViewModels.Home;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Windows.Security.ExchangeActiveSyncProvisioning;
@@ -48,7 +49,7 @@ namespace HolooneNavis.ViewModels.Login
                     Instance.UserLogin.Username = LoginCredentials.Username;
                     Instance.UserLogin.Password = LoginCredentials.Password;
                     Instance.UserLogin.UserFullName = LoginCredentials.Username;
-                    Instance.UserLogin.LoginType = "Sphere";
+                    Instance.UserLogin.LoginType = new LoginType { Type = "Sphere", Region = LoginCredentials.Hosts.Single(x => x.IsChecked).Text };
                     Instance.UserLogin.IsLoggedIn = true;
                     Instance.UserLogin.Token = dynamic.token;
 
@@ -78,7 +79,7 @@ namespace HolooneNavis.ViewModels.Login
                     Instance.UserLogin.Password = response.User.Password;
                     Instance.UserLogin.UserFullName = response.User.UserFullName;
                     Instance.UserLogin.IsLoggedIn = true;
-                    Instance.UserLogin.LoginType = "Microsoft";
+                    Instance.UserLogin.LoginType = new LoginType { Type = "Microsoft", Region = LoginCredentials.Hosts.Single(x => x.IsChecked).Text };
                     Instance.UserLogin.Token = response.User.Token;
 
                     _localeStorage.Store("user_login", Instance.UserLogin);

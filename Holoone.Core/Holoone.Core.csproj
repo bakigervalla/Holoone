@@ -438,9 +438,6 @@
     <PackageReference Include="MaterialDesignThemes">
       <Version>4.2.1</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.Web.WebView2">
-      <Version>1.0.1133-prerelease</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.Windows.SDK.Contracts">
       <Version>10.0.18362.2005</Version>
     </PackageReference>

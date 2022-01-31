@@ -11,7 +11,6 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -50,27 +49,32 @@ namespace Holoone.Api.Services
         /// <param name="files"></param>
         /// <param name="processingParams"></param>
         /// <returns></returns>
-        public async Task<string> ExportModelFormCompositionAsync(UserLogin user, NameValueCollection values, NameValueCollection files,
-            ProcessingParams processingParams, string urlPath, string formDataName)
+        public async Task<string> ExportModelFormCompositionAsync(
+            UserLogin user,
+            NameValueCollection values,
+            NameValueCollection files,
+            ProcessingParams processingParams,
+            string urlPath,
+            string formDataName)
         {
             string encodedCredentials = System.Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1")
                                            .GetBytes(user.Username + ":" + user.Password));
 
-            string url = RequestConstants.BaseUrl + urlPath;
+            string url = Utility.GetBaseUrl(user) + urlPath;
 
             string boundary = "----------------------------" + DateTime.Now.Ticks.ToString("x");
             // The first boundary
-            byte[] boundaryBytes = System.Text.Encoding.UTF8.GetBytes("\r\n--" + boundary + "\r\n");
+            byte[] boundaryBytes = Encoding.UTF8.GetBytes("\r\n--" + boundary + "\r\n");
             // The last boundary
-            byte[] trailer = System.Text.Encoding.UTF8.GetBytes("\r\n--" + boundary + "--\r\n");
+            byte[] trailer = Encoding.UTF8.GetBytes("\r\n--" + boundary + "--\r\n");
             // The first time it itereates, we need to make sure it doesn't put too many new paragraphs down or it completely messes up poor webbrick
-            byte[] boundaryBytesF = System.Text.Encoding.ASCII.GetBytes("--" + boundary + "\r\n");
+            byte[] boundaryBytesF = Encoding.ASCII.GetBytes("--" + boundary + "\r\n");
 
             // Create the request and set parameters
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.ContentType = "multipart/form-data; boundary=" + boundary;
             //request.Headers.Add("Authorization", "Basic " + encodedCredentials);
-            if (user.LoginType == "LCP")
+            if (user.LoginType.Type == "LCP")
                 request.Headers.Add("Bearer", user.Token);
             else
                 request.Headers.Add("Authorization", "Token " + user.Token);
@@ -85,7 +89,7 @@ namespace Holoone.Api.Services
             foreach (string key in values.Keys)
             {
                 // Write item to stream
-                byte[] formItemBytes = System.Text.Encoding.UTF8.GetBytes(string.Format("Content-Disposition: form-data; name=\"{0}\";\r\n\r\n{1}", key, values[key]));
+                byte[] formItemBytes = Encoding.UTF8.GetBytes(string.Format("Content-Disposition: form-data; name=\"{0}\";\r\n\r\n{1}", key, values[key]));
                 requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
                 requestStream.Write(formItemBytes, 0, formItemBytes.Length);
             }
@@ -102,7 +106,7 @@ namespace Holoone.Api.Services
                         break;
 
                     // Write item to stream
-                    byte[] formItemBytes = System.Text.Encoding.UTF8.GetBytes(string.Format("Content-Disposition: form-data; name=\"{0}\";\r\n\r\n{1}", item.key, item.value));
+                    byte[] formItemBytes = Encoding.UTF8.GetBytes(string.Format("Content-Disposition: form-data; name=\"{0}\";\r\n\r\n{1}", item.key, item.value));
                     requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
                     requestStream.Write(formItemBytes, 0, formItemBytes.Length);
                 }
@@ -120,10 +124,10 @@ namespace Holoone.Api.Services
                         byte[] formItemBytes = new byte[2048];
 
                         if (formDataName == "layers")
-                            formItemBytes = System.Text.Encoding.UTF8.GetBytes(
+                            formItemBytes = Encoding.UTF8.GetBytes(
                                 string.Format("Content-Disposition: form-data; name=\"layers[]\"; filename=\"{0}\"\r\nContent-Type: application/octet-stream\r\n\r\n", fileName));
                         else if (formDataName == "file")
-                            formItemBytes = System.Text.Encoding.UTF8.GetBytes(
+                            formItemBytes = Encoding.UTF8.GetBytes(
                             string.Format("Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\nContent-Type: application/octet-stream\r\n\r\n", formDataName, fileName));
 
                         requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
@@ -155,65 +159,34 @@ namespace Holoone.Api.Services
 
         public async Task<IList<MediaFile>> GetCompanyMediaFolderContent(UserLogin user, int folderId = 0)
         {
-            _flurlClient.BaseUrl = RequestConstants.BaseUrl;
+            _flurlClient.BaseUrl = Utility.GetBaseUrl(user);
 
-            string url = "media/";
+            IDictionary<string, string> queryParams = null;
+            //queryParams = new Dictionary<string, string> { { "type", "folder" }, { "folder_pk", folderId.ToString() } };
 
             if (folderId != 0)
-                url += $"/?folder_pk={folderId}";
+                queryParams = new Dictionary<string, string> { { "folder_pk", folderId.ToString() } };
 
-            var response = await _flurlClient.Request(url)
-                                .WithBasicAuth(user.Username, user.Password)
+            IFlurlResponse response;
+
+            if (user.LoginType.Type == "LCP")
+                response = await _flurlClient.Request("media/")
+                                    .WithHeader("Bearer", user.Token)
+                                    .WithHeader("Content-Type", "application/json")
+                                    .SetQueryParams(queryParams)
+                                    .GetAsync();
+            else
+                response = await _flurlClient.Request("media/")
+                                //.WithBasicAuth(user.Username, user.Password)
+                                .WithHeader("Authorization", "Token " + user.Token)
                                 .WithHeader("Content-Type", "application/json")
+                                .SetQueryParams(queryParams)
                                 .GetAsync();
 
             return response.ResponseMessage.IsSuccessStatusCode
                     ? await response.GetJsonAsync<IList<MediaFile>>()
                     : null;
         }
-
-        //public async Task<IList<MediaFile>> GetCompanyMediaFolderContent(UserLogin user, int folderId = 0)
-        //{
-        //    _flurlClient.BaseUrl = RequestConstants.BaseUrl;
-
-        //    string url = "media/";
-
-        //    if (folderId != 0)
-        //        url += $"/?folder_pk={folderId}";
-
-        //    var fc = new FlurlClient().WithHeader("User-Agent", "Keep/1.0");
-        //    fc.BaseUrl = RequestConstants.BaseUrl;
-
-        //    string response;
-
-        //    if (user.LoginType == "LCP")
-        //        fc.WithHeader("Bearer", string.Format("Token {0}", user.Token));
-        //    else
-        //        fc.WithHeader("Authorization", string.Format("Token {0}", user.Token));
-
-        //    response = await _flurlClient.Request(url)
-        //                        .WithHeader("Content-Type", "application/json")
-        //                        .WithClient(fc)
-        //                        .WithHeader("Bearer", user.Token)
-        //                        .GetJsonAsync();
-        //    else
-        //        response = await _flurlClient.Request(url)
-        //                       .WithHeader("Content-Type", "application/json")
-        //                       .WithClient(fc)
-        //                       .WithHeader("Authorization", $"Token {user.Token}")
-        //                       .GetStringAsync();
-
-        //    response = await _flurlClient.Request(url)
-        //                        .WithOAuthBearerToken(user.Token)
-        //                        .WithHeader("Content-Type", "application/json")
-        //                        .GetJsonAsync();
-
-        //    return JsonConvert.DeserializeObject<IList<MediaFile>>(response);
-        //    //return response.ResponseMessage.IsSuccessStatusCode
-        //    //        ? await response.GetJsonListAsync.GetJsonAsync<IList<MediaFile>>()
-        //    //        : null;
-        //}
-
 
         /// <summary>
         /// OBSOLETE
@@ -224,7 +197,7 @@ namespace Holoone.Api.Services
         /// <returns></returns>
         public async Task<IFlurlResponse> ExportModelAsync(UserLogin user, MediaItem mediaItem, string filePath)
         {
-            _flurlClient.BaseUrl = RequestConstants.BaseUrl;
+            _flurlClient.BaseUrl = Utility.GetBaseUrl(user);
 
             string jsonFormData = JsonConvert.SerializeObject(mediaItem);
             string jsonProcessingParams = JsonConvert.SerializeObject(mediaItem.RequestProcessingParams);

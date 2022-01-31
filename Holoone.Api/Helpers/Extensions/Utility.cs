@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Holoone.Api.Helpers.Constants;
+using Holoone.Api.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,6 +46,13 @@ namespace Holoone.Api.Helpers.Extensions
             }
 
             return "";
+        }
+
+        public static string GetBaseUrl(UserLogin login)
+        {
+            return login.LoginType.Type == "LCP"
+                                    ? RequestConstants.LenovoBaseUrls[login.LoginType.Region]
+                                    : RequestConstants.SphereBaseUrls[login.LoginType.Region];
         }
 
     }

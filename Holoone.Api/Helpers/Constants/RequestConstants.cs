@@ -20,9 +20,9 @@ namespace Holoone.Api.Helpers.Constants
         };
 
         public static IDictionary<string, string> LenovoBaseUrls = new Dictionary<string, string> {
-            { "USA", "https://core.naea1.holo-one.lenovo.com"},
-            { "Europe", "https://core.euwe1.holo-one.lenovo.com"},
-            { "China", "https://core.cnno1.holo-one.lenovo.com"}
+            { "USA", "https://core.naea1.holo-one.lenovo.com/core/"},
+            { "Europe", "https://core.euwe1.holo-one.lenovo.com/core/"},
+            { "China", "https://core.cnno1.holo-one.lenovo.com/core/"}
         };
 
         public static IDictionary<string, string> LCPHOSTBaseUrls = new Dictionary<string, string> {

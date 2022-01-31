@@ -66,7 +66,7 @@ namespace HolooneNavis.ViewModels.Login
 
                 // Open Browser for Login and Account validation
 
-                regionUrl += @$"/core/integration/thinkreality/authorize/?orgID={LCPOrganization.Organization}&origin=external_browser&device_id={deviceId}&auth_code={temp_auth_token}";
+                regionUrl += @$"integration/thinkreality/authorize/?orgID={LCPOrganization.Organization}&origin=external_browser&device_id={deviceId}&auth_code={temp_auth_token}";
 
                 //NavigateWebView(regionUrl);
                 //return;
@@ -97,7 +97,7 @@ namespace HolooneNavis.ViewModels.Login
                     Instance.UserLogin.Password = ""; // LoginCredentials.Password;
                     Instance.UserLogin.UserFullName = "LCP Account"; // LoginCredentials.Username;
                     Instance.UserLogin.IsLoggedIn = true;
-                    Instance.UserLogin.LoginType = "LCP";
+                    Instance.UserLogin.LoginType = new LoginType { Type = "LCP", Region = LoginCredentials.Hosts.Single(x => x.IsChecked).Text };
                     Instance.UserLogin.Token = token.AccessToken;
                     Instance.UserLogin.RefreshToken = token.RefreshToken;
 

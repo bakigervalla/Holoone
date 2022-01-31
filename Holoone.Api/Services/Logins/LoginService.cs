@@ -125,7 +125,7 @@ namespace Holoone.Api.Services
             {
                 _flurlClient.BaseUrl = regionUrl;
 
-                dynamic request = await _flurlClient.Request("core/integration/thinkreality/generate-auth-code/")
+                dynamic request = await _flurlClient.Request("integration/thinkreality/generate-auth-code/")
                                  .SetQueryParam("device_id", deviceId)
                                  .GetJsonAsync();
 
@@ -143,7 +143,7 @@ namespace Holoone.Api.Services
             {
                 _flurlClient.BaseUrl = regionUrl;
 
-                var request = await _flurlClient.Request("core/integration/thinkreality/check-login-state/")
+                var request = await _flurlClient.Request("integration/thinkreality/check-login-state/")
                                         .PostJsonAsync(new
                                         {
                                             auth_code = authCode,

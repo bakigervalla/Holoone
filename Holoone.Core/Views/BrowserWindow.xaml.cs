@@ -1,12 +1,5 @@
-﻿using HolooneNavis.ViewModels.Login;
-using Microsoft.Web.WebView2.Core;
-using System;
-using System.IO;
-using System.Net;
-using System.Text;
-using System.Threading;
+﻿using System;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace HolooneNavis.Views
 {
@@ -38,26 +31,26 @@ namespace HolooneNavis.Views
 
         private async void NavigateWebView(string Url)
         {
-            CoreWebView2EnvironmentOptions opt = new CoreWebView2EnvironmentOptions();
+            //CoreWebView2EnvironmentOptions opt = new CoreWebView2EnvironmentOptions();
 
-            opt.AdditionalBrowserArguments = "--enable-logging --log-file=C:\\temp\\tests\\WebView1.log";
+            //opt.AdditionalBrowserArguments = "--enable-logging --log-file=C:\\temp\\tests\\WebView1.log";
 
-            CoreWebView2Environment env = await CoreWebView2Environment.CreateAsync(null, "WebViewFolder1", opt);
+            //CoreWebView2Environment env = await CoreWebView2Environment.CreateAsync(null, "WebViewFolder1", opt);
 
-            await Wb.EnsureCoreWebView2Async(env);
+            //await Wb.EnsureCoreWebView2Async(env);
 
-            CoreWebView2EnvironmentOptions opt2 = new CoreWebView2EnvironmentOptions();
+            //CoreWebView2EnvironmentOptions opt2 = new CoreWebView2EnvironmentOptions();
 
-            opt2.AdditionalBrowserArguments = "--enable-logging --log-file=C:\\temp\\tests\\WebView2.log";
+            //opt2.AdditionalBrowserArguments = "--enable-logging --log-file=C:\\temp\\tests\\WebView2.log";
 
-            CoreWebView2Environment env2 = await CoreWebView2Environment.CreateAsync(null, "WebViewFolder2", opt2);
+            //CoreWebView2Environment env2 = await CoreWebView2Environment.CreateAsync(null, "WebViewFolder2", opt2);
 
-            await Wb.EnsureCoreWebView2Async(env2);
+            //await Wb.EnsureCoreWebView2Async(env2);
 
-            await Dispatcher.BeginInvoke(new Action(() =>
-            {
-                Wb.Source = new Uri(Url);
-            }));
+            //await Dispatcher.BeginInvoke(new Action(() =>
+            //{
+            //    Wb.Source = new Uri(Url);
+            //}));
         }
 
         private bool _firstLoad = true;
@@ -69,25 +62,25 @@ namespace HolooneNavis.Views
             //    options: new CoreWebView2EnvironmentOptions(allowSingleSignOnUsingOSPrimaryAccount: true));
             //await Wb.EnsureCoreWebView2Async(env);
 
-            Wb.NavigationCompleted += WebView_NavigationCompleted;
+            //Wb.NavigationCompleted += WebView_NavigationCompleted;
 
-            Wb.Source = new Uri(url);
+            //Wb.Source = new Uri(url);
         }
 
-        private void WebView_NavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
-        {
-            if (!_firstLoad)
-                return;
+        //private void WebView_NavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
+        //{
+        //    if (!_firstLoad)
+        //        return;
 
-            _firstLoad = false;
-            Wb.Visibility = Visibility.Visible;
-        }
+        //    _firstLoad = false;
+        //    Wb.Visibility = Visibility.Visible;
+        //}
 
-        private void YourPage_OnUnloaded(object sender, RoutedEventArgs e)
-        {
-            _firstLoad = true;
-            Wb.Dispose();
-        }
+        //private void YourPage_OnUnloaded(object sender, RoutedEventArgs e)
+        //{
+        //    _firstLoad = true;
+        //    Wb.Dispose();
+        //}
 
         //private async void HandleRedirect()
         //{

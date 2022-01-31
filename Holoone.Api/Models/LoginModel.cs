@@ -55,9 +55,14 @@ namespace Holoone.Api.Models
         private bool _isLoggedIn;
         public bool IsLoggedIn { get => _isLoggedIn; set { _isLoggedIn = value; RaisePropertyChanged(); } }
 
-        public string LoginType { get; set; }
+        public LoginType LoginType { get; set; }
     }
 
+    public class LoginType
+    {
+        public string Type { get; set; }
+        public string Region { get; set; }
+    }
     public class LoginCredentialsGraph: BaseModel
     {
         [JsonProperty("license_type")]
