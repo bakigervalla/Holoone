@@ -11,35 +11,34 @@ class Script
     static public void Main(string[] args)
     {
         const string projectName = "Holoone Navisworks integration";
-        string navisDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData); // $"{Environment.ExpandEnvironmentVariables("%ProgramW6432%")}\\Autodesk\\";
-        string[] versions = new string[] { "2019", "2020", "2021", "2022" };
-        IList<Dir> dirs = new List<Dir>();
+        const string installPath19 = @"%AppDataFolder%\Autodesk\Autodesk Navisworks Simulate 2019";
+        const string installPath20 = @"%AppDataFolder%\Autodesk\Autodesk Navisworks Simulate 2020";
+        const string installPath21 = @"%AppDataFolder%\Autodesk\Autodesk Navisworks Simulate 2021";
+        const string installPath22 = @"%AppDataFolder%\Autodesk\Autodesk Navisworks Simulate 2022";
+        const string installPathM19 = @"%AppDataFolder%\Autodesk\Autodesk Navisworks Manage 2019";
+        const string installPathM20 = @"%AppDataFolder%\Autodesk\Autodesk Navisworks Manage 2020";
+        const string installPathM21 = @"%AppDataFolder%\Autodesk\Autodesk Navisworks Manage 2021";
+        const string installPathM22 = @"%AppDataFolder%\Autodesk\Autodesk Navisworks Manage 2022";
+        const string sourceDir = "install";
 
-        foreach (var version in versions)
-        {
-            string pathManage = Path.Combine(navisDir, $"Autodesk Navisworks Manage {version}");
-            string pathSimulate = Path.Combine(navisDir, $"Autodesk Navisworks Simulate {version}");
-
-            if (Directory.Exists(pathManage))
-                dirs.Add(new Dir(Path.Combine(pathManage, "Plugins", "HolooneNavis"), FillEntities(null, "install").ToArray()));
-            if (Directory.Exists(pathSimulate))
-                dirs.Add(new Dir(Path.Combine(pathSimulate, "Plugins", "HolooneNavis"), FillEntities(null, "install").ToArray()));
-        }
-
-        foreach(var dir in dirs)
-        {
-            if (!Directory.Exists(dir.Name))
-                Directory.CreateDirectory(dir.Name);
-        }
         var project = new Project(projectName)
         {
-            Dirs = dirs.ToArray(),
+            Dirs = new[] {
+                new InstallDir(installPath19, FillEntities(null, sourceDir).ToArray()),
+                //new InstallDir(installPath20, FillEntities(null, sourceDir).ToArray()),
+                //new InstallDir(installPath21, FillEntities(null, sourceDir).ToArray()),
+                //new InstallDir(installPath22, FillEntities(null, sourceDir).ToArray()),
+                //new InstallDir(installPathM19, FillEntities(null, sourceDir).ToArray()),
+                //new InstallDir(installPathM20, FillEntities(null, sourceDir).ToArray()),
+                //new InstallDir(installPathM21, FillEntities(null, sourceDir).ToArray()),
+                //new InstallDir(installPathM22, FillEntities(null, sourceDir).ToArray()),
+            },
             Description = "Holoone integration for Autodesk Navisworks",
             Package =
-                    {
+            {
                 AttributesDefinition =
                     @"AdminImage=yes; Comments=Holoone integration for Autodesk Navisworks; Description=Holoone integration for Autodesk Navisworks"
-                    },
+            },
             GUID = new Guid("{B5AF2152-9F97-4B14-AA75-E2E25A78BF1B}"),
             UpgradeCode = new Guid("{69B86E21-99B1-4E97-9A54-2F908AD3DC3A}"),
             MajorUpgradeStrategy = new MajorUpgradeStrategy
@@ -55,10 +54,11 @@ class Script
             ControlPanelInfo = { Manufacturer = "Holo-one", ProductIcon = "holo_one_logo.ico" },
             Encoding = Encoding.UTF8,
             LicenceFile = string.Empty,
-            Platform = Platform.x64,
             Codepage = "1251"
         };
 
+        // the path to wix311 binaries
+        Compiler.WixLocation = @"C:\Program Files (x86)\WiX Toolset v3.11\bin";
         Compiler.BuildMsi(project);
     }
 
