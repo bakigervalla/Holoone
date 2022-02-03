@@ -11,20 +11,20 @@ class Script
     static public void Main(string[] args)
     {
         const string projectName = "Holoone Navisworks integration";
-        const string installPath19 = @"%AppDataFolder%\Autodesk\Autodesk Navisworks Simulate 2019";
-        const string installPath20 = @"%AppDataFolder%\Autodesk\Autodesk Navisworks Simulate 2020";
-        const string installPath21 = @"%AppDataFolder%\Autodesk\Autodesk Navisworks Simulate 2021";
-        const string installPath22 = @"%AppDataFolder%\Autodesk\Autodesk Navisworks Simulate 2022";
-        const string installPathM19 = @"%AppDataFolder%\Autodesk\Autodesk Navisworks Manage 2019";
-        const string installPathM20 = @"%AppDataFolder%\Autodesk\Autodesk Navisworks Manage 2020";
-        const string installPathM21 = @"%AppDataFolder%\Autodesk\Autodesk Navisworks Manage 2021";
-        const string installPathM22 = @"%AppDataFolder%\Autodesk\Autodesk Navisworks Manage 2022";
+        const string installPath19 = @"%AppDataFolder%\Autodesk Navisworks Simulate 2019\Plugins";
+        const string installPath20 = @"%AppDataFolder%\Autodesk Navisworks Simulate 2020\Plugins";
+        const string installPath21 = @"%AppDataFolder%\Autodesk Navisworks Simulate 2021\Plugins";
+        const string installPath22 = @"%AppDataFolder%\Autodesk Navisworks Simulate 2022\Plugins";
+        const string installPathM19 = @"%AppDataFolder%\Autodesk Navisworks Manage 2019\Plugins";
+        const string installPathM20 = @"%AppDataFolder%\Autodesk Navisworks Manage 2020\Plugins\HolooneNavis";
+        const string installPathM21 = @"%AppDataFolder%\Autodesk Navisworks Manage 2021\Plugins";
+        const string installPathM22 = @"%AppDataFolder%\Autodesk Navisworks Manage 2022\Plugins";
         const string sourceDir = "install";
 
         var project = new Project(projectName)
         {
             Dirs = new[] {
-                new InstallDir(installPath19, FillEntities(null, sourceDir).ToArray()),
+                new InstallDir(installPathM20, FillEntities(null, sourceDir).ToArray()),
                 //new InstallDir(installPath20, FillEntities(null, sourceDir).ToArray()),
                 //new InstallDir(installPath21, FillEntities(null, sourceDir).ToArray()),
                 //new InstallDir(installPath22, FillEntities(null, sourceDir).ToArray()),

@@ -4,8 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:HolooneNavis.Views.Export.BIM.Existing"
+                          xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
     <Grid VerticalAlignment="Stretch" Margin="0,30,0,40">
         <Grid.RowDefinitions>
             <RowDefinition Height="80" />
@@ -17,10 +21,38 @@
         <Image Height="80" VerticalAlignment="Center" 
                Source="pack://application:,,,/HolooneNavis;component/Resources/Images/export.png" />
 
-        <TextBlock Grid.Row="1" VerticalAlignment="Center" Text="Available models" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" />
+        <TextBlock Grid.Row="1" VerticalAlignment="Center" Text="Available models" FontSize="16" Style="{StaticResource MaterialDesignSubtitle2TextBlock}" />
 
-        <Button Grid.Row="3" x:Name="NavigateToAddLayerlPage" HorizontalAlignment="Center" Width="240" VerticalAlignment="Center">Modify Selected</Button>
+        <ItemsControl Grid.Row="2" ItemsSource="{Binding MediaFiles}" Focusable="False"
+                              VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxHeight="240">
+            <ItemsControl.Template>
+                <ControlTemplate>
+                    <ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}">
+                        <ItemsPresenter />
+                    </ScrollViewer>
+                </ControlTemplate>
+            </ItemsControl.Template>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="30" />
+                        </Grid.ColumnDefinitions>
+                        <!--<TextBlock Text="{Binding Id}" materialDesign:HintAssist.Hint="Layer Name" VerticalAlignment="Center" Margin="0,2,0,2"/>-->
+                        <TextBlock Text="{Binding DisplayName}" materialDesign:HintAssist.Hint="Layer Name" VerticalAlignment="Center" Margin="0,2,0,2"/>
+                        <!--<TextBlock Grid.Column="2" Text="{Binding FileExtension}" materialDesign:HintAssist.Hint="Layer Name" VerticalAlignment="Center" Margin="0,2,0,2"/>-->
+                        <!--<TextBlock Grid.Column="4" Text="{Binding MediaFileType}" materialDesign:HintAssist.Hint="Layer Name" VerticalAlignment="Center" Margin="0,2,0,2"/>-->
+                        <RadioButton Grid.Column="1" GroupName="DefaultSelectGroup" IsChecked="{Binding IsSelected}" HorizontalAlignment="Center" Margin="0" Focusable="False" />
+                        <!--<TextBlock Text="{Binding ParentFolderId}" materialDesign:HintAssist.Hint="Layer Name" VerticalAlignment="Center" Margin="0,2,0,2"/>
+                        <TextBlock Text="{Binding SubFolders}" materialDesign:HintAssist.Hint="Layer Name" VerticalAlignment="Center" Margin="0,2,0,2"/>-->
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <Button Grid.Row="3" x:Name="Get3DModelAsync" HorizontalAlignment="Center" Width="240" VerticalAlignment="Center">Modify Selected</Button>
 
     </Grid>
-    
+
 </UserControl>

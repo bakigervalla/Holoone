@@ -20,5 +20,8 @@ namespace Holoone.Api.Services.Interfaces
 
         // OBSOLETE
         Task<IFlurlResponse> ExportModelAsync(UserLogin user, MediaItem mediaItem, string filePath);
+
+        Task<IList<MediaFile>> GetCompany3DModels(UserLogin user);
+        Task<object> Get3DModel(UserLogin user, MediaFile mediaFile);
     }
 }

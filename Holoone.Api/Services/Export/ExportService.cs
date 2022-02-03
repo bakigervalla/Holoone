@@ -234,5 +234,51 @@ namespace Holoone.Api.Services
                 throw ex;
             }
         }
+
+        public async Task<IList<MediaFile>> GetCompany3DModels(UserLogin user)
+        {
+            _flurlClient.BaseUrl = Utility.GetBaseUrl(user);
+
+            IFlurlResponse response;
+
+            if (user.LoginType.Type == "LCP")
+                response = await _flurlClient.Request("media/")
+                                    .SetQueryParam("type", "one_to_one_overlay_model")
+                                    .WithHeader("Bearer", user.Token)
+                                    .WithHeader("Content-Type", "application/json")
+                                    .GetAsync();
+            else
+                response = await _flurlClient.Request("media/")
+                                    .SetQueryParam("type", "one_to_one_overlay_model")
+                                    .WithHeader("Authorization", "Token " + user.Token)
+                                    .WithHeader("Content-Type", "application/json")
+                                    .GetAsync();
+
+            return response.ResponseMessage.IsSuccessStatusCode
+                    ? await response.GetJsonAsync<IList<MediaFile>>()
+                    : null;
+        }
+
+        public async Task<object> Get3DModel(UserLogin user, MediaFile mediaFile)
+        {
+            _flurlClient.BaseUrl = Utility.GetBaseUrl(user);
+
+            IFlurlResponse response;
+
+            if (user.LoginType.Type == "LCP")
+                response = await _flurlClient.Request($"media/3dmodel/{mediaFile.Id}/")
+                                    .WithHeader("Bearer", user.Token)
+                                    .WithHeader("Content-Type", "application/json")
+                                    .GetAsync();
+            else
+                response = await _flurlClient.Request($"media/3dmodel/{mediaFile.Id}/")
+                                    .WithHeader("Authorization", "Token " + user.Token)
+                                    .WithHeader("Content-Type", "application/json")
+                                    .GetAsync();
+
+            return response.ResponseMessage.IsSuccessStatusCode
+                    ? await response.GetJsonAsync<IList<MediaFile>>()
+                    : null;
+        }
     }
 }
