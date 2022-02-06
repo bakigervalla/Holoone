@@ -35,6 +35,8 @@ namespace HolooneNavis.ViewModels.Export.BIM.Existing
             _eventAggregator = eventAggregator;
 
             Get3DModels().AsResult();
+
+            QueryNavisModel().AsResult();
         }
 
 
@@ -43,11 +45,6 @@ namespace HolooneNavis.ViewModels.Export.BIM.Existing
         public string _state = "SelectLayer";
         public string State { get => _state; set { _state = value; NotifyOfPropertyChange("State"); } }
 
-        public void NavigateToAddLayerlPage()
-        {
-            State = "AddLayer";
-        }
-
         public void NavigateToSelectModelPage()
         {
             State = "SelectModel";
@@ -55,6 +52,11 @@ namespace HolooneNavis.ViewModels.Export.BIM.Existing
             QueryNavisModel().AsResult();
 
             SelectedFiles = new List<string>();
+        }
+
+        public void NavigateToAddLayerlPage()
+        {
+            State = "AddLayer";
         }
 
         #endregion
@@ -81,7 +83,13 @@ namespace HolooneNavis.ViewModels.Export.BIM.Existing
         private ObservableCollection<BIMLayer> _bimLayers = new ObservableCollection<BIMLayer>();
         public ObservableCollection<BIMLayer> BIMLayers { get => _bimLayers; set { _bimLayers = value; NotifyOfPropertyChange(nameof(BIMLayers)); } }
 
+        //
         public ModelItem SelectedModelItem { get; set; }
+        public IEnumerable<BIM3DModel> BIM3DModels { get; set; }
+
+        // 
+        private int? OriginalPrimaryLayerId { get; set; }
+        public List<int> DeletedLayers;
 
         #endregion
 
@@ -109,15 +117,29 @@ namespace HolooneNavis.ViewModels.Export.BIM.Existing
             {
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
-                SelectedMediaFile = MediaFiles.FirstOrDefault(x => x.IsSelected);
-
-                if(SelectedMediaFile == null)
+                if (SelectedMediaFile == null)
                 {
                     MessageBox.Show("Please selecte a model to continue");
                     return;
                 }
 
-                var result = await _apiService.Get3DModel(UserLogin, SelectedMediaFile);
+                BIM3DModels = await _apiService.Get3DModelById(UserLogin, SelectedMediaFile.Id);
+
+                BIMModel.ModelName = SelectedMediaFile.DisplayName;
+                foreach (var item in BIM3DModels)
+                    BIMLayers.Add(new BIMLayer
+                    {
+                        Name = Path.GetFileNameWithoutExtension(item.Name),
+                        FilePath = item.Name,
+                        IsDefault = item.IsPrimary,
+                        IsSet = true
+                    });
+
+                // get original primary layer Id
+                OriginalPrimaryLayerId = _bimLayers.First(x => x.IsDefault)?.Id;
+
+                State = "AddLayer";
+
             }
             catch (Exception ex)
             {
@@ -147,11 +169,14 @@ namespace HolooneNavis.ViewModels.Export.BIM.Existing
                 if (layer != null)
                     layer.IsDefault = true;
             }
+
+            if (bimLayer.Id > 0)
+                DeletedLayers.Add(bimLayer.Id);
         }
 
         public void AttachModelItem(BIMLayer bimLayer)
         {
-            ModelSelectionWindow window = new ModelSelectionWindow() { DataContext = this };
+            ModelSelectionWindow window = new ModelSelectionWindow(false) { DataContext = this };
 
             if (window.ShowDialog() ?? true)
             {
@@ -190,24 +215,31 @@ namespace HolooneNavis.ViewModels.Export.BIM.Existing
         {
             try
             {
-                if (SelectedFolder == null)
-                {
-                    MessageBox.Show("Please, select a destination folder");
-                    return;
-                }
-
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
-                //* BIMLayers = new ObservableCollection<BIMLayer>(_navisService.ExportToFBX(BIMLayers));
-
                 BIMLayers = new ObservableCollection<BIMLayer>(_navisService.ExportToNWD(BIMLayers));
+
+                // prepare input
+                int? primaryLayerId = BIMLayers.First(x => x.IsDefault)?.Id;
 
                 var valParts = new NameValueCollection
                     {
                         { "model_name", BIMModel.ModelName },
-                        { "primary_layer_index", BIMLayers.ToList().FindIndex(x=> x.IsDefault).ToString() },
-                        { "parent_folder", SelectedFolder.Id == 0 ? "null" : SelectedFolder.Id.ToString() },
+                        { "primary_layer_id",  primaryLayerId.ToString()},
+                        { "previous_primary_layer_id", primaryLayerId.Equals(OriginalPrimaryLayerId) ? "" : OriginalPrimaryLayerId.ToString() },
+                        { "layers_to_delete", BIMLayers.ToList().FindIndex(x=> x.IsDefault).ToString() },
+                        { "layers_to_update", BIMLayers.ToList().FindIndex(x=> x.IsDefault).ToString() },
                     };
+
+                //var valParts = new NameValueCollection
+                //    {
+                //        { "model_name", BIMModel.ModelName },
+                //        { "parent_folder", SelectedFolder.Id == 0 ? "null" : SelectedFolder.Id.ToString() },
+                //        { "primary_layer_id", BIMLayers.ToList().FindIndex(x=> x.IsDefault).ToString() },
+                //        { "previous_primary_layer_id", BIMLayers.ToList().FindIndex(x=> x.IsDefault).ToString() },
+                //        { "layers_to_delete", BIMLayers.ToList().FindIndex(x=> x.IsDefault).ToString() },
+                //        { "layers_to_update", BIMLayers.ToList().FindIndex(x=> x.IsDefault).ToString() },
+                //    };
 
                 NameValueCollection valColl = new NameValueCollection();
 

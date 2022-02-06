@@ -10,6 +10,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
+    <UserControl.Resources>
+        <Style x:Key="hiddenHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="Visibility" Value="Collapsed" />
+        </Style>
+    </UserControl.Resources>
+
+    
     <Grid VerticalAlignment="Stretch" Margin="0,30,0,40">
         <Grid.RowDefinitions>
             <RowDefinition Height="80" />
@@ -23,34 +30,26 @@
 
         <TextBlock Grid.Row="1" VerticalAlignment="Center" Text="Available models" FontSize="16" Style="{StaticResource MaterialDesignSubtitle2TextBlock}" />
 
-        <ItemsControl Grid.Row="2" ItemsSource="{Binding MediaFiles}" Focusable="False"
-                              VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxHeight="240">
-            <ItemsControl.Template>
-                <ControlTemplate>
-                    <ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}">
-                        <ItemsPresenter />
-                    </ScrollViewer>
-                </ControlTemplate>
-            </ItemsControl.Template>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="30" />
-                        </Grid.ColumnDefinitions>
-                        <!--<TextBlock Text="{Binding Id}" materialDesign:HintAssist.Hint="Layer Name" VerticalAlignment="Center" Margin="0,2,0,2"/>-->
-                        <TextBlock Text="{Binding DisplayName}" materialDesign:HintAssist.Hint="Layer Name" VerticalAlignment="Center" Margin="0,2,0,2"/>
-                        <!--<TextBlock Grid.Column="2" Text="{Binding FileExtension}" materialDesign:HintAssist.Hint="Layer Name" VerticalAlignment="Center" Margin="0,2,0,2"/>-->
-                        <!--<TextBlock Grid.Column="4" Text="{Binding MediaFileType}" materialDesign:HintAssist.Hint="Layer Name" VerticalAlignment="Center" Margin="0,2,0,2"/>-->
-                        <RadioButton Grid.Column="1" GroupName="DefaultSelectGroup" IsChecked="{Binding IsSelected}" HorizontalAlignment="Center" Margin="0" Focusable="False" />
-                        <!--<TextBlock Text="{Binding ParentFolderId}" materialDesign:HintAssist.Hint="Layer Name" VerticalAlignment="Center" Margin="0,2,0,2"/>
-                        <TextBlock Text="{Binding SubFolders}" materialDesign:HintAssist.Hint="Layer Name" VerticalAlignment="Center" Margin="0,2,0,2"/>-->
-                    </Grid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-
+        <ListView Grid.Row="2" ItemsSource="{Binding MediaFiles}" Focusable="False" SelectedItem="{Binding SelectedMediaFile}"
+                              VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxHeight="240" SelectionMode="Single">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#EFEFEF" />
+                            <Setter Property="BorderBrush" Value="{StaticResource PrimaryBlueColor}" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+                <GridView ColumnHeaderContainerStyle="{StaticResource hiddenHeaderStyle}">
+                    <GridView.Columns>
+                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding DisplayName}" />
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
         <Button Grid.Row="3" x:Name="Get3DModelAsync" HorizontalAlignment="Center" Width="240" VerticalAlignment="Center">Modify Selected</Button>
 
     </Grid>

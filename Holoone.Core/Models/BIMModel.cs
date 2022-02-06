@@ -21,6 +21,7 @@ namespace HolooneNavis.Models
 
     public class BIMLayer : BaseModel
     {
+        public int Id { get; set; }
         public string Name { get; set; }
 
         private ModelItem _modelItem { get; set; }

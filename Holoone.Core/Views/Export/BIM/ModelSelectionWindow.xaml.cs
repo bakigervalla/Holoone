@@ -1,4 +1,5 @@
 ﻿using Autodesk.Navisworks.Api;
+using HolooneNavis.ViewModels.Export.BIM.Existing;
 using HolooneNavis.ViewModels.Export.BIM.New;
 using System;
 using System.Collections.Generic;
@@ -21,17 +22,24 @@ namespace HolooneNavis.Views.Export.BIM
     /// </summary>
     public partial class ModelSelectionWindow : Window
     {
-        private ExportBIMNewViewModel DX { get; set; }
+        private bool _isNewBIM;
+        private ExportBIMNewViewModel BIMNewViewModel { get; set; }
+        private ExportBIMExistingViewModel BIMExistingViewModel { get; set; }
 
-        public ModelSelectionWindow()
+        public ModelSelectionWindow(bool IsNewBIM)
         {
             InitializeComponent();
+
+            _isNewBIM = IsNewBIM;
             this.Loaded += ModelSelectionWindow_Loaded;
         }
 
         private void ModelSelectionWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            DX = this.DataContext as ExportBIMNewViewModel;
+            if (_isNewBIM)
+                BIMNewViewModel = this.DataContext as ExportBIMNewViewModel;
+            else
+                BIMExistingViewModel = this.DataContext as ExportBIMExistingViewModel;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -43,7 +51,11 @@ namespace HolooneNavis.Views.Export.BIM
         private void TextBlock_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             var selectedModel = (ModelItem)((TextBlock)sender).Tag;
-            DX.SelectedModelItem = selectedModel;
+
+            if (_isNewBIM)
+                BIMNewViewModel.SelectedModelItem = selectedModel;
+            else
+                BIMExistingViewModel.SelectedModelItem = selectedModel;
             ;
         }
     }

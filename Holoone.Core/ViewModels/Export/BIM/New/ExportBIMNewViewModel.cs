@@ -111,7 +111,7 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
 
         public void AttachModelItem(BIMLayer bimLayer)
         {
-            ModelSelectionWindow window = new ModelSelectionWindow() { DataContext = this };
+            ModelSelectionWindow window = new ModelSelectionWindow(true) { DataContext = this };
 
             if (window.ShowDialog() ?? true)
             {

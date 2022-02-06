@@ -1,0 +1,462 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="b5af2152-9f97-4b14-aa75-e2e25a88df1b" Name="Holoone Navisworks integration" Language="1033" Codepage="1251" Version="0.1.1" UpgradeCode="69b86e21-99b1-4e97-9a54-2f908ad3dc3a" Manufacturer="Holo-one">
+    <Package InstallerVersion="200" Compressed="yes" Description="Holoone integration for Autodesk Navisworks" SummaryCodepage="1251" InstallScope="perMachine" Languages="1033" AdminImage="yes" Comments="Holoone integration for Autodesk Navisworks" />
+    <Media Id="1" Cabinet="_...loone20Navisworks20integration.cab" EmbedCab="yes" />
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="AppDataFolder" Name="AppDataFolder">
+        <Directory Id="AppDataFolder.Autodesk20Navisworks20Manage202020" Name="Autodesk Navisworks Manage 2020">
+          <Directory Id="AppDataFolder.Autodesk20Navisworks20Manage202020.Plugins" Name="Plugins">
+            <Directory Id="INSTALLDIR" Name="HolooneNavis">
+
+              <Component Id="Component.AdWindows.dll_3001786745" Guid="b5af2152-9f97-4b14-aa75-e2e2e34eb949">
+                <File Id="AdWindows.dll_3001786745" Source="install\AdWindows.dll" />
+                <RemoveFolder Id="INSTALLDIR" On="uninstall" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.Caliburn.Micro.Core.dll_2246886420" Guid="b5af2152-9f97-4b14-aa75-e2e22e0f5465">
+                <File Id="Caliburn.Micro.Core.dll_2246886420" Source="install\Caliburn.Micro.Core.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.Caliburn.Micro.Platform.Core.dll_2436133012" Guid="b5af2152-9f97-4b14-aa75-e2e2cfe482d2">
+                <File Id="Caliburn.Micro.Platform.Core.dll_2436133012" Source="install\Caliburn.Micro.Platform.Core.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.Caliburn.Micro.Platform.dll_3538377800" Guid="b5af2152-9f97-4b14-aa75-e2e28a3e9017">
+                <File Id="Caliburn.Micro.Platform.dll_3538377800" Source="install\Caliburn.Micro.Platform.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.Flurl.dll_132298193" Guid="b5af2152-9f97-4b14-aa75-e2e25e052bd6">
+                <File Id="Flurl.dll_132298193" Source="install\Flurl.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.Flurl.Http.dll_3583213376" Guid="b5af2152-9f97-4b14-aa75-e2e27770240f">
+                <File Id="Flurl.Http.dll_3583213376" Source="install\Flurl.Http.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.Holoone.Api.dll_1665932079" Guid="b5af2152-9f97-4b14-aa75-e2e24dc68b38">
+                <File Id="Holoone.Api.dll_1665932079" Source="install\Holoone.Api.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.Holoone.Api.dll.config_3016212053" Guid="b5af2152-9f97-4b14-aa75-e2e26eb2c9e8">
+                <File Id="Holoone.Api.dll.config_3016212053" Source="install\Holoone.Api.dll.config" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.HolooneNavis.dll_1060601646" Guid="b5af2152-9f97-4b14-aa75-e2e252dfc52c">
+                <File Id="HolooneNavis.dll_1060601646" Source="install\HolooneNavis.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.HolooneNavis.dll.config_866463236" Guid="b5af2152-9f97-4b14-aa75-e2e2d0e6a339">
+                <File Id="HolooneNavis.dll.config_866463236" Source="install\HolooneNavis.dll.config" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.Janus.Data.v3.dll_1104451798" Guid="b5af2152-9f97-4b14-aa75-e2e2f578dfa0">
+                <File Id="Janus.Data.v3.dll_1104451798" Source="install\Janus.Data.v3.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.Janus.Windows.Common.v3.dll_332117074" Guid="b5af2152-9f97-4b14-aa75-e2e27bacfd27">
+                <File Id="Janus.Windows.Common.v3.dll_332117074" Source="install\Janus.Windows.Common.v3.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.Janus.Windows.GridEX.v3.dll_3527876998" Guid="b5af2152-9f97-4b14-aa75-e2e21767fdd7">
+                <File Id="Janus.Windows.GridEX.v3.dll_3527876998" Source="install\Janus.Windows.GridEX.v3.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.Janus.Windows.UI.v3.dll_754460238" Guid="b5af2152-9f97-4b14-aa75-e2e2bd5c62ba">
+                <File Id="Janus.Windows.UI.v3.dll_754460238" Source="install\Janus.Windows.UI.v3.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.lcodpgluerest.dll_644611704" Guid="b5af2152-9f97-4b14-aa75-e2e2f54e5914">
+                <File Id="lcodpgluerest.dll_644611704" Source="install\lcodpgluerest.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.LocalStorage.dll_1041648132" Guid="b5af2152-9f97-4b14-aa75-e2e2214f0096">
+                <File Id="LocalStorage.dll_1041648132" Source="install\LocalStorage.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.ManagedMC3.dll_3821585673" Guid="b5af2152-9f97-4b14-aa75-e2e241646e66">
+                <File Id="ManagedMC3.dll_3821585673" Source="install\ManagedMC3.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.MaterialDesignColors.dll_3116051306" Guid="b5af2152-9f97-4b14-aa75-e2e2e60d80d5">
+                <File Id="MaterialDesignColors.dll_3116051306" Source="install\MaterialDesignColors.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.MaterialDesignExtensions.dll_247871635" Guid="b5af2152-9f97-4b14-aa75-e2e2bc86319c">
+                <File Id="MaterialDesignExtensions.dll_247871635" Source="install\MaterialDesignExtensions.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.MaterialDesignThemes.Wpf.dll_3544766988" Guid="b5af2152-9f97-4b14-aa75-e2e22b332658">
+                <File Id="MaterialDesignThemes.Wpf.dll_3544766988" Source="install\MaterialDesignThemes.Wpf.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.Microsoft.Expression.Interactions.dll_2645022811" Guid="b5af2152-9f97-4b14-aa75-e2e2d94ada2d">
+                <File Id="Microsoft.Expression.Interactions.dll_2645022811" Source="install\Microsoft.Expression.Interactions.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.Microsoft.Identity.Client.dll_3300436396" Guid="b5af2152-9f97-4b14-aa75-e2e230ab3e4a">
+                <File Id="Microsoft.Identity.Client.dll_3300436396" Source="install\Microsoft.Identity.Client.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.Microsoft.Practices.Prism.dll_3568051277" Guid="b5af2152-9f97-4b14-aa75-e2e245be870a">
+                <File Id="Microsoft.Practices.Prism.dll_3568051277" Source="install\Microsoft.Practices.Prism.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.Microsoft.Practices.Prism.UnityExtensions.dll_2978142408" Guid="b5af2152-9f97-4b14-aa75-e2e23039961e">
+                <File Id="Microsoft.Practices.Prism.UnityExtensions.dll_2978142408" Source="install\Microsoft.Practices.Prism.UnityExtensions.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.Microsoft.Practices.ServiceLocation.dll_3569185821" Guid="b5af2152-9f97-4b14-aa75-e2e218b9d5b4">
+                <File Id="Microsoft.Practices.ServiceLocation.dll_3569185821" Source="install\Microsoft.Practices.ServiceLocation.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.Microsoft.Practices.Unity.dll_4152165320" Guid="b5af2152-9f97-4b14-aa75-e2e283efd9d8">
+                <File Id="Microsoft.Practices.Unity.dll_4152165320" Source="install\Microsoft.Practices.Unity.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.Microsoft.Xaml.Behaviors.dll_853589008" Guid="b5af2152-9f97-4b14-aa75-e2e22bc8e9d1">
+                <File Id="Microsoft.Xaml.Behaviors.dll_853589008" Source="install\Microsoft.Xaml.Behaviors.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.Newtonsoft.Json.dll_2571791496" Guid="b5af2152-9f97-4b14-aa75-e2e266c88b63">
+                <File Id="Newtonsoft.Json.dll_2571791496" Source="install\Newtonsoft.Json.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.odviewdll_clr.dll_4038382152" Guid="b5af2152-9f97-4b14-aa75-e2e272d61b3d">
+                <File Id="odviewdll_clr.dll_4038382152" Source="install\odviewdll_clr.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.Syncfusion.Core.dll_1527586769" Guid="b5af2152-9f97-4b14-aa75-e2e2283156d9">
+                <File Id="Syncfusion.Core.dll_1527586769" Source="install\Syncfusion.Core.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.Syncfusion.Grid.Wpf.dll_818368753" Guid="b5af2152-9f97-4b14-aa75-e2e27fe3fdc7">
+                <File Id="Syncfusion.Grid.Wpf.dll_818368753" Source="install\Syncfusion.Grid.Wpf.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.Syncfusion.GridCommon.Wpf.dll_2088272730" Guid="b5af2152-9f97-4b14-aa75-e2e26fb2d790">
+                <File Id="Syncfusion.GridCommon.Wpf.dll_2088272730" Source="install\Syncfusion.GridCommon.Wpf.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.Syncfusion.Linq.Base.dll_907650602" Guid="b5af2152-9f97-4b14-aa75-e2e28d3027ba">
+                <File Id="Syncfusion.Linq.Base.dll_907650602" Source="install\Syncfusion.Linq.Base.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.Syncfusion.Shared.Wpf.dll_1303226405" Guid="b5af2152-9f97-4b14-aa75-e2e2ef64f2bb">
+                <File Id="Syncfusion.Shared.Wpf.dll_1303226405" Source="install\Syncfusion.Shared.Wpf.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.Syncfusion.Tools.Wpf.dll_753366194" Guid="b5af2152-9f97-4b14-aa75-e2e2ae6e8dc6">
+                <File Id="Syncfusion.Tools.Wpf.dll_753366194" Source="install\Syncfusion.Tools.Wpf.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.System.ValueTuple.dll_1840030787" Guid="b5af2152-9f97-4b14-aa75-e2e2ce1d98e3">
+                <File Id="System.ValueTuple.dll_1840030787" Source="install\System.ValueTuple.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.System.Windows.Interactivity.dll_2726308904" Guid="b5af2152-9f97-4b14-aa75-e2e227522c3b">
+                <File Id="System.Windows.Interactivity.dll_2726308904" Source="install\System.Windows.Interactivity.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Component Id="Component.WPFSpark.dll_1292352430" Guid="b5af2152-9f97-4b14-aa75-e2e2913bb2e0">
+                <File Id="WPFSpark.dll_1292352430" Source="install\WPFSpark.dll" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
+              <Directory Id="INSTALLDIR.en2dUS" Name="en-US">
+
+                <Component Id="Component.AdWindows.resources.dll_3210200813" Guid="b5af2152-9f97-4b14-aa75-e2e2c76af4e5">
+                  <File Id="AdWindows.resources.dll_3210200813" Source="install\en-US\AdWindows.resources.dll" />
+                  <RemoveFolder Id="INSTALLDIR.en2dUS" On="uninstall" />
+
+                  <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                    <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                  </RegistryKey>
+                </Component>
+
+                <Component Id="Component.HolooneNavis.HolooneAddin.name_3862175539" Guid="b5af2152-9f97-4b14-aa75-e2e23b58b768">
+                  <File Id="HolooneNavis.HolooneAddin.name_3862175539" Source="install\en-US\HolooneNavis.HolooneAddin.name" />
+
+                  <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                    <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                  </RegistryKey>
+                </Component>
+
+                <Component Id="Component.HolooneNavis.HolooneAddin.xaml_3910029168" Guid="b5af2152-9f97-4b14-aa75-e2e2829b816b">
+                  <File Id="HolooneNavis.HolooneAddin.xaml_3910029168" Source="install\en-US\HolooneNavis.HolooneAddin.xaml" />
+
+                  <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                    <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                  </RegistryKey>
+                </Component>
+
+              </Directory>
+
+              <Directory Id="INSTALLDIR.Images" Name="Images">
+
+                <Component Id="Component.holo_16.ico_2311610191" Guid="b5af2152-9f97-4b14-aa75-e2e276eee974">
+                  <File Id="holo_16.ico_2311610191" Source="install\Images\holo_16.ico" />
+                  <RemoveFolder Id="INSTALLDIR.Images" On="uninstall" />
+
+                  <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                    <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                  </RegistryKey>
+                </Component>
+
+                <Component Id="Component.holo_32.ico_2303483925" Guid="b5af2152-9f97-4b14-aa75-e2e204a93435">
+                  <File Id="holo_32.ico_2303483925" Source="install\Images\holo_32.ico" />
+
+                  <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                    <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                  </RegistryKey>
+                </Component>
+
+              </Directory>
+            </Directory>
+
+            <Component Id="AppDataFolder.Autodesk20Navisworks20Manage202020.Plugins" Guid="b5af2152-9f97-4b14-aa75-e2e218b0b96a">
+              <RemoveFolder Id="AppDataFolder.Autodesk20Navisworks20Manage202020.Plugins" On="uninstall" />
+
+              <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                <RegistryValue Value="0" Type="string" KeyPath="yes" />
+              </RegistryKey>
+            </Component>
+
+          </Directory>
+
+          <Component Id="AppDataFolder.Autodesk20Navisworks20Manage202020" Guid="b5af2152-9f97-4b14-aa75-e2e2fb1feb06">
+            <RemoveFolder Id="AppDataFolder.Autodesk20Navisworks20Manage202020" On="uninstall" />
+
+            <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+              <RegistryValue Value="0" Type="string" KeyPath="yes" />
+            </RegistryKey>
+          </Component>
+
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <Icon Id="app_icon.ico" SourceFile="holo_one_logo.ico" />
+
+    <Upgrade Id="69b86e21-99b1-4e97-9a54-2f908ad3dc3a">
+      <UpgradeVersion Minimum="0.0.0.0" Maximum="0.1.1" IncludeMinimum="yes" IncludeMaximum="yes" Property="UPGRADEFOUND" />
+      <UpgradeVersion Minimum="0.1.1" IncludeMinimum="no" Property="NEWPRODUCTFOUND" />
+    </Upgrade>
+
+    <CustomAction Id="PreventDowngrading" Error="Newer version already installed" />
+
+    <Property Id="ARPPRODUCTICON" Value="app_icon.ico" />
+
+    <Feature Id="Complete" Title="Complete" Absent="allow" Level="1">
+      <ComponentRef Id="Component.AdWindows.dll_3001786745" />
+      <ComponentRef Id="Component.Caliburn.Micro.Core.dll_2246886420" />
+      <ComponentRef Id="Component.Caliburn.Micro.Platform.Core.dll_2436133012" />
+      <ComponentRef Id="Component.Caliburn.Micro.Platform.dll_3538377800" />
+      <ComponentRef Id="Component.Flurl.dll_132298193" />
+      <ComponentRef Id="Component.Flurl.Http.dll_3583213376" />
+      <ComponentRef Id="Component.Holoone.Api.dll_1665932079" />
+      <ComponentRef Id="Component.Holoone.Api.dll.config_3016212053" />
+      <ComponentRef Id="Component.HolooneNavis.dll_1060601646" />
+      <ComponentRef Id="Component.HolooneNavis.dll.config_866463236" />
+      <ComponentRef Id="Component.Janus.Data.v3.dll_1104451798" />
+      <ComponentRef Id="Component.Janus.Windows.Common.v3.dll_332117074" />
+      <ComponentRef Id="Component.Janus.Windows.GridEX.v3.dll_3527876998" />
+      <ComponentRef Id="Component.Janus.Windows.UI.v3.dll_754460238" />
+      <ComponentRef Id="Component.lcodpgluerest.dll_644611704" />
+      <ComponentRef Id="Component.LocalStorage.dll_1041648132" />
+      <ComponentRef Id="Component.ManagedMC3.dll_3821585673" />
+      <ComponentRef Id="Component.MaterialDesignColors.dll_3116051306" />
+      <ComponentRef Id="Component.MaterialDesignExtensions.dll_247871635" />
+      <ComponentRef Id="Component.MaterialDesignThemes.Wpf.dll_3544766988" />
+      <ComponentRef Id="Component.Microsoft.Expression.Interactions.dll_2645022811" />
+      <ComponentRef Id="Component.Microsoft.Identity.Client.dll_3300436396" />
+      <ComponentRef Id="Component.Microsoft.Practices.Prism.dll_3568051277" />
+      <ComponentRef Id="Component.Microsoft.Practices.Prism.UnityExtensions.dll_2978142408" />
+      <ComponentRef Id="Component.Microsoft.Practices.ServiceLocation.dll_3569185821" />
+      <ComponentRef Id="Component.Microsoft.Practices.Unity.dll_4152165320" />
+      <ComponentRef Id="Component.Microsoft.Xaml.Behaviors.dll_853589008" />
+      <ComponentRef Id="Component.Newtonsoft.Json.dll_2571791496" />
+      <ComponentRef Id="Component.odviewdll_clr.dll_4038382152" />
+      <ComponentRef Id="Component.Syncfusion.Core.dll_1527586769" />
+      <ComponentRef Id="Component.Syncfusion.Grid.Wpf.dll_818368753" />
+      <ComponentRef Id="Component.Syncfusion.GridCommon.Wpf.dll_2088272730" />
+      <ComponentRef Id="Component.Syncfusion.Linq.Base.dll_907650602" />
+      <ComponentRef Id="Component.Syncfusion.Shared.Wpf.dll_1303226405" />
+      <ComponentRef Id="Component.Syncfusion.Tools.Wpf.dll_753366194" />
+      <ComponentRef Id="Component.System.ValueTuple.dll_1840030787" />
+      <ComponentRef Id="Component.System.Windows.Interactivity.dll_2726308904" />
+      <ComponentRef Id="Component.WPFSpark.dll_1292352430" />
+      <ComponentRef Id="Component.AdWindows.resources.dll_3210200813" />
+      <ComponentRef Id="Component.HolooneNavis.HolooneAddin.name_3862175539" />
+      <ComponentRef Id="Component.HolooneNavis.HolooneAddin.xaml_3910029168" />
+      <ComponentRef Id="Component.holo_16.ico_2311610191" />
+      <ComponentRef Id="Component.holo_32.ico_2303483925" />
+      <ComponentRef Id="AppDataFolder.Autodesk20Navisworks20Manage202020" />
+      <ComponentRef Id="AppDataFolder.Autodesk20Navisworks20Manage202020.Plugins" />
+    </Feature>
+
+    <InstallExecuteSequence>
+      <Custom Action="PreventDowngrading" After="FindRelatedProducts">NEWPRODUCTFOUND</Custom>
+
+      <RemoveExistingProducts After="InstallInitialize" />
+    </InstallExecuteSequence>
+
+    <InstallUISequence>
+      <Custom Action="PreventDowngrading" After="FindRelatedProducts">NEWPRODUCTFOUND</Custom>
+    </InstallUISequence>
+
+  </Product>
+</Wix>
+
