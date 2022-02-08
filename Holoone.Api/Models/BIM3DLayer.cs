@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Holoone.Api.Models
 {
-    public class BIM3DModel : BaseModel
+    public class BIM3DLayer : BaseModel
 	{
 		[JsonProperty("cad_model_id")]
 		public int CadModelId { get; set; }

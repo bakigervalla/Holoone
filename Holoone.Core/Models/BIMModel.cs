@@ -24,6 +24,8 @@ namespace HolooneNavis.Models
         public int Id { get; set; }
         public string Name { get; set; }
 
+        public string OriginalName { get; set; }
+
         private ModelItem _modelItem { get; set; }
         public ModelItem ModelItem { get => _modelItem; set { _modelItem = value; RaisePropertyChanged(nameof(ModelItem)); } }
 

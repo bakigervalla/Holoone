@@ -85,11 +85,11 @@ namespace HolooneNavis.ViewModels.Export.BIM.Existing
 
         //
         public ModelItem SelectedModelItem { get; set; }
-        public IEnumerable<BIM3DModel> BIM3DModels { get; set; }
+        public IEnumerable<BIM3DLayer> BIM3DLayers { get; set; }
 
         // 
         private int? OriginalPrimaryLayerId { get; set; }
-        public List<int> DeletedLayers;
+        public List<string> DeletedLayers = new List<string>();
 
         #endregion
 
@@ -123,20 +123,24 @@ namespace HolooneNavis.ViewModels.Export.BIM.Existing
                     return;
                 }
 
-                BIM3DModels = await _apiService.Get3DModelById(UserLogin, SelectedMediaFile.Id);
+                BIMLayers.Clear();
+
+                BIM3DLayers = await _apiService.Get3DModelById(UserLogin, SelectedMediaFile.Id);
 
                 BIMModel.ModelName = SelectedMediaFile.DisplayName;
-                foreach (var item in BIM3DModels)
+                foreach (var item in BIM3DLayers)
                     BIMLayers.Add(new BIMLayer
                     {
                         Name = Path.GetFileNameWithoutExtension(item.Name),
+                        OriginalName = Path.GetFileNameWithoutExtension(item.Name),
                         FilePath = item.Name,
                         IsDefault = item.IsPrimary,
-                        IsSet = true
+                        IsSet = true,
+                        Id = item.CadModelId
                     });
 
                 // get original primary layer Id
-                OriginalPrimaryLayerId = _bimLayers.First(x => x.IsDefault)?.Id;
+                OriginalPrimaryLayerId = BIMLayers.FirstOrDefault(x => x.IsDefault)?.Id;
 
                 State = "AddLayer";
 
@@ -171,7 +175,7 @@ namespace HolooneNavis.ViewModels.Export.BIM.Existing
             }
 
             if (bimLayer.Id > 0)
-                DeletedLayers.Add(bimLayer.Id);
+                DeletedLayers.Add(bimLayer.Id.ToString());
         }
 
         public void AttachModelItem(BIMLayer bimLayer)
@@ -211,48 +215,94 @@ namespace HolooneNavis.ViewModels.Export.BIM.Existing
                 SelectedFiles.Add(model.Model.SourceFileName);
         }
 
-        public async Task ExportAsync()
+        public async Task ExportAsync_FormData()
         {
             try
             {
+                if (BIMLayers.FirstOrDefault(x => x.IsDefault) == null)
+                {
+                    MessageBox.Show("Please choose a default layer");
+                    return;
+                }
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
                 BIMLayers = new ObservableCollection<BIMLayer>(_navisService.ExportToNWD(BIMLayers));
 
-                // prepare input
-                int? primaryLayerId = BIMLayers.First(x => x.IsDefault)?.Id;
-
-                var valParts = new NameValueCollection
+                var metaData = new NameValueCollection
                     {
                         { "model_name", BIMModel.ModelName },
-                        { "primary_layer_id",  primaryLayerId.ToString()},
-                        { "previous_primary_layer_id", primaryLayerId.Equals(OriginalPrimaryLayerId) ? "" : OriginalPrimaryLayerId.ToString() },
-                        { "layers_to_delete", BIMLayers.ToList().FindIndex(x=> x.IsDefault).ToString() },
-                        { "layers_to_update", BIMLayers.ToList().FindIndex(x=> x.IsDefault).ToString() },
+                        { "primary_layer_id",  BIMLayers.Single(x => x.IsDefault).Id.ToString() },
+                        { "previous_primary_layer_id", OriginalPrimaryLayerId.ToString() },
+                        //{ "layers_to_delete", DeletedLayers },
+                        //{ "layers_to_update", BIMLayers.Where(x => x.Id > 0).Select(x => x.Id.ToString()) },
                     };
 
-                //var valParts = new NameValueCollection
-                //    {
-                //        { "model_name", BIMModel.ModelName },
-                //        { "parent_folder", SelectedFolder.Id == 0 ? "null" : SelectedFolder.Id.ToString() },
-                //        { "primary_layer_id", BIMLayers.ToList().FindIndex(x=> x.IsDefault).ToString() },
-                //        { "previous_primary_layer_id", BIMLayers.ToList().FindIndex(x=> x.IsDefault).ToString() },
-                //        { "layers_to_delete", BIMLayers.ToList().FindIndex(x=> x.IsDefault).ToString() },
-                //        { "layers_to_update", BIMLayers.ToList().FindIndex(x=> x.IsDefault).ToString() },
-                //    };
+                int i = 0;
+                var updatedLayers = new NameValueCollection();
+                var layerFiles = new NameValueCollection();
 
-                NameValueCollection valColl = new NameValueCollection();
+                // Get updated lates (either change on Name or Changed ModelItem)
+                foreach (var l in BIMLayers.Where(x => x.Id > 0 && (x.ModelItem != null || !x.Name.Equals(x.OriginalName))))
+                    updatedLayers.Add(i++.ToString(), l.Id.ToString());
 
-                foreach (var layer in BIMLayers)
-                {
-                    valColl.Add(layer.FilePath, "");
-                }
 
-                await _apiService.ExportModelFormCompositionAsync(Instance.UserLogin, valParts, valColl, null, "media/bim/add/", "layers");
+                foreach (var layer in BIMLayers.Where(x => x.ModelItem != null))
+                    layerFiles.Add(layer.FilePath, "");
 
-                MessageBox.Show("Uploaded successfully.");
+                await _apiService.ExportExistingBIMAsync(Instance.UserLogin, SelectedMediaFile.Id, metaData, updatedLayers, DeletedLayers, layerFiles);
 
+                MessageBox.Show("Project exported successfully.");
                 await NavigationService.GoTo<HomeViewModel>();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                try
+                {
+                    foreach (var layer in BIMLayers)
+                        File.Delete(layer.FilePath);
+                }
+                catch { }
+
+                await _eventAggregator.PublishOnUIThreadAsync(false);
+            }
+        }
+
+        public async Task ExportAsync()
+        {
+            try
+            {
+                var primaryLayer = BIMLayers.FirstOrDefault(x => x.IsDefault);
+                if (primaryLayer == null)
+                {
+                    MessageBox.Show("Please choose a default layer");
+                    return;
+                }
+                await _eventAggregator.PublishOnUIThreadAsync(true);
+
+                BIMLayers = new ObservableCollection<BIMLayer>(_navisService.ExportToNWD(BIMLayers));
+
+                var data = new ExistingBIM3D
+                {
+                    ModelName = BIMModel.ModelName,
+                    PrimaryLayerId = primaryLayer.Id.ToString(),
+                    PreviousPrimaryLayerId = OriginalPrimaryLayerId?.ToString(),
+                    //LayersToUpdate = BIMLayers.Where(x => x.Id > 0 && (x.ModelItem != null || !x.Name.Equals(x.OriginalName)))
+                    //                            .Select((s, i) => new LayerToUpdate { index = i, value = s.Id }), // x => x.i, x => x.s.Id
+                    LayersToUpdate = BIMLayers.Where(x => x.Id > 0 && (x.ModelItem != null || !x.Name.Equals(x.OriginalName))).Select(x=> x.Id.ToString()).ToList(),
+                    LayersToDelete = DeletedLayers,
+                    Layers = BIMLayers.Where(x => x.ModelItem != null).Select(x=> new LayerFile { Name = x.Name, File = File.ReadAllBytes(x.FilePath) })
+                };
+
+                await _apiService.ExportExistingModelAsync(Instance.UserLogin, SelectedMediaFile.Id, data);
+
+                MessageBox.Show("Project exported successfully.");
+                await NavigationService.GoTo<HomeViewModel>();
+
             }
             catch (Exception ex)
             {

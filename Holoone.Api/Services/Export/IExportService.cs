@@ -16,15 +16,11 @@ namespace Holoone.Api.Services.Interfaces
 
         Task<string> ExportModelFormCompositionAsync(UserLogin user, NameValueCollection values, NameValueCollection files, ProcessingParams processingParams, string urlPath, string formDataName);
 
-        Task<string> ExportExistingBIMAsync(UserLogin user, NameValueCollection values, NameValueCollection files, ProcessingParams processingParams,
-            string urlPath, string formDataName);
+        Task<string> ExportExistingBIMAsync(UserLogin user, int mediaId, NameValueCollection metadata, NameValueCollection updatedLayers, List<string> deletedLayers, NameValueCollection files);
+        Task<IFlurlResponse> ExportExistingModelAsync(UserLogin user, int mediaId, ExistingBIM3D values);
 
         Task<IList<MediaFile>> GetCompanyMediaFolderContent(UserLogin user, int folderId = 0);
-
-        // OBSOLETE
-        Task<IFlurlResponse> ExportModelAsync(UserLogin user, MediaItem mediaItem, string filePath);
-
         Task<IList<MediaFile>> GetCompany3DModels(UserLogin user);
-        Task<IEnumerable<BIM3DModel>> Get3DModelById(UserLogin user, int mediaFileId);
+        Task<IEnumerable<BIM3DLayer>> Get3DModelById(UserLogin user, int mediaFileId);
     }
 }
