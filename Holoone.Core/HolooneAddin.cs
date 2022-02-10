@@ -20,7 +20,7 @@ namespace HolooneNavis
         protected override void OnLoaded()
         {
             // Assembly resolver
-            AppDomain.CurrentDomain.AssemblyResolve += ForceLibraryLoad;
+           // AppDomain.CurrentDomain.AssemblyResolve += ForceLibraryLoad;
 
             // MergeDefaultAppConfig();
 
@@ -112,9 +112,11 @@ namespace HolooneNavis
         /// </summary>
         private Assembly ForceLibraryLoad(object sender, ResolveEventArgs args)
         {
-            var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var assemblyPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "Autodesk", "ApplicationPlugins", 
+                "Holoone.bundle", "Contents");
 
-            string[] assemblies = new string[] { "Newtonsoft.Json.dll", "LocalStorage.dll", "Microsoft.Xaml.Behaviors.dll", "Holoone.Api.dll" };
+            string[] assemblies = new string[] { "Newtonsoft.Json.dll", "LocalStorage.dll", "Microsoft.Xaml.Behaviors.dll",
+                                                 "MaterialDesignThemes.Wpf.dll", "MaterialDesignExtensions.dll", "MaterialDesignColors.dll"};
 
             foreach (string assembly in assemblies)
                 Assembly.LoadFrom(Path.Combine(assemblyPath, assembly));

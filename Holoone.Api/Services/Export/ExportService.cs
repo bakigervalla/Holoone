@@ -280,43 +280,33 @@ namespace Holoone.Api.Services
 
             foreach (string key in metadata.Keys)
             {
-                // Write item to stream
+
                 byte[] formItemBytes = Encoding.UTF8.GetBytes(string.Format("Content-Disposition: form-data; name=\"{0}\";\r\n\r\n{1}", key, metadata[key]));
                 requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
                 requestStream.Write(formItemBytes, 0, formItemBytes.Length);
             }
 
             // Updated Layers
-            if (updatedLayers.Count == 0)
+            foreach (string key in updatedLayers.Keys)
             {
-                byte[] formItemBytes = Encoding.UTF8.GetBytes(string.Format("Content-Disposition: form-data; name=\"layers_to_update[]\""));
+                byte[] formItemBytes = Encoding.UTF8.GetBytes(string.Format("Content-Disposition: form-data; name=\"layers_to_update[{0}]\";\r\n\r\n{1}", key, updatedLayers[key]));
                 requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
                 requestStream.Write(formItemBytes, 0, formItemBytes.Length);
             }
-            else
-                foreach (string key in updatedLayers.Keys)
-                {
-                    byte[] formItemBytes = Encoding.UTF8.GetBytes(string.Format("Content-Disposition: form-data; name=\"layers_to_update[{0}]\";\r\n\r\n{1}", key, updatedLayers[key]));
-                    requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
-                    requestStream.Write(formItemBytes, 0, formItemBytes.Length);
-                }
 
             // Deleted Layers
-            if (deletedLayers.Count == 0)
+            //byte[] delFormItemBytes = Encoding.UTF8.GetBytes(string.Format("Content-Disposition: form-data; name=\"layers_to_delete\";\r\n\r\n{0}",
+            //    string.Join("[{0},]", deletedLayers)));
+            //requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
+            //requestStream.Write(delFormItemBytes, 0, delFormItemBytes.Length);
+            int i = 0;
+            foreach (string key in deletedLayers)
             {
-                byte[] formItemBytes = Encoding.UTF8.GetBytes(string.Format("Content-Disposition: form-data; name=\"layers_to_delete[]\""));
+                byte[] formItemBytes = Encoding.UTF8.GetBytes(string.Format("Content-Disposition: form-data; name=\"layers_to_delete[{0}]\";\r\n\r\n{1}", i++, deletedLayers[i]));
                 requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
                 requestStream.Write(formItemBytes, 0, formItemBytes.Length);
             }
-            else
-            {
-                foreach (string id in deletedLayers)
-                {
-                    byte[] formItemBytes = Encoding.UTF8.GetBytes(string.Format("Content-Disposition: form-data; name=\"layers_to_delete[]\";\r\n\r\n{0}", id));
-                    requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
-                    requestStream.Write(formItemBytes, 0, formItemBytes.Length);
-                }
-            }
+
 
             if (files != null)
             {
@@ -390,11 +380,11 @@ namespace Holoone.Api.Services
                                                     .WithHeader("Authorization", "Token " + user.Token)
                                                     //.PostJsonAsync(jsonFormData)
                                                     .PostAsync(byteContent);
-                                                    //.PostMultipartAsync(mp => mp
-                                                    //    //.AddFile("layers", Path.GetFileName(files[0]))                    // local file path
-                                                    //    //* .AddFile("file2", new MemoryStream(byteArray), Path.GetFileName(values.Layers[0].Name))        // file stream
-                                                    //    .AddJson("json", jsonFormData)              // json
-                                                    //);
+                //.PostMultipartAsync(mp => mp
+                //    //.AddFile("layers", Path.GetFileName(files[0]))                    // local file path
+                //    //* .AddFile("file2", new MemoryStream(byteArray), Path.GetFileName(values.Layers[0].Name))        // file stream
+                //    .AddJson("json", jsonFormData)              // json
+                //);
 
 
                 return response;

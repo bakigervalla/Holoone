@@ -63,31 +63,31 @@
   <ItemGroup>
     <Reference Include="AdWindows, Version=2017.11.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\AdWindows.dll</HintPath>
+      <HintPath>..\..\..\Autodesk\Navisworks Manage 2022\AdWindows.dll</HintPath>
     </Reference>
     <Reference Include="Autodesk.Navisworks.Api">
-      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.Api.dll</HintPath>
+      <HintPath>..\..\..\Autodesk\Navisworks Manage 2022\Autodesk.Navisworks.Api.dll</HintPath>
     </Reference>
     <Reference Include="Autodesk.Navisworks.Automation">
-      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.Automation.dll</HintPath>
+      <HintPath>..\..\..\Autodesk\Navisworks Manage 2022\Autodesk.Navisworks.Automation.dll</HintPath>
     </Reference>
     <Reference Include="Autodesk.Navisworks.ComApi">
-      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.ComApi.dll</HintPath>
+      <HintPath>..\..\..\Autodesk\Navisworks Manage 2022\Autodesk.Navisworks.ComApi.dll</HintPath>
     </Reference>
     <Reference Include="Autodesk.Navisworks.Controls">
-      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.Controls.dll</HintPath>
+      <HintPath>..\..\..\Autodesk\Navisworks Manage 2022\Autodesk.Navisworks.Controls.dll</HintPath>
     </Reference>
     <Reference Include="Autodesk.Navisworks.Interop.ComApi">
-      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.Interop.ComApi.dll</HintPath>
+      <HintPath>..\..\..\Autodesk\Navisworks Manage 2022\Autodesk.Navisworks.Interop.ComApi.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Autodesk.Navisworks.Interop.ComApiAutomation">
-      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.Interop.ComApiAutomation.dll</HintPath>
+      <HintPath>..\..\..\Autodesk\Navisworks Manage 2022\Autodesk.Navisworks.Interop.ComApiAutomation.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="navisworks.gui.roamer, Version=16.0.1326.55, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\navisworks.gui.roamer.dll</HintPath>
+      <HintPath>..\..\..\Autodesk\Navisworks Manage 2022\navisworks.gui.roamer.dll</HintPath>
     </Reference>
     <Reference Include="netstandard" />
     <Reference Include="PresentationFramework" />

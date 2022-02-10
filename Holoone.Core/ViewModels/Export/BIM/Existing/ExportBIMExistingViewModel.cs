@@ -215,7 +215,7 @@ namespace HolooneNavis.ViewModels.Export.BIM.Existing
                 SelectedFiles.Add(model.Model.SourceFileName);
         }
 
-        public async Task ExportAsync_FormData()
+        public async Task ExportAsync()
         {
             try
             {
@@ -232,7 +232,7 @@ namespace HolooneNavis.ViewModels.Export.BIM.Existing
                     {
                         { "model_name", BIMModel.ModelName },
                         { "primary_layer_id",  BIMLayers.Single(x => x.IsDefault).Id.ToString() },
-                        { "previous_primary_layer_id", OriginalPrimaryLayerId.ToString() },
+                        { "previous_primary_layer_id", OriginalPrimaryLayerId.HasValue ? OriginalPrimaryLayerId.ToString() : BIMLayers.Single(x => x.IsDefault).Id.ToString() },
                         //{ "layers_to_delete", DeletedLayers },
                         //{ "layers_to_update", BIMLayers.Where(x => x.Id > 0).Select(x => x.Id.ToString()) },
                     };
@@ -242,7 +242,7 @@ namespace HolooneNavis.ViewModels.Export.BIM.Existing
                 var layerFiles = new NameValueCollection();
 
                 // Get updated lates (either change on Name or Changed ModelItem)
-                foreach (var l in BIMLayers.Where(x => x.Id > 0 && (x.ModelItem != null || !x.Name.Equals(x.OriginalName))))
+                foreach (var l in BIMLayers) //.Where(x => x.Id > 0 && (x.ModelItem != null || !x.Name.Equals(x.OriginalName))))
                     updatedLayers.Add(i++.ToString(), l.Id.ToString());
 
 
@@ -272,7 +272,7 @@ namespace HolooneNavis.ViewModels.Export.BIM.Existing
             }
         }
 
-        public async Task ExportAsync()
+        public async Task ExportAsync_FLURL()
         {
             try
             {
