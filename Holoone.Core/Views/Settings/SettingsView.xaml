@@ -18,6 +18,12 @@
             <md:PackIcon Kind="Gear" VerticalAlignment="Center" />
             <TextBlock Text="Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" />
         </StackPanel>
+
+        <StackPanel Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Orientation="Vertical">
+            <TextBlock Text="Holoone Navisworks integration 1.0.0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <TextBlock Text="{Binding ApiVersion}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </StackPanel>
+
     </Grid>
 
 </UserControl>

@@ -26,7 +26,7 @@ namespace HolooneNavis.ViewModels.Login
 
             // !CRITICAL: Remove on live
             LoginCredentials = new LoginCredentials { Username = "baki.test@holo-one.com", Password = "g6hN!(3#" };
-            }
+        }
 
         #region methods
 

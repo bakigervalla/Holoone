@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ApplicationPackage SchemaVersion="1.0" AutodeskProduct="Navisworks" Name="Holoone" Description="Holoone Navisworks Plugin." AppVersion="1.0.0" FriendlyVersion="1.0.0" ProductType="Application" HelpFile="./Contents/Resources/help.html" SupportedLocales="Enu" AppNameSpace="appstore.exchange.autodesk.com" Author="Holoone" ProductCode="{22DB936B-5525-4CA8-B508-26D5BB3283F8}" UpgradeCode="{3F809177-F479-4143-9E00-D1C97CE2D1D9}" Icon="./Contents/holo_one_logo.png">
+    <CompanyDetails Name="Holoone" Url="https://holo-one.com" Email="bakigervalla@gmail.com" />
+    <Components Description="2018 parts">
+        <RuntimeRequirements OS="Win64" Platform="NAVMAN|NAVSIM" SeriesMin="Nw15" SeriesMax="Nw15" />
+        <ComponentEntry AppName="HolooneNavis" AppType="ManagedPlugin" Version="1.0.0" ModuleName="./Contents/HolooneNavis.dll" AppDescription="HolooneNavis" />
+    </Components>	
+    <Components Description="2019 parts">
+        <RuntimeRequirements OS="Win64" Platform="NAVMAN|NAVSIM" SeriesMin="Nw16" SeriesMax="Nw16" />
+        <ComponentEntry AppName="HolooneNavis" AppType="ManagedPlugin" Version="1.0.0" ModuleName="./Contents/v16/HolooneNavis.dll" AppDescription="HolooneNavis" />
+    </Components>
+    <Components Description="2020 parts">
+        <RuntimeRequirements OS="Win64" Platform="NAVMAN|NAVSIM" SeriesMin="Nw17" SeriesMax="Nw17" />
+        <ComponentEntry AppName="HolooneNavis" AppType="ManagedPlugin" Version="1.0.0" ModuleName="./Contents/v17/HolooneNavis.dll" AppDescription="HolooneNavis" />
+    </Components>
+    <Components Description="2021 parts">
+        <RuntimeRequirements OS="Win64" Platform="NAVMAN|NAVSIM" SeriesMin="Nw18" SeriesMax="Nw18" />
+        <ComponentEntry AppName="HolooneNavis" AppType="ManagedPlugin" Version="1.0.0" ModuleName="./Contents/v18/HolooneNavis.dll" AppDescription="HolooneNavis" />
+    </Components>
+    <Components Description="2022 parts">
+        <RuntimeRequirements OS="Win64" Platform="NAVMAN|NAVSIM" SeriesMin="Nw19" SeriesMax="Nw19" />
+        <ComponentEntry AppName="HolooneNavis" AppType="ManagedPlugin" Version="1.0.0" ModuleName="./Contents/v19/HolooneNavis.dll" AppDescription="HolooneNavis" />
+    </Components>
+</ApplicationPackage>

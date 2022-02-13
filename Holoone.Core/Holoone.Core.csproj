@@ -31,7 +31,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\Autodesk\Navisworks Simulate 2019\Plugins\HolooneNavis\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -61,9 +61,8 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AdWindows, Version=3.1.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Autodesk\Navisworks Manage 2020\Plugins\HolooneNavis\AdWindows.dll</HintPath>
+    <Reference Include="AdWindows">
+      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\AdWindows.dll</HintPath>
     </Reference>
     <Reference Include="Autodesk.Navisworks.Api, Version=17.0.1336.83, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
@@ -91,7 +90,7 @@
     </Reference>
     <Reference Include="navisworks.gui.roamer, Version=19.0.1366.6, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Autodesk\Navisworks Manage 2020\Plugins\HolooneNavis\navisworks.gui.roamer.dll</HintPath>
+      <HintPath>..\..\..\Autodesk\Navisworks Manage 2020\navisworks.gui.roamer.dll</HintPath>
     </Reference>
     <Reference Include="netstandard" />
     <Reference Include="PresentationFramework" />
@@ -482,17 +481,17 @@
     <Resource Include="Resources\Images\holo_one_logo.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Holoone.Api\Holoone.Api.csproj">
-      <Project>{45706951-170f-4706-b69f-4cd2fda72994}</Project>
-      <Name>Holoone.Api</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\Images\holo_16.ico" />
     <Resource Include="Resources\Images\holo_32.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="FodyWeavers.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Holoone.Api\Holoone.Api.csproj">
+      <Project>{45706951-170f-4706-b69f-4cd2fda72994}</Project>
+      <Name>Holoone.Api</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

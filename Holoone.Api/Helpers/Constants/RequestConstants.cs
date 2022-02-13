@@ -10,6 +10,7 @@ namespace Holoone.Api.Helpers.Constants
 {
     public static class RequestConstants
     {
+        public const string API_VERSION = "1.0.0";
         public const string RootUrl = "https://dev.holo-one.com/";
         public const string BaseUrl = "https://dev.holo-one.com/core/";
         
@@ -19,9 +20,9 @@ namespace Holoone.Api.Helpers.Constants
             { "China", "https://core.holo-one.cn/core/"}
         };
         public static IDictionary<string, string> SphereProdBaseUrls = new Dictionary<string, string> {
-            { "USA", "https://holo-one.com/core/"},
-            { "Europe", "https://holo-one.com/core/"},
-            { "China", "https://holo-one.cn/core/"}
+            { "USA", "https://core.holo-one.com/core/"},
+            { "Europe", "https://core.holo-one.com/core/"},
+            { "China", "https://core.holo-one.cn/core/"}
         };
 
         public static IDictionary<string, string> LenovoBaseUrls = new Dictionary<string, string> {

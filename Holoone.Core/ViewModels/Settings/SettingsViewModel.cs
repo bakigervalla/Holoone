@@ -1,9 +1,5 @@
-﻿using HolooneNavis.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Holoone.Api.Helpers.Constants;
+using HolooneNavis.Services.Interfaces;
 
 namespace HolooneNavis.ViewModels.Settings
 {
@@ -13,5 +9,7 @@ namespace HolooneNavis.ViewModels.Settings
         {
 
         }
+
+        public string ApiVersion => $"API Version: {RequestConstants.API_VERSION}";
     }
 }
