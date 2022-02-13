@@ -42,8 +42,10 @@ namespace HolooneNavis.Services
             Document oDoc = Application.ActiveDocument;
             DocumentModels models = oDoc.Models;
 
-            IEnumerable<ModelItem> visible,
+            IList<ModelItem> visible = new List<ModelItem>(),
                 hidden;
+            ModelItem parent = null;
+            
             string basePath = Path.Combine(Path.GetTempPath(), "HolooneNavis");
             IEnumerable<ModelItem> allModelItems = bimLayers.Select(x => x.ModelItem);
 
@@ -51,20 +53,41 @@ namespace HolooneNavis.Services
                 Directory.CreateDirectory(basePath);
 
             //Add all the items that are visible to the visible collection
-            var childItems = oDoc.Models.RootItems.SelectMany(x => x.Children);
+            hidden = oDoc.Models.RootItems.SelectMany(x => x.Descendants).ToList();
 
             foreach (var layer in bimLayers.Where(x => x.ModelItem != null && !string.IsNullOrEmpty(x.Name)))
             {
-                visible = childItems.Where(x => x.DisplayName == layer.ModelItem.DisplayName).SelectMany(x => x.DescendantsAndSelf);
-                hidden = childItems.Where(x => x.DisplayName != layer.ModelItem.DisplayName).SelectMany(x => x.DescendantsAndSelf);
+                // if not the root item is selected find selected layer
+                if (oDoc.Models.RootItems.FirstOrDefault(x => x.DisplayName == layer.ModelItem.DisplayName) == null)
+                {
+                    if (!layer.ModelItem.IsLayer)
+                    {
+                        parent = layer.ModelItem.FindFirstObjectAncestor();
+                        while (parent != null)
+                        {
+                            visible.Add(parent);
+                            parent = parent.FindFirstObjectAncestor();
+                        }
 
-                //Assign the ModelItemCollection to the selection
-                Application.ActiveDocument.CurrentSelection.CopyFrom(visible);
+                        foreach (var itm in layer.ModelItem.Parent.Descendants)
+                            if (itm.DisplayName == layer.ModelItem.DisplayName)
+                                foreach (var chld in itm.DescendantsAndSelf)
+                                    visible.Add(chld);
+                    }
+                    else
+                        visible = hidden.Where(x => x.DisplayName == layer.ModelItem.DisplayName).SelectMany(x => x.DescendantsAndSelf).ToList();
 
-                //hide the remaining items
-                Application.ActiveDocument.Models.SetHidden(hidden, true);
+                    foreach (var itm in visible)
+                        hidden.Remove(itm);
+                    
+                    //Assign the ModelItemCollection to the selection
+                    Application.ActiveDocument.CurrentSelection.CopyFrom(visible);
 
-                layer.FilePath = Path.Combine(basePath, layer.Name + ".nwd");
+                    //hide the remaining items
+                    Application.ActiveDocument.Models.SetHidden(hidden, true);
+                }
+
+                layer.FilePath = Path.Combine(basePath, Path.GetFileNameWithoutExtension(layer.Name) + ".nwd");
 
                 //Save the Navisworks file
                 oDoc.PublishFile(layer.FilePath, GetPublishProperties(layer.Name));

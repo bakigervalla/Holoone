@@ -48,11 +48,28 @@ namespace Holoone.Api.Helpers.Extensions
             return "";
         }
 
-        public static string GetBaseUrl(UserLogin login)
+        public static string GetBaseUrl(string loginType, string region)
         {
-            return login.LoginType.Type == "LCP"
-                                    ? RequestConstants.LenovoBaseUrls[login.LoginType.Region]
-                                    : RequestConstants.SphereBaseUrls[login.LoginType.Region];
+            return loginType == "LCP"
+                                    ? RequestConstants.LenovoBaseUrls[region]
+                                    : GetSphereBaseUrlByEnvironment(region);
+        }
+
+        public static string GetHostUrl(string loginType, string region)
+        {
+            return loginType == "LCP"
+                                    ? RequestConstants.LCPHOSTBaseUrls[region]
+                                    : GetSphereBaseUrlByEnvironment(region);
+        }
+
+        private static string GetSphereBaseUrlByEnvironment(string region)
+        {
+#if DEBUG
+            return RequestConstants.SphereDevBaseUrls[region];
+#else
+            return RequestConstants.SphereProdBaseUrls[region];
+#endif
+
         }
 
     }

@@ -6,6 +6,7 @@ using HolooneNavis.Helpers;
 using HolooneNavis.Services.Interfaces;
 using HolooneNavis.ViewModels.Home;
 using HolooneNavis.Views;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -46,6 +47,8 @@ namespace HolooneNavis.ViewModels.Login
         {
             try
             {
+                LCPOrganization.IsDirty = true;
+
                 if (LCPOrganization.ValidateObject(LCPOrganization).HasErrors)
                     return;
 
@@ -90,8 +93,8 @@ namespace HolooneNavis.ViewModels.Login
                     token = await loginPolling();
                     Thread.Sleep(1000);
                 }
-                
-                if(!string.IsNullOrEmpty(token.AccessToken))
+
+                if (!string.IsNullOrEmpty(token.AccessToken))
                 {
                     Instance.UserLogin.Username = ""; // LoginCredentials.Username;
                     Instance.UserLogin.Password = ""; // LoginCredentials.Password;
@@ -100,6 +103,9 @@ namespace HolooneNavis.ViewModels.Login
                     Instance.UserLogin.LoginType = new LoginType { Type = "LCP", Region = LoginCredentials.Hosts.Single(x => x.IsChecked).Text };
                     Instance.UserLogin.Token = token.AccessToken;
                     Instance.UserLogin.RefreshToken = token.RefreshToken;
+                    Instance.UserLogin.DeviceId = deviceId;
+                    Instance.UserLogin.RegionUrl = regionUrl;
+                    Instance.UserLogin.OrganizationId = LCPOrganization.Organization;
 
                     _localeStorage.Store("user_login", Instance.UserLogin);
 

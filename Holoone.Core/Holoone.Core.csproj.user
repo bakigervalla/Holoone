@@ -13,4 +13,8 @@
     <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
     <StartAction>Program</StartAction>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <StartAction>Program</StartAction>
+    <StartProgram>E:\Program Files\Autodesk\Navisworks Simulate 2019\Roamer.exe</StartProgram>
+  </PropertyGroup>
 </Project>

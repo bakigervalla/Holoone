@@ -152,7 +152,7 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
             {
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
-                MediaFiles = await _exportService.GetCompanyMediaFolderContent(Instance.UserLogin, 0);
+                MediaFiles = await (await _exportService.EnsureTokenAsync(Instance.UserLogin)).GetCompanyMediaFolderContent(Instance.UserLogin, 0);
 
                 if (MediaFiles != null)
                 {
@@ -185,7 +185,7 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
 
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
-                var result = await _exportService.GetCompanyMediaFolderContent(UserLogin, mediaFile.Id);
+                var result = await (await _exportService.EnsureTokenAsync(Instance.UserLogin)).GetCompanyMediaFolderContent(UserLogin, mediaFile.Id);
 
                 if (result != null)
                 {
@@ -236,7 +236,12 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
                     valColl.Add(layer.FilePath, "");
                 }
 
-                await _exportService.ExportModelFormCompositionAsync(Instance.UserLogin, valParts, valColl, null, "media/bim/add/", "layers");
+                await (await _exportService.EnsureTokenAsync(Instance.UserLogin)).ExportModelFormCompositionAsync(Instance.UserLogin, valParts, valColl, null, "media/bim/add/", "layers");
+
+                foreach (var layer in BIMLayers)
+                    File.Delete(layer.FilePath);
+
+                await _eventAggregator.PublishOnUIThreadAsync(false);
 
                 MessageBox.Show("Uploaded successfully.");
 
@@ -245,17 +250,6 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                try
-                {
-                    foreach (var layer in BIMLayers)
-                        File.Delete(layer.FilePath);
-                }
-                catch { }
-
-                await _eventAggregator.PublishOnUIThreadAsync(false);
             }
         }
 

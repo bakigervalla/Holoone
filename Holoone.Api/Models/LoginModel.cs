@@ -50,6 +50,10 @@ namespace Holoone.Api.Models
         public string Token { get; set; }
         public string RefreshToken { get; set; }
 
+        public string DeviceId { get; set; }
+        public string RegionUrl { get; set; }
+        public string OrganizationId { get; set; }
+
         public DateTimeOffset TokenExpires { get; set; }
 
         private bool _isLoggedIn;
@@ -173,6 +177,9 @@ namespace Holoone.Api.Models
         [Required(ErrorMessage = "Organization field is required")]
         [JsonProperty("organization")]
         public string Organization { get; set; }
+
+        [JsonIgnore]
+        public bool IsDirty { get; set; }
 
     }
 

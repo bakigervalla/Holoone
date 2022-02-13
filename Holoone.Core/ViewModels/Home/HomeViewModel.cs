@@ -10,7 +10,6 @@ namespace HolooneNavis.ViewModels.Home
     {
         public HomeViewModel(IHoloNavigationService navigationService) //: base(navigationService)
         {
-            
         }
 
         public void ShowLoginPage() => NavigationService.GoTo<LoginViewModel>();

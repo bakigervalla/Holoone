@@ -123,7 +123,7 @@ namespace HolooneNavis.ViewModels.Export.Default
             {
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
-                MediaFiles = await _exportService.GetCompanyMediaFolderContent(Instance.UserLogin, 0);
+                MediaFiles = await (await _exportService.EnsureTokenAsync(Instance.UserLogin)).GetCompanyMediaFolderContent(Instance.UserLogin, 0);
 
                 if (MediaFiles != null)
                 {
@@ -156,7 +156,7 @@ namespace HolooneNavis.ViewModels.Export.Default
 
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
-                var result = await _exportService.GetCompanyMediaFolderContent(Instance.UserLogin, mediaFile.Id);
+                var result = await (await _exportService.EnsureTokenAsync(Instance.UserLogin)).GetCompanyMediaFolderContent(Instance.UserLogin, mediaFile.Id);
 
                 if (result != null)
                 {
@@ -206,8 +206,13 @@ namespace HolooneNavis.ViewModels.Export.Default
                         { layer.FilePath, "" }
                     };
 
-                    await _exportService.ExportModelFormCompositionAsync(Instance.UserLogin, valParts, valColl, ProcessingParams, "media/add/file/", "file");
+                    await (await _exportService.EnsureTokenAsync(Instance.UserLogin)).ExportModelFormCompositionAsync(Instance.UserLogin, valParts, valColl, ProcessingParams, "media/add/file/", "file");
                 }
+
+                foreach (var layer in BIMLayers)
+                    File.Delete(layer.FilePath);
+
+                await _eventAggregator.PublishOnUIThreadAsync(false);
 
                 MessageBox.Show("Uploaded successfully.");
 
@@ -217,17 +222,6 @@ namespace HolooneNavis.ViewModels.Export.Default
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                try
-                {
-                    foreach (var layer in BIMLayers)
-                        File.Delete(layer.FilePath);
-                }
-                catch { }
-
-                await _eventAggregator.PublishOnUIThreadAsync(false);
             }
         }
 

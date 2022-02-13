@@ -13,10 +13,15 @@ namespace Holoone.Api.Helpers.Constants
         public const string RootUrl = "https://dev.holo-one.com/";
         public const string BaseUrl = "https://dev.holo-one.com/core/";
         
-        public static IDictionary<string, string> SphereBaseUrls = new Dictionary<string, string> {
+        public static IDictionary<string, string> SphereDevBaseUrls = new Dictionary<string, string> {
             { "USA", "https://dev.holo-one.com/core/"},
             { "Europe", "https://dev.holo-one.com/core/"},
             { "China", "https://core.holo-one.cn/core/"}
+        };
+        public static IDictionary<string, string> SphereProdBaseUrls = new Dictionary<string, string> {
+            { "USA", "https://holo-one.com/core/"},
+            { "Europe", "https://holo-one.com/core/"},
+            { "China", "https://holo-one.cn/core/"}
         };
 
         public static IDictionary<string, string> LenovoBaseUrls = new Dictionary<string, string> {

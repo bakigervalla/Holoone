@@ -31,7 +31,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\..\Autodesk\Navisworks Simulate 2019\Plugins\HolooneNavis\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -61,33 +61,37 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AdWindows, Version=2017.11.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="AdWindows, Version=3.1.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Autodesk\Navisworks Manage 2022\AdWindows.dll</HintPath>
+      <HintPath>..\..\..\Autodesk\Navisworks Manage 2020\Plugins\HolooneNavis\AdWindows.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.Navisworks.Api">
-      <HintPath>..\..\..\Autodesk\Navisworks Manage 2020\Autodesk.Navisworks.Api.dll</HintPath>
+    <Reference Include="Autodesk.Navisworks.Api, Version=17.0.1336.83, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.Api.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.Navisworks.Automation">
-      <HintPath>..\..\..\Autodesk\Navisworks Manage 2020\Autodesk.Navisworks.Automation.dll</HintPath>
+    <Reference Include="Autodesk.Navisworks.Automation, Version=17.0.1336.83, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.Automation.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.Navisworks.ComApi">
-      <HintPath>..\..\..\Autodesk\Navisworks Manage 2020\Autodesk.Navisworks.ComApi.dll</HintPath>
+    <Reference Include="Autodesk.Navisworks.ComApi, Version=17.0.1336.83, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.ComApi.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.Navisworks.Controls">
-      <HintPath>..\..\..\Autodesk\Navisworks Manage 2020\Autodesk.Navisworks.Controls.dll</HintPath>
+    <Reference Include="Autodesk.Navisworks.Controls, Version=17.0.1336.83, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.Controls.dll</HintPath>
     </Reference>
     <Reference Include="Autodesk.Navisworks.Interop.ComApi">
-      <HintPath>..\..\..\Autodesk\Navisworks Manage 2020\Autodesk.Navisworks.Interop.ComApi.dll</HintPath>
+      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.Interop.ComApi.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Autodesk.Navisworks.Interop.ComApiAutomation">
-      <HintPath>..\..\..\Autodesk\Navisworks Manage 2020\Autodesk.Navisworks.Interop.ComApiAutomation.dll</HintPath>
+      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.Interop.ComApiAutomation.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="navisworks.gui.roamer, Version=16.0.1326.55, Culture=neutral, processorArchitecture=AMD64">
+    <Reference Include="navisworks.gui.roamer, Version=19.0.1366.6, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Autodesk\Navisworks Manage 2022\navisworks.gui.roamer.dll</HintPath>
+      <HintPath>..\..\..\Autodesk\Navisworks Manage 2020\Plugins\HolooneNavis\navisworks.gui.roamer.dll</HintPath>
     </Reference>
     <Reference Include="netstandard" />
     <Reference Include="PresentationFramework" />
@@ -236,6 +240,9 @@
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
+    <None Include="FodyWeavers.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="HolooneNavis.HolooneAddin.name" />
     <None Include="Resources\Styles\App.xaml.OLd">
       <SubType>Designer</SubType>

@@ -11,6 +11,8 @@ namespace Holoone.Api.Services.Interfaces
 {
     public interface ILoginService
     {
+        Task RefreshLoginToken(UserLogin userLogin);
+
         Task<IFlurlResponse> LoginSphereAsync(LoginCredentials loginCredentials);
 
         Task<MicrosoftGraphResponse> LoginWithMicrosoftAsync(LoginCredentials loginCredentials);

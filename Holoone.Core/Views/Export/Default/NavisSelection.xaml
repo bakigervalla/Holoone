@@ -31,7 +31,8 @@
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                     <Border Background="Transparent">
-                        <TextBlock Text="{Binding Path=PropertyCategories, Converter={conv:ModelItemDisplayNameConverter}}" 
+                        <!--<TextBlock Text="{Binding Path=PropertyCategories, Converter={conv:ModelItemDisplayNameConverter}}"-->
+                        <TextBlock Text="{Binding ., Converter={conv:ModelItemDisplayNameConverter}}" 
                                    VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="6 3 0 0">
                              <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseLeftButtonUp">

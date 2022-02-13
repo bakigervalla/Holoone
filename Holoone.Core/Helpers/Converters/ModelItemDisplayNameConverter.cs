@@ -13,25 +13,34 @@ namespace HolooneNavis.Helpers.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            PropertyCategoryCollection oColl = value as PropertyCategoryCollection;
+            ModelItem model = value as ModelItem;
 
-            if (oColl == null)
-                return "error!";
+            if (model.DisplayName != "")
+                return model.DisplayName;
+            else
+                return model.Descendants.FirstOrDefault()?.DisplayName;
 
-            // try to check if there is name with the item
-            DataProperty oDP = oColl.FindPropertyByDisplayName("Item", "Name");
+            // The below method for returning SelectTree Item name, returns empty/Insert parent's name (Insert->Door_12)
 
-            if (oDP != null) //use "name" as node name
-                return oDP.Value.ToDisplayString();
+            //PropertyCategoryCollection oColl = value as PropertyCategoryCollection;
+
+            //if (oColl == null)
+            //    return "error!";
+
+            //// try to check if there is name with the item
+            //DataProperty oDP = oColl.FindPropertyByDisplayName("Item", "Name");
+
+            //if (oDP != null) //use "name" as node name
+            //    return oDP.Value.ToDisplayString();
 
 
-            // if no "name", then check "type"
-            oDP = oColl.FindPropertyByDisplayName("Item", "Type");
-            if (oDP != null) //use "type" as node name
-                return oDP.Value.ToDisplayString();
+            //// if no "name", then check "type"
+            //oDP = oColl.FindPropertyByDisplayName("Item", "Type");
+            //if (oDP != null) //use "type" as node name
+            //    return oDP.Value.ToDisplayString();
 
-            // can be null? that must be a terrible error!
-            return "Error!";
+            //// can be null? that must be a terrible error!
+            //return "Error!";
         }
 
         public object ConvertBack(object value, Type targetTypes, object parameter, System.Globalization.CultureInfo culture)

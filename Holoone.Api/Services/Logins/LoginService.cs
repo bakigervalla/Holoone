@@ -14,6 +14,11 @@ using Microsoft.Identity.Client;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using Holoone.Api.Helpers.Extensions;
+using Hanssens.Net;
+using System.Net.Http;
+using System.Net;
+using Newtonsoft.Json;
+using System.Windows.Forms;
 
 namespace Holoone.Api.Services
 {
@@ -22,30 +27,82 @@ namespace Holoone.Api.Services
 
         private readonly IFlurlClient _flurlClient;
         private readonly IMicrosoftGraphService _microsoftGraph;
+        private readonly ILocalStorage _localeStorage;
 
         public LoginService(
             IFlurlClientFactory flurlClientFac,
-            IMicrosoftGraphService microsoftGraph
+            IMicrosoftGraphService microsoftGraph,
+            ILocalStorage localeStorage
             )
         {
             _flurlClient = flurlClientFac.Get(RequestConstants.BaseUrl);
             _microsoftGraph = microsoftGraph;
+            _localeStorage = localeStorage;
         }
 
         public async Task<IFlurlResponse> LoginSphereAsync(LoginCredentials loginCredentials)
         {
             string hostKey = loginCredentials.Hosts.Single(x => x.IsChecked).Text;
-            _flurlClient.BaseUrl = RequestConstants.SphereBaseUrls[hostKey];
+            _flurlClient.BaseUrl = Utility.GetBaseUrl("Sphere", hostKey);
 
             return await _flurlClient.Request("api-token-auth/")
                     .WithHeader(RequestConstants.UserAgent, RequestConstants.UserAgentValue)
                     .PostJsonAsync(loginCredentials);
         }
 
+        public async Task RefreshLoginToken(UserLogin userLogin)
+        {
+            // get login data
+            var isLoggedIn = _localeStorage.Exists("user_login");
+
+            if (!isLoggedIn)
+                return;
+
+            var client = new HttpClient();
+
+            //var userLogin = _localeStorage.Get<UserLogin>("user_login");
+
+            if (userLogin.LoginType.Type == "LCP")
+            {
+                // check is token valid, otherwise refresh token
+                var checkUrl = Utility.GetBaseUrl("LCP", userLogin.LoginType.Region);
+
+                using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{checkUrl}media/?type=generic_3d_model"))
+                {
+                    requestMessage.Headers.Add("Bearer", userLogin.Token);
+
+                    var result = await client.SendAsync(requestMessage);
+
+                    if (result.StatusCode != HttpStatusCode.Forbidden)
+                        return;
+                }
+
+                // refresh token
+                var host = Utility.GetHostUrl("LCP", userLogin.LoginType.Region);
+
+                var refreshTokenUrl = $"{userLogin.RegionUrl}integration/thinkreality/refresh/?client_id={userLogin.OrganizationId}&host={host}&refresh_token={userLogin.RefreshToken}";
+
+                using (var requestMessage = new HttpRequestMessage(HttpMethod.Get, refreshTokenUrl))
+                {
+                    var response = await client.SendAsync(requestMessage);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var responseContent = await response.Content.ReadAsStringAsync();
+                        dynamic result = JsonConvert.DeserializeObject(responseContent);
+
+                        userLogin.Token = result.access_token;
+                        userLogin.RefreshToken = result.refresh_token;
+                        _localeStorage.Store("user_login", userLogin);
+                    }
+                }
+            }
+        }
+
         public async Task<MicrosoftGraphResponse> LoginWithMicrosoftAsync(LoginCredentials loginCredentials)
         {
             string hostKey = loginCredentials.Hosts.Single(x => x.IsChecked).Text;
-            _flurlClient.BaseUrl = RequestConstants.SphereBaseUrls[hostKey];
+            _flurlClient.BaseUrl = Utility.GetBaseUrl("Sphere", hostKey);
 
             string response = await _flurlClient.Request("integration/microsoft-graph/authorize/?request_type=sign_up&origin=app")
                                     // .WithHeaders(new { Content_Type = "application/x-www-form-urlencoded" })

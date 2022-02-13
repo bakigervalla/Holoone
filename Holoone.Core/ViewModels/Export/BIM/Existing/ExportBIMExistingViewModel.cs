@@ -19,18 +19,18 @@ namespace HolooneNavis.ViewModels.Export.BIM.Existing
 {
     public class ExportBIMExistingViewModel : BaseViewModel
     {
-        private readonly IExportService _apiService;
+        private readonly IExportService _exportService;
         private readonly INavisService _navisService;
         private readonly IEventAggregator _eventAggregator;
 
         public ExportBIMExistingViewModel(
             IHoloNavigationService navigationService,
-            IExportService apiService,
+            IExportService exportService,
             INavisService navisService,
             IEventAggregator eventAggregator
             )
         {
-            _apiService = apiService;
+            _exportService = exportService;
             _navisService = navisService;
             _eventAggregator = eventAggregator;
 
@@ -99,7 +99,7 @@ namespace HolooneNavis.ViewModels.Export.BIM.Existing
             {
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
-                MediaFiles = await _apiService.GetCompany3DModels(UserLogin);
+                MediaFiles = await (await _exportService.EnsureTokenAsync(Instance.UserLogin)).GetCompany3DModels(UserLogin);
             }
             catch (Exception ex)
             {
@@ -125,7 +125,7 @@ namespace HolooneNavis.ViewModels.Export.BIM.Existing
 
                 BIMLayers.Clear();
 
-                BIM3DLayers = await _apiService.Get3DModelById(UserLogin, SelectedMediaFile.Id);
+                BIM3DLayers = await (await _exportService.EnsureTokenAsync(Instance.UserLogin)).Get3DModelById(UserLogin, SelectedMediaFile.Id);
 
                 BIMModel.ModelName = SelectedMediaFile.DisplayName;
                 foreach (var item in BIM3DLayers)
@@ -249,26 +249,22 @@ namespace HolooneNavis.ViewModels.Export.BIM.Existing
                 foreach (var layer in BIMLayers.Where(x => x.ModelItem != null))
                     layerFiles.Add(layer.FilePath, "");
 
-                await _apiService.ExportExistingBIMAsync(Instance.UserLogin, SelectedMediaFile.Id, metaData, updatedLayers, DeletedLayers, layerFiles);
+                await (await _exportService.EnsureTokenAsync(Instance.UserLogin))
+                                            .ExportExistingBIMAsync(Instance.UserLogin, SelectedMediaFile.Id, metaData, updatedLayers, DeletedLayers, layerFiles);
+
+                foreach (var layer in BIMLayers)
+                    File.Delete(layer.FilePath);
+
+                await _eventAggregator.PublishOnUIThreadAsync(false);
 
                 MessageBox.Show("Project exported successfully.");
+
                 await NavigationService.GoTo<HomeViewModel>();
 
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                try
-                {
-                    foreach (var layer in BIMLayers)
-                        File.Delete(layer.FilePath);
-                }
-                catch { }
-
-                await _eventAggregator.PublishOnUIThreadAsync(false);
             }
         }
 
@@ -293,12 +289,12 @@ namespace HolooneNavis.ViewModels.Export.BIM.Existing
                     PreviousPrimaryLayerId = OriginalPrimaryLayerId?.ToString(),
                     //LayersToUpdate = BIMLayers.Where(x => x.Id > 0 && (x.ModelItem != null || !x.Name.Equals(x.OriginalName)))
                     //                            .Select((s, i) => new LayerToUpdate { index = i, value = s.Id }), // x => x.i, x => x.s.Id
-                    LayersToUpdate = BIMLayers.Where(x => x.Id > 0 && (x.ModelItem != null || !x.Name.Equals(x.OriginalName))).Select(x=> x.Id.ToString()).ToList(),
+                    LayersToUpdate = BIMLayers.Where(x => x.Id > 0 && (x.ModelItem != null || !x.Name.Equals(x.OriginalName))).Select(x => x.Id.ToString()).ToList(),
                     LayersToDelete = DeletedLayers,
-                    Layers = BIMLayers.Where(x => x.ModelItem != null).Select(x=> new LayerFile { Name = x.Name, File = File.ReadAllBytes(x.FilePath) })
+                    Layers = BIMLayers.Where(x => x.ModelItem != null).Select(x => new LayerFile { Name = x.Name, File = File.ReadAllBytes(x.FilePath) })
                 };
 
-                await _apiService.ExportExistingModelAsync(Instance.UserLogin, SelectedMediaFile.Id, data);
+                await (await _exportService.EnsureTokenAsync(Instance.UserLogin)).ExportExistingModelAsync(Instance.UserLogin, SelectedMediaFile.Id, data);
 
                 MessageBox.Show("Project exported successfully.");
                 await NavigationService.GoTo<HomeViewModel>();

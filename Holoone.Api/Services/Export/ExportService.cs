@@ -1,5 +1,6 @@
 ﻿using Flurl.Http;
 using Flurl.Http.Configuration;
+using Hanssens.Net;
 using Holoone.Api.Helpers.Constants;
 using Holoone.Api.Helpers.Extensions;
 using Holoone.Api.Models;
@@ -15,6 +16,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Holoone.Api.Services
 {
@@ -37,11 +39,26 @@ namespace Holoone.Api.Services
     public class ExportService : IExportService
     {
         private readonly IFlurlClient _flurlClient;
+        ILoginService _loginService;
+        private readonly ILocalStorage _localeStorage;
 
-        public ExportService(IFlurlClientFactory flurlClientFac)
+        public ExportService(IFlurlClientFactory flurlClientFac, ILoginService loginService, ILocalStorage localeStorage)
         {
+            _loginService = loginService;
+            _localeStorage = localeStorage;
+
             _flurlClient = flurlClientFac.Get(RequestConstants.BaseUrl);
+            // _flurlClient.Configure(settings => settings.BeforeCallAsync = EnsureTokenAsync);
+            // FlurlHttp
         }
+
+        public async Task<ExportService> EnsureTokenAsync(UserLogin userLogin) //FlurlCall arg)
+        {
+            // try refresh token
+            await _loginService.RefreshLoginToken(userLogin);
+            return this;
+        }
+
 
         /// <summary>
         /// Export by file path
@@ -62,7 +79,7 @@ namespace Holoone.Api.Services
             string encodedCredentials = System.Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1")
                                            .GetBytes(user.Username + ":" + user.Password));
 
-            string url = Utility.GetBaseUrl(user) + urlPath;
+            string url = Utility.GetBaseUrl(user.LoginType.Type, user.LoginType.Region) + urlPath;
 
             string boundary = "----------------------------" + DateTime.Now.Ticks.ToString("x");
             // The first boundary
@@ -162,7 +179,7 @@ namespace Holoone.Api.Services
 
         public async Task<IList<MediaFile>> GetCompanyMediaFolderContent(UserLogin user, int folderId = 0)
         {
-            _flurlClient.BaseUrl = Utility.GetBaseUrl(user);
+            _flurlClient.BaseUrl = Utility.GetBaseUrl(user.LoginType.Type, user.LoginType.Region);
 
             IDictionary<string, string> queryParams = null;
             //queryParams = new Dictionary<string, string> { { "type", "folder" }, { "folder_pk", folderId.ToString() } };
@@ -194,13 +211,13 @@ namespace Holoone.Api.Services
 
         public async Task<IList<MediaFile>> GetCompany3DModels(UserLogin user)
         {
-            _flurlClient.BaseUrl = Utility.GetBaseUrl(user);
+            _flurlClient.BaseUrl = Utility.GetBaseUrl(user.LoginType.Type, user.LoginType.Region);
 
             IFlurlResponse response;
 
             if (user.LoginType.Type == "LCP")
                 response = await _flurlClient.Request("media/")
-                                    .SetQueryParam("type", "one_to_one_overlay_model")
+                                    .SetQueryParam("type", "generic_3d_model") //"one_to_one_overlay_model"
                                     .WithHeader("Bearer", user.Token)
                                     .WithHeader("Content-Type", "application/json")
                                     .GetAsync();
@@ -219,7 +236,7 @@ namespace Holoone.Api.Services
 
         public async Task<IEnumerable<BIM3DLayer>> Get3DModelById(UserLogin user, int mediaFileId)
         {
-            _flurlClient.BaseUrl = Utility.GetBaseUrl(user);
+            _flurlClient.BaseUrl = Utility.GetBaseUrl(user.LoginType.Type, user.LoginType.Region);
 
             IFlurlResponse response;
 
@@ -252,7 +269,7 @@ namespace Holoone.Api.Services
             string encodedCredentials = System.Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1")
                                            .GetBytes(user.Username + ":" + user.Password));
 
-            string url = Utility.GetBaseUrl(user) + $"media/bim/{mediaId}/update/";
+            string url = Utility.GetBaseUrl(user.LoginType.Type, user.LoginType.Region) + $"media/bim/{mediaId}/update/";
 
             string boundary = "----------------------------" + DateTime.Now.Ticks.ToString("x");
             // The first boundary
@@ -360,7 +377,7 @@ namespace Holoone.Api.Services
         /// <returns></returns>
         public async Task<IFlurlResponse> ExportExistingModelAsync(UserLogin user, int mediaId, ExistingBIM3D values)
         {
-            _flurlClient.BaseUrl = Utility.GetBaseUrl(user);
+            _flurlClient.BaseUrl = Utility.GetBaseUrl(user.LoginType.Type, user.LoginType.Region);
 
             string jsonFormData = JsonConvert.SerializeObject(values);
 
