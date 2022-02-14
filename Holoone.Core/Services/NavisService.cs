@@ -55,7 +55,7 @@ namespace HolooneNavis.Services
             //Add all the items that are visible to the visible collection
             hidden = oDoc.Models.RootItems.SelectMany(x => x.Descendants).ToList();
 
-            foreach (var layer in bimLayers.Where(x => x.ModelItem != null && !string.IsNullOrEmpty(x.Name)))
+            foreach (var layer in bimLayers.Where(x => x.ModelItem != null)) // && !string.IsNullOrEmpty(x.Name)))
             {
                 // if not the root item is selected find selected layer
                 if (oDoc.Models.RootItems.FirstOrDefault(x => x.DisplayName == layer.ModelItem.DisplayName) == null)
@@ -70,12 +70,13 @@ namespace HolooneNavis.Services
                         }
 
                         foreach (var itm in layer.ModelItem.Parent.Descendants)
-                            if (itm.DisplayName == layer.ModelItem.DisplayName)
+                            if (itm.InstanceHashCode == layer.ModelItem.InstanceHashCode) //if (itm.DisplayName == layer.ModelItem.DisplayName)
                                 foreach (var chld in itm.DescendantsAndSelf)
                                     visible.Add(chld);
                     }
                     else
-                        visible = hidden.Where(x => x.DisplayName == layer.ModelItem.DisplayName).SelectMany(x => x.DescendantsAndSelf).ToList();
+                        visible = hidden.Where(x => x.InstanceHashCode == layer.ModelItem.InstanceHashCode).SelectMany(x => x.DescendantsAndSelf).ToList();
+                    //visible = hidden.Where(x => x.DisplayName == layer.ModelItem.DisplayName).SelectMany(x => x.DescendantsAndSelf).ToList();
 
                     foreach (var itm in visible)
                         hidden.Remove(itm);
@@ -87,10 +88,12 @@ namespace HolooneNavis.Services
                     Application.ActiveDocument.Models.SetHidden(hidden, true);
                 }
 
-                layer.FilePath = Path.Combine(basePath, Path.GetFileNameWithoutExtension(layer.Name) + ".nwd");
+                string fileName = getLayerName(layer);
+
+                layer.FilePath = Path.Combine(basePath, Path.GetFileNameWithoutExtension(fileName) + ".nwd");
 
                 //Save the Navisworks file
-                oDoc.PublishFile(layer.FilePath, GetPublishProperties(layer.Name));
+                oDoc.PublishFile(layer.FilePath, GetPublishProperties(fileName));
 
                 oDoc.CurrentSelection.Clear();
 
@@ -103,6 +106,16 @@ namespace HolooneNavis.Services
             }
 
             return bimLayers;
+        }
+
+        private string getLayerName(BIMLayer layer)
+        {
+            if (!string.IsNullOrEmpty(layer.ModelItem.DisplayName))
+                return layer.ModelItem.DisplayName;
+            else if (!string.IsNullOrEmpty(layer.ModelItem.Descendants.FirstOrDefault()?.DisplayName))
+                return layer.ModelItem.Descendants.FirstOrDefault()?.DisplayName;
+            else
+                return layer.ModelItem.ClassDisplayName;
         }
 
         private PublishProperties GetPublishProperties(string title)

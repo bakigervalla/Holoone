@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="C:\Program Files (x86)\InstallShield\2018\Support\0409\buildreport.xsl"?>
+<BuildReport ProductName="Holoone" ProductVersion="1.0.0" Built="2-14-2022 11-22-26 AM" Config="Deploy" Media="Release 1" Uncompressed="0.00 MB">
+  <Features>
+    <Feature Title="##IDS_FEATURE_DISPLAY_NAME1##">Holo_one_Files</Feature>
+  </Features>
+  <Components>
+    <Component x64="32" KeyPath="adwindows.resources.dll2">AdWindows.resources.dll2</Component>
+    <Component x64="32">AllOtherFiles</Component>
+    <Component x64="32">AllOtherFiles1</Component>
+    <Component x64="32">AllOtherFiles13</Component>
+    <Component x64="32">AllOtherFiles2</Component>
+    <Component x64="32">AllOtherFiles28</Component>
+    <Component x64="32">AllOtherFiles29</Component>
+    <Component x64="32">AllOtherFiles3</Component>
+    <Component x64="32">AllOtherFiles4</Component>
+    <Component x64="32">AllOtherFiles8</Component>
+    <Component x64="32" KeyPath="caliburn.micro.core.dll2">Caliburn.Micro.Core.dll2</Component>
+    <Component x64="32" KeyPath="caliburn.micro.platform.core2">Caliburn.Micro.Platform.Core.dll2</Component>
+    <Component x64="32" KeyPath="caliburn.micro.platform.dll2">Caliburn.Micro.Platform.dll2</Component>
+    <Component x64="32" KeyPath="flurl.http.dll2">Flurl.Http.dll2</Component>
+    <Component x64="32" KeyPath="flurl.dll2">Flurl.dll2</Component>
+    <Component x64="32">Holoone.Api.dll2</Component>
+    <Component x64="32" KeyPath="holoone.api.dll">Holoone.Api.dll3</Component>
+    <Component x64="32" KeyPath="holoonenavis.dll2">HolooneNavis.dll2</Component>
+    <Component x64="32" KeyPath="localstorage.dll2">LocalStorage.dll2</Component>
+    <Component x64="32" KeyPath="microsoft.xaml.behaviors.dll2">Microsoft.Xaml.Behaviors.dll2</Component>
+    <Component x64="32" KeyPath="newtonsoft.json.dll2">Newtonsoft.Json.dll2</Component>
+    <Component x64="32" KeyPath="wpfspark.dll2">WPFSpark.dll2</Component>
+    <Component x64="32" KeyPath="_20C6AEA9C2448DE311908F5CDEE4B1A2">_0B459435B8FBC8AD1D45EFE5EB1DDD7B</Component>
+    <Component x64="32" KeyPath="_57A0AE048FDC3797FEF686F9032CC155">_15C506021E68D8DBB37CA2EB9665A6D3</Component>
+    <Component x64="32" KeyPath="_6C70EEC4C10C5C4A36BF686C33DF1EAA">_3CA17A6E1C566293042173C3FF9D2B78</Component>
+    <Component x64="32" KeyPath="_E41283F20B6FD60C391E76698D2943D4">_4935E56D3CB9D584E77D920D54F763D2</Component>
+    <Component x64="32" KeyPath="_C9BA3EABAED75F7D53F5A41C1D00F340">_4942537FBEE7740230C79947A7CE6E77</Component>
+    <Component x64="32" KeyPath="_A2F1AF6D7265E66C84DD8252B32E0ED5">_535D4084D44E55CF4B915DFD9076E2D1</Component>
+    <Component x64="32" KeyPath="_995E3A054CE839E79E437FCBEEB3D335">_5923B876E1F2B23157BDCFAF65385162</Component>
+    <Component x64="32" KeyPath="_7B3A05C53A4C0726833BEF1068E2EEEE">_6B56AEA613B5010E9F0403B367D52629</Component>
+    <Component x64="32" KeyPath="_C008B4F04F71F67FA1516F87DA6C1AE6">_AC3AE0C17B3636B20DF96C51721A9618</Component>
+    <Component x64="32" KeyPath="_34D505A61D128FDCA0640998955E57A1">_C5F65D12AA5D447ACF1EA6826168C3BC</Component>
+    <Component x64="32" KeyPath="_39F16CE5135E170301EF9446679A53F3">_C7342F3867B35229FB6064FCCEF7B01F</Component>
+  </Components>
+  <Prerequisites />
+  <MergeModules />
+  <DynamicLinks />
+  <Files>
+    <File Destination="{HOLOONE.BUNDLE1} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle" Component="AllOtherFiles3" Modified="13.02.2022 6:33:22 PM" Size="955" Version="">PackageContents.xml</File>
+    <File Destination="{V17} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17" Component="Newtonsoft.Json.dll2" Modified="09.11.2019 12:56:44 AM" Size="700336" Version="12.0.3.23909">Newtonsoft.Json.dll</File>
+    <File Destination="{V17} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17" Component="AllOtherFiles8" Modified="16.10.2021 11:36:03 PM" Size="32489" Version="">holo_one_logo.png</File>
+    <File Destination="{V17} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17" Component="Caliburn.Micro.Core.dll2" Modified="23.04.2021 7:29:00 PM" Size="88064" Version="4.0.173.65239">Caliburn.Micro.Core.dll</File>
+    <File Destination="{V17} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17" Component="_AC3AE0C17B3636B20DF96C51721A9618" Modified="07.12.2019 10:10:37 AM" Size="107144" Version="4.8.4084.0">netstandard.dll</File>
+    <File Destination="{V17} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17" Component="_4942537FBEE7740230C79947A7CE6E77" Modified="11.05.2021 5:46:45 PM" Size="30336" Version="4.8.4084.0">System.Data.Common.dll</File>
+    <File Destination="{V17} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17" Component="_0B459435B8FBC8AD1D45EFE5EB1DDD7B" Modified="11.05.2021 5:46:45 PM" Size="30256" Version="4.8.4084.0">System.Diagnostics.StackTrace.dll</File>
+    <File Destination="{V17} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17" Component="_6B56AEA613B5010E9F0403B367D52629" Modified="11.05.2021 5:46:45 PM" Size="29824" Version="4.8.4084.0">System.Globalization.Extensions.dll</File>
+    <File Destination="{V17} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17" Component="_C7342F3867B35229FB6064FCCEF7B01F" Modified="11.05.2021 5:46:45 PM" Size="30768" Version="4.8.4084.0">System.Net.Sockets.dll</File>
+    <File Destination="{V17} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17" Component="_5923B876E1F2B23157BDCFAF65385162" Modified="11.05.2021 5:46:44 PM" Size="30256" Version="4.8.4084.0">System.Runtime.InteropServices.RuntimeInformation.dll</File>
+    <File Destination="{V17} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17" Component="_15C506021E68D8DBB37CA2EB9665A6D3" Modified="11.05.2021 5:46:44 PM" Size="30768" Version="4.8.4084.0">System.Security.Cryptography.Algorithms.dll</File>
+    <File Destination="{V17} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17" Component="_535D4084D44E55CF4B915DFD9076E2D1" Modified="11.05.2021 5:46:44 PM" Size="29744" Version="4.8.4084.0">System.Security.SecureString.dll</File>
+    <File Destination="{V17} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17" Component="_C5F65D12AA5D447ACF1EA6826168C3BC" Modified="11.05.2021 5:46:44 PM" Size="29832" Version="4.8.4084.0">System.Threading.Overlapped.dll</File>
+    <File Destination="{V17} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17" Component="_4935E56D3CB9D584E77D920D54F763D2" Modified="11.05.2021 5:46:44 PM" Size="29824" Version="4.8.4084.0">System.ValueTuple.dll</File>
+    <File Destination="{V17} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17" Component="_3CA17A6E1C566293042173C3FF9D2B78" Modified="11.05.2021 5:46:44 PM" Size="29320" Version="4.8.4084.0">System.Xml.XPath.XDocument.dll</File>
+    <File Destination="{V17} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17" Component="Caliburn.Micro.Platform.Core.dll2" Modified="23.04.2021 7:29:02 PM" Size="18432" Version="4.0.173.65239">Caliburn.Micro.Platform.Core.dll</File>
+    <File Destination="{V17} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17" Component="Microsoft.Xaml.Behaviors.dll2" Modified="16.01.2020 12:50:08 AM" Size="144768" Version="1.1.19.35512">Microsoft.Xaml.Behaviors.dll</File>
+    <File Destination="{V17} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17" Component="WPFSpark.dll2" Modified="29.01.2018 12:46:46 PM" Size="165376" Version="1.4.0.0">WPFSpark.dll</File>
+    <File Destination="{V17} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17" Component="Flurl.Http.dll2" Modified="04.05.2021 4:53:58 PM" Size="106496" Version="3.2.0.0">Flurl.Http.dll</File>
+    <File Destination="{V17} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17" Component="Flurl.dll2" Modified="04.05.2021 4:53:52 PM" Size="37376" Version="3.0.2.0">Flurl.dll</File>
+    <File Destination="{V17} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17" Component="LocalStorage.dll2" Modified="18.02.2021 11:00:28 PM" Size="12288" Version="2.1.0.0">LocalStorage.dll</File>
+    <File Destination="{V17} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17" Component="Caliburn.Micro.Platform.dll2" Modified="23.04.2021 7:29:06 PM" Size="94720" Version="4.0.173.65239">Caliburn.Micro.Platform.dll</File>
+    <File Destination="{V17} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17" Component="Holoone.Api.dll3" Modified="14.02.2022 11:20:46 AM" Size="70144" Version="1.0.0.0">Holoone.Api.dll</File>
+    <File Destination="{EN_US4} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17\en-US" Component="AllOtherFiles28" Modified="10.11.2021 11:58:10 PM" Size="399" Version="">HolooneNavis.HolooneAddin.name</File>
+    <File Destination="{EN_US4} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17\en-US" Component="AllOtherFiles28" Modified="11.11.2021 12:09:53 AM" Size="1125" Version="">HolooneNavis.HolooneAddin.xaml</File>
+    <File Destination="{EN_US4} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17\en-US" Component="AdWindows.resources.dll2" Modified="22.11.2017 8:05:52 AM" Size="1151472" Version="2017.11.1.0">AdWindows.resources.dll</File>
+    <File Destination="{V17} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17" Component="HolooneNavis.dll2" Modified="14.02.2022 11:20:53 AM" Size="9085440" Version="1.0.0.0">HolooneNavis.dll</File>
+    <File Destination="{IMAGES4} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17\Images" Component="AllOtherFiles29" Modified="11.11.2021 12:03:40 AM" Size="1150" Version="">holo_16.ico</File>
+    <File Destination="{IMAGES4} [CommonAppDataFolder]Autodesk\ApplicationPlugins\Holoone.bundle\Contents\v17\Images" Component="AllOtherFiles29" Modified="11.11.2021 12:04:37 AM" Size="4286" Version="">holo_32.ico</File>
+  </Files>
+</BuildReport>

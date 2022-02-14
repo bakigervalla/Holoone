@@ -117,7 +117,19 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
             {
                 bimLayer.ModelItem = SelectedModelItem;
                 bimLayer.IsSet = true;
+                bimLayer.Name = getLayerName(SelectedModelItem);
+
             }
+        }
+
+        private string getLayerName(ModelItem model)
+        {
+            if (!string.IsNullOrEmpty(model.DisplayName))
+                return model.DisplayName;
+            else if (string.IsNullOrEmpty(model.Descendants.FirstOrDefault()?.DisplayName))
+                return model.Descendants.FirstOrDefault()?.DisplayName;
+            else
+                return model.ClassDisplayName;
         }
 
         public void SaveBIMModelAndLayers()

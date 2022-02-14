@@ -14,11 +14,14 @@ namespace HolooneNavis.Helpers.Converters
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             ModelItem model = value as ModelItem;
+            var desceDisplayName = model.Descendants.FirstOrDefault()?.DisplayName;
 
             if (model.DisplayName != "")
                 return model.DisplayName;
+            else if (!string.IsNullOrEmpty(desceDisplayName))
+                return desceDisplayName;
             else
-                return model.Descendants.FirstOrDefault()?.DisplayName;
+                return model.ClassDisplayName;
 
             // The below method for returning SelectTree Item name, returns empty/Insert parent's name (Insert->Door_12)
 

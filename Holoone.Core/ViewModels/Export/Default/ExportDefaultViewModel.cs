@@ -114,7 +114,17 @@ namespace HolooneNavis.ViewModels.Export.Default
         public void GetSelectedModelItemAsync(ModelItem model)
         {
             BIMLayers.Clear();
-            BIMLayers.Add(new BIMLayer { Name = model.DisplayName, ModelItem = model });
+            BIMLayers.Add(new BIMLayer { Name = getLayerName(model), ModelItem = model });
+        }
+
+        private string getLayerName(ModelItem model)
+        {
+            if (!string.IsNullOrEmpty(model.DisplayName))
+                return model.DisplayName;
+            else if (string.IsNullOrEmpty(model.Descendants.FirstOrDefault()?.DisplayName))
+                return model.Descendants.FirstOrDefault()?.DisplayName;
+            else
+                return model.ClassDisplayName;
         }
 
         public async Task GetFoldersAsync()

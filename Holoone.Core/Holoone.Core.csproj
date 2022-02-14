@@ -64,28 +64,28 @@
     <Reference Include="AdWindows">
       <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\AdWindows.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.Navisworks.Api, Version=17.0.1336.83, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
+    <Reference Include="Autodesk.Navisworks.Api, Version=16.0.1326.55, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.Api.dll</HintPath>
+      <HintPath>..\..\..\Autodesk\Navisworks Manage 2020\Autodesk.Navisworks.Api.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.Navisworks.Automation, Version=17.0.1336.83, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
+    <Reference Include="Autodesk.Navisworks.Automation, Version=16.0.1326.55, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.Automation.dll</HintPath>
+      <HintPath>..\..\..\Autodesk\Navisworks Manage 2020\Autodesk.Navisworks.Automation.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.Navisworks.ComApi, Version=17.0.1336.83, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
+    <Reference Include="Autodesk.Navisworks.ComApi, Version=16.0.1326.55, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.ComApi.dll</HintPath>
+      <HintPath>..\..\..\Autodesk\Navisworks Manage 2020\Autodesk.Navisworks.ComApi.dll</HintPath>
     </Reference>
-    <Reference Include="Autodesk.Navisworks.Controls, Version=17.0.1336.83, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
+    <Reference Include="Autodesk.Navisworks.Controls, Version=16.0.1326.55, Culture=neutral, PublicKeyToken=d85e58fa5af9b484, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.Controls.dll</HintPath>
+      <HintPath>..\..\..\Autodesk\Navisworks Manage 2020\Autodesk.Navisworks.Controls.dll</HintPath>
     </Reference>
     <Reference Include="Autodesk.Navisworks.Interop.ComApi">
-      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.Interop.ComApi.dll</HintPath>
+      <HintPath>..\..\..\Autodesk\Navisworks Manage 2020\Autodesk.Navisworks.Interop.ComApi.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Autodesk.Navisworks.Interop.ComApiAutomation">
-      <HintPath>..\..\..\Autodesk\Navisworks Simulate 2019\Autodesk.Navisworks.Interop.ComApiAutomation.dll</HintPath>
+      <HintPath>..\..\..\Autodesk\Navisworks Manage 2020\Autodesk.Navisworks.Interop.ComApiAutomation.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="navisworks.gui.roamer, Version=19.0.1366.6, Culture=neutral, processorArchitecture=AMD64">
