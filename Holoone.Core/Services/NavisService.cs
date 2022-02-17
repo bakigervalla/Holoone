@@ -28,11 +28,13 @@ namespace HolooneNavis.Services
                 if (models == null || models.Count() == 0)
                     return new ModelItemCollection();
 
-                Model model = models.First;
-                ModelItem rootItem = model.RootItem;
+                // Model model = models.First;
+                //ModelItem rootItem = model.RootItem;
+                //items.Add(rootItem);
 
-                items.Add(rootItem);
-
+                foreach (var model in models)
+                    items.Add(model.RootItem);
+                
                 return items;
             });
         }
@@ -42,10 +44,10 @@ namespace HolooneNavis.Services
             Document oDoc = Application.ActiveDocument;
             DocumentModels models = oDoc.Models;
 
-            IList<ModelItem> visible = new List<ModelItem>(),
-                hidden;
-            ModelItem parent = null;
-            
+            List<ModelItem> visible = new List<ModelItem>(),
+                hidden = new List<ModelItem>();
+            ModelItemEnumerableCollection parents;
+
             string basePath = Path.Combine(Path.GetTempPath(), "HolooneNavis");
             IEnumerable<ModelItem> allModelItems = bimLayers.Select(x => x.ModelItem);
 
@@ -57,30 +59,32 @@ namespace HolooneNavis.Services
 
             foreach (var layer in bimLayers.Where(x => x.ModelItem != null)) // && !string.IsNullOrEmpty(x.Name)))
             {
+                //Add all the items that are visible to the visible collection
+                // hidden.AddRange(layer.ModelItem.Ancestors.Last().DescendantsAndSelf.ToList());
+
                 // if not the root item is selected find selected layer
                 if (oDoc.Models.RootItems.FirstOrDefault(x => x.DisplayName == layer.ModelItem.DisplayName) == null)
                 {
                     if (!layer.ModelItem.IsLayer)
                     {
-                        parent = layer.ModelItem.FindFirstObjectAncestor();
-                        while (parent != null)
-                        {
+                        parents = layer.ModelItem.Ancestors;
+                        foreach (var parent in parents)
                             visible.Add(parent);
-                            parent = parent.FindFirstObjectAncestor();
-                        }
 
-                        foreach (var itm in layer.ModelItem.Parent.Descendants)
-                            if (itm.InstanceHashCode == layer.ModelItem.InstanceHashCode) //if (itm.DisplayName == layer.ModelItem.DisplayName)
-                                foreach (var chld in itm.DescendantsAndSelf)
-                                    visible.Add(chld);
+                        foreach (var itm in layer.ModelItem.DescendantsAndSelf)
+                            visible.Add(itm);
                     }
                     else
+                    {
+                        //Add all the items that are visible to the visible collection
+                        // hidden.AddRange(layer.ModelItem.Ancestors.Last().DescendantsAndSelf.ToList());
+
                         visible = hidden.Where(x => x.InstanceHashCode == layer.ModelItem.InstanceHashCode).SelectMany(x => x.DescendantsAndSelf).ToList();
-                    //visible = hidden.Where(x => x.DisplayName == layer.ModelItem.DisplayName).SelectMany(x => x.DescendantsAndSelf).ToList();
+                    }
 
                     foreach (var itm in visible)
                         hidden.Remove(itm);
-                    
+
                     //Assign the ModelItemCollection to the selection
                     Application.ActiveDocument.CurrentSelection.CopyFrom(visible);
 
@@ -93,6 +97,7 @@ namespace HolooneNavis.Services
                 layer.FilePath = Path.Combine(basePath, Path.GetFileNameWithoutExtension(fileName) + ".nwd");
 
                 //Save the Navisworks file
+                //oDoc.SaveFile(layer.FilePath);
                 oDoc.PublishFile(layer.FilePath, GetPublishProperties(fileName));
 
                 oDoc.CurrentSelection.Clear();

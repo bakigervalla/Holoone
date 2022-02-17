@@ -20,7 +20,7 @@ namespace HolooneNavis
         protected override void OnLoaded()
         {
             // Assembly resolver
-           // AppDomain.CurrentDomain.AssemblyResolve += ForceLibraryLoad;
+            // AppDomain.CurrentDomain.AssemblyResolve += ForceLibraryLoad;
 
             // MergeDefaultAppConfig();
 
@@ -46,6 +46,8 @@ namespace HolooneNavis
                             var windowManager = IoC.Get<IWindowManager>();
                             var shellViewModel = (Screen)IoC.Get<ShellViewModel>();
                             var result = windowManager.ShowDialogAsync(shellViewModel, null);
+
+                            Autodesk.Navisworks.Api.Controls.ApplicationControl.Terminate();
 
                             ////Get the ViewModel for the screen from Container
                             //ShellViewModel relayListViewModel = bootstraper._container.GetInstance<ShellViewModel>();
@@ -112,7 +114,7 @@ namespace HolooneNavis
         /// </summary>
         private Assembly ForceLibraryLoad(object sender, ResolveEventArgs args)
         {
-            var assemblyPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "Autodesk", "ApplicationPlugins", 
+            var assemblyPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "Autodesk", "ApplicationPlugins",
                 "Holoone.bundle", "Contents");
 
             string[] assemblies = new string[] { "Newtonsoft.Json.dll", "LocalStorage.dll", "Microsoft.Xaml.Behaviors.dll",
