@@ -54,8 +54,8 @@ namespace Holoone.Api.Models
         [JsonProperty("media_file_type")]
         public string MediaFileType { get; set; }
 
-        //[JsonProperty("media_subtype")]
-        //public string MediaSubtype { get; set; }
+        [JsonProperty("media_subtype")]
+        public string MediaSubtype { get; set; }
 
         //[JsonProperty("model_subtype")]
         //public string ModelSubtype { get; set; }

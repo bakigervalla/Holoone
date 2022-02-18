@@ -137,17 +137,16 @@ namespace Holoone.Api.Services
                 {
                     if (File.Exists(key))
                     {
-                        string fileName = System.IO.Path.GetFileName(key);
                         int bytesRead = 0;
                         byte[] buffer = new byte[2048];
                         byte[] formItemBytes = new byte[2048];
 
                         if (formDataName == "layers")
                             formItemBytes = Encoding.UTF8.GetBytes(
-                                string.Format("Content-Disposition: form-data; name=\"layers[]\"; filename=\"{0}\"\r\nContent-Type: application/octet-stream\r\n\r\n", fileName));
+                                string.Format("Content-Disposition: form-data; name=\"layers[]\"; filename=\"{0}\"\r\nContent-Type: application/octet-stream\r\n\r\n", files[key]));
                         else if (formDataName == "file")
                             formItemBytes = Encoding.UTF8.GetBytes(
-                            string.Format("Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\nContent-Type: application/octet-stream\r\n\r\n", formDataName, fileName));
+                            string.Format("Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\nContent-Type: application/octet-stream\r\n\r\n", formDataName, files[key]));
 
                         requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
                         requestStream.Write(formItemBytes, 0, formItemBytes.Length);
@@ -264,7 +263,7 @@ namespace Holoone.Api.Services
         /// <param name="files"></param>
         /// <param name="processingParams"></param>
         /// <returns></returns>
-        public async Task<string> ExportExistingBIMAsync(UserLogin user, int mediaId, NameValueCollection metadata, NameValueCollection updatedLayers, List<string> deletedLayers, NameValueCollection files)
+        public async Task<string> ExportExistingBIMAsync(UserLogin user, int mediaId, Dictionary<string, dynamic> payload, NameValueCollection files)
         {
             string encodedCredentials = System.Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1")
                                            .GetBytes(user.Username + ":" + user.Password));
@@ -295,35 +294,13 @@ namespace Holoone.Api.Services
             // Get request stream
             Stream requestStream = request.GetRequestStream();
 
-            foreach (string key in metadata.Keys)
+            foreach (string key in payload.Keys)
             {
 
-                byte[] formItemBytes = Encoding.UTF8.GetBytes(string.Format("Content-Disposition: form-data; name=\"{0}\";\r\n\r\n{1}", key, metadata[key]));
+                byte[] formItemBytes = Encoding.UTF8.GetBytes(string.Format("Content-Disposition: form-data; name=\"{0}\";\r\n\r\n{1}", key, payload[key]));
                 requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
                 requestStream.Write(formItemBytes, 0, formItemBytes.Length);
             }
-
-            // Updated Layers
-            foreach (string key in updatedLayers.Keys)
-            {
-                byte[] formItemBytes = Encoding.UTF8.GetBytes(string.Format("Content-Disposition: form-data; name=\"layers_to_update[{0}]\";\r\n\r\n{1}", key, updatedLayers[key]));
-                requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
-                requestStream.Write(formItemBytes, 0, formItemBytes.Length);
-            }
-
-            // Deleted Layers
-            //byte[] delFormItemBytes = Encoding.UTF8.GetBytes(string.Format("Content-Disposition: form-data; name=\"layers_to_delete\";\r\n\r\n{0}",
-            //    string.Join("[{0},]", deletedLayers)));
-            //requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
-            //requestStream.Write(delFormItemBytes, 0, delFormItemBytes.Length);
-            int i = 0;
-            foreach (string key in deletedLayers)
-            {
-                byte[] formItemBytes = Encoding.UTF8.GetBytes(string.Format("Content-Disposition: form-data; name=\"layers_to_delete[{0}]\";\r\n\r\n{1}", i++, deletedLayers[i]));
-                requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
-                requestStream.Write(formItemBytes, 0, formItemBytes.Length);
-            }
-
 
             if (files != null)
             {
@@ -331,15 +308,11 @@ namespace Holoone.Api.Services
                 {
                     if (File.Exists(key))
                     {
-                        string fileName = System.IO.Path.GetFileName(key);
                         int bytesRead = 0;
                         byte[] buffer = new byte[2048];
                         byte[] formItemBytes = new byte[2048];
                         formItemBytes = Encoding.UTF8.GetBytes(
-                            string.Format("Content-Disposition: form-data; name=\"layers[]\"; filename=\"{0}\"\r\nContent-Type: application/octet-stream\r\n\r\n", fileName));
-
-                        //formItemBytes = Encoding.UTF8.GetBytes(
-                        //string.Format("Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\nContent-Type: application/octet-stream\r\n\r\n", formDataName, fileName));
+                            string.Format("Content-Disposition: form-data; name=\"layers[]\"; filename=\"{0}\"\r\nContent-Type: application/octet-stream\r\n\r\n", files[key]));
 
                         requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
                         requestStream.Write(formItemBytes, 0, formItemBytes.Length);
@@ -366,50 +339,6 @@ namespace Holoone.Api.Services
             {
                 return await reader.ReadToEndAsync();
             };
-        }
-
-        /// <summary>
-        /// OBSOLETE
-        /// </summary>
-        /// <param name="user"></param>
-        /// <param name="mediaItem"></param>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        public async Task<IFlurlResponse> ExportExistingModelAsync(UserLogin user, int mediaId, ExistingBIM3D values)
-        {
-            _flurlClient.BaseUrl = Utility.GetBaseUrl(user.LoginType.Type, user.LoginType.Region);
-
-            string jsonFormData = JsonConvert.SerializeObject(values);
-
-            var buffer = System.Text.Encoding.UTF8.GetBytes(jsonFormData);
-            var byteContent = new ByteArrayContent(buffer);
-            byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-            try
-            {
-                IFlurlResponse response;
-                if (user.LoginType.Type == "LCP")
-                    response = await _flurlClient.Request($"media/bim/{mediaId}/update/")
-                                                    .WithHeader("Bearer", user.Token)
-                                                    .PostJsonAsync(jsonFormData);
-                else
-                    response = await _flurlClient.Request($"media/bim/{mediaId}/update/")
-                                                    .WithHeader("Authorization", "Token " + user.Token)
-                                                    //.PostJsonAsync(jsonFormData)
-                                                    .PostAsync(byteContent);
-                //.PostMultipartAsync(mp => mp
-                //    //.AddFile("layers", Path.GetFileName(files[0]))                    // local file path
-                //    //* .AddFile("file2", new MemoryStream(byteArray), Path.GetFileName(values.Layers[0].Name))        // file stream
-                //    .AddJson("json", jsonFormData)              // json
-                //);
-
-
-                return response;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
         }
 
     }

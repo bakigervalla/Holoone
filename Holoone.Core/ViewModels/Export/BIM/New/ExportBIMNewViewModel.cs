@@ -117,8 +117,7 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
             {
                 bimLayer.ModelItem = SelectedModelItem;
                 bimLayer.IsSet = true;
-                bimLayer.Name = getLayerName(SelectedModelItem);
-
+                // bimLayer.Name = getLayerName(SelectedModelItem);
             }
         }
 
@@ -245,7 +244,7 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
 
                 foreach (var layer in BIMLayers)
                 {
-                    valColl.Add(layer.FilePath, "");
+                    valColl.Add(layer.FilePath, layer.Name);
                 }
 
                 await (await _exportService.EnsureTokenAsync(Instance.UserLogin)).ExportModelFormCompositionAsync(Instance.UserLogin, valParts, valColl, null, "media/bim/add/", "layers");
@@ -261,6 +260,7 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
             }
             catch (Exception ex)
             {
+                await _eventAggregator.PublishOnUIThreadAsync(false);
                 MessageBox.Show(ex.Message);
             }
         }

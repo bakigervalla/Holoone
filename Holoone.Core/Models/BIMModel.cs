@@ -28,7 +28,6 @@ namespace HolooneNavis.Models
 
         private ModelItem _modelItem { get; set; }
         public ModelItem ModelItem { get => _modelItem; set { _modelItem = value; RaisePropertyChanged(nameof(ModelItem)); } }
-
         private string _filePath { get; set; }
         public string FilePath { get => _filePath; set { _filePath = value; RaisePropertyChanged(nameof(FilePath)); } }
 

@@ -50,12 +50,12 @@ namespace HolooneNavis.Services
 
             string basePath = Path.Combine(Path.GetTempPath(), "HolooneNavis");
             IEnumerable<ModelItem> allModelItems = bimLayers.Select(x => x.ModelItem);
-
+            
             if (!Directory.Exists(basePath))
                 Directory.CreateDirectory(basePath);
 
             //Add all the items that are visible to the visible collection
-            hidden = oDoc.Models.RootItems.SelectMany(x => x.Descendants).ToList();
+            hidden = oDoc.Models.RootItems.SelectMany(x => x.DescendantsAndSelf).ToList();
 
             foreach (var layer in bimLayers.Where(x => x.ModelItem != null)) // && !string.IsNullOrEmpty(x.Name)))
             {
