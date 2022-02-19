@@ -216,7 +216,7 @@ namespace HolooneNavis.ViewModels.Export.Default
                         { layer.FilePath, "" }
                     };
 
-                    await (await _exportService.EnsureTokenAsync(Instance.UserLogin)).ExportModelFormCompositionAsync(Instance.UserLogin, valParts, valColl, ProcessingParams, "media/add/file/", "file");
+                    await (await _exportService.EnsureTokenAsync(Instance.UserLogin)).ExportDefaultModelAndNewBIMAsync(Instance.UserLogin, valParts, valColl, ProcessingParams, "media/add/file/", "file");
                 }
 
                 foreach (var layer in BIMLayers)
@@ -232,6 +232,10 @@ namespace HolooneNavis.ViewModels.Export.Default
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                await _eventAggregator.PublishOnUIThreadAsync(false);
             }
         }
 

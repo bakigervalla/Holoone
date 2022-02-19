@@ -14,7 +14,7 @@ namespace Holoone.Api.Services.Interfaces
     public interface IExportService
     {
         Task<ExportService> EnsureTokenAsync(UserLogin userLogin);
-        Task<string> ExportModelFormCompositionAsync(UserLogin user, NameValueCollection values, NameValueCollection files, ProcessingParams processingParams, string urlPath, string formDataName);
+        Task<string> ExportDefaultModelAndNewBIMAsync(UserLogin user, NameValueCollection values, NameValueCollection files, ProcessingParams processingParams, string urlPath, string exportType);
         Task<string> ExportExistingBIMAsync(UserLogin user, int mediaId, Dictionary<string, dynamic> payload, NameValueCollection files);
         Task<IList<MediaFile>> GetCompanyMediaFolderContent(UserLogin user, int folderId = 0);
         Task<IList<MediaFile>> GetCompany3DModels(UserLogin user);

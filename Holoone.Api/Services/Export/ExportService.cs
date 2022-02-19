@@ -59,6 +59,83 @@ namespace Holoone.Api.Services
             return this;
         }
 
+        public async Task<IList<MediaFile>> GetCompanyMediaFolderContent(UserLogin user, int folderId = 0)
+        {
+            _flurlClient.BaseUrl = Utility.GetBaseUrl(user.LoginType.Type, user.LoginType.Region);
+
+            IDictionary<string, string> queryParams = null;
+            //queryParams = new Dictionary<string, string> { { "type", "folder" }, { "folder_pk", folderId.ToString() } };
+
+            if (folderId != 0)
+                queryParams = new Dictionary<string, string> { { "folder_pk", folderId.ToString() } };
+
+            IFlurlResponse response;
+
+            if (user.LoginType.Type == "LCP")
+                response = await _flurlClient.Request("media/")
+                                    .WithHeader("Bearer", user.Token)
+                                    .WithHeader("Content-Type", "application/json")
+                                    .SetQueryParams(queryParams)
+                                    .GetAsync();
+            else
+                response = await _flurlClient.Request("media/")
+                                //.WithBasicAuth(user.Username, user.Password)
+                                .WithHeader("Authorization", "Token " + user.Token)
+                                .WithHeader("Content-Type", "application/json")
+                                .SetQueryParams(queryParams)
+                                .GetAsync();
+
+            return response.ResponseMessage.IsSuccessStatusCode
+                    ? await response.GetJsonAsync<IList<MediaFile>>()
+                    : null;
+        }
+
+        public async Task<IList<MediaFile>> GetCompany3DModels(UserLogin user)
+        {
+            _flurlClient.BaseUrl = Utility.GetBaseUrl(user.LoginType.Type, user.LoginType.Region);
+
+            IFlurlResponse response;
+
+            if (user.LoginType.Type == "LCP")
+                response = await _flurlClient.Request("media/")
+                                    .SetQueryParam("type", "generic_3d_model") //"one_to_one_overlay_model"
+                                    .WithHeader("Bearer", user.Token)
+                                    .WithHeader("Content-Type", "application/json")
+                                    .GetAsync();
+            else
+                response = await _flurlClient.Request("media/")
+                                    .SetQueryParam("type", "generic_3d_model")
+                                    // .SetQueryParam("type", "one_to_one_overlay_model")
+                                    .WithHeader("Authorization", "Token " + user.Token)
+                                    .WithHeader("Content-Type", "application/json")
+                                    .GetAsync();
+
+            return response.ResponseMessage.IsSuccessStatusCode
+                    ? await response.GetJsonAsync<IList<MediaFile>>()
+                    : null;
+        }
+
+        public async Task<IEnumerable<BIM3DLayer>> Get3DModelById(UserLogin user, int mediaFileId)
+        {
+            _flurlClient.BaseUrl = Utility.GetBaseUrl(user.LoginType.Type, user.LoginType.Region);
+
+            IFlurlResponse response;
+
+            if (user.LoginType.Type == "LCP")
+                response = await _flurlClient.Request($"media/3dmodel/{mediaFileId}/")
+                                    .WithHeader("Bearer", user.Token)
+                                    .WithHeader("Content-Type", "application/json")
+                                    .GetAsync();
+            else
+                response = await _flurlClient.Request($"media/3dmodel/{mediaFileId}/")
+                                    .WithHeader("Authorization", "Token " + user.Token)
+                                    .WithHeader("Content-Type", "application/json")
+                                    .GetAsync();
+
+            return response.ResponseMessage.IsSuccessStatusCode
+                    ? await response.GetJsonAsync<IEnumerable<BIM3DLayer>>()
+                    : null;
+        }
 
         /// <summary>
         /// Export by file path
@@ -68,13 +145,7 @@ namespace Holoone.Api.Services
         /// <param name="files"></param>
         /// <param name="processingParams"></param>
         /// <returns></returns>
-        public async Task<string> ExportModelFormCompositionAsync(
-            UserLogin user,
-            NameValueCollection values,
-            NameValueCollection files,
-            ProcessingParams processingParams,
-            string urlPath,
-            string formDataName)
+        public async Task<string> ExportDefaultModelAndNewBIMAsync(UserLogin user, NameValueCollection values, NameValueCollection files, ProcessingParams processingParams, string urlPath, string exportType)
         {
             string encodedCredentials = System.Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1")
                                            .GetBytes(user.Username + ":" + user.Password));
@@ -137,16 +208,13 @@ namespace Holoone.Api.Services
                 {
                     if (File.Exists(key))
                     {
+                        string fileName = exportType == "file" ? Path.GetFileName(key) : files[key];
                         int bytesRead = 0;
                         byte[] buffer = new byte[2048];
                         byte[] formItemBytes = new byte[2048];
 
-                        if (formDataName == "layers")
-                            formItemBytes = Encoding.UTF8.GetBytes(
-                                string.Format("Content-Disposition: form-data; name=\"layers[]\"; filename=\"{0}\"\r\nContent-Type: application/octet-stream\r\n\r\n", files[key]));
-                        else if (formDataName == "file")
-                            formItemBytes = Encoding.UTF8.GetBytes(
-                            string.Format("Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\nContent-Type: application/octet-stream\r\n\r\n", formDataName, files[key]));
+                        formItemBytes = Encoding.UTF8.GetBytes(
+                            string.Format("Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\nContent-Type: application/octet-stream\r\n\r\n", exportType, fileName));
 
                         requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
                         requestStream.Write(formItemBytes, 0, formItemBytes.Length);
@@ -173,86 +241,6 @@ namespace Holoone.Api.Services
             {
                 return await reader.ReadToEndAsync();
             };
-        }
-
-
-        public async Task<IList<MediaFile>> GetCompanyMediaFolderContent(UserLogin user, int folderId = 0)
-        {
-            _flurlClient.BaseUrl = Utility.GetBaseUrl(user.LoginType.Type, user.LoginType.Region);
-
-            IDictionary<string, string> queryParams = null;
-            //queryParams = new Dictionary<string, string> { { "type", "folder" }, { "folder_pk", folderId.ToString() } };
-
-            if (folderId != 0)
-                queryParams = new Dictionary<string, string> { { "folder_pk", folderId.ToString() } };
-
-            IFlurlResponse response;
-
-            if (user.LoginType.Type == "LCP")
-                response = await _flurlClient.Request("media/")
-                                    .WithHeader("Bearer", user.Token)
-                                    .WithHeader("Content-Type", "application/json")
-                                    .SetQueryParams(queryParams)
-                                    .GetAsync();
-            else
-                response = await _flurlClient.Request("media/")
-                                //.WithBasicAuth(user.Username, user.Password)
-                                .WithHeader("Authorization", "Token " + user.Token)
-                                .WithHeader("Content-Type", "application/json")
-                                .SetQueryParams(queryParams)
-                                .GetAsync();
-
-            return response.ResponseMessage.IsSuccessStatusCode
-                    ? await response.GetJsonAsync<IList<MediaFile>>()
-                    : null;
-        }
-
-
-        public async Task<IList<MediaFile>> GetCompany3DModels(UserLogin user)
-        {
-            _flurlClient.BaseUrl = Utility.GetBaseUrl(user.LoginType.Type, user.LoginType.Region);
-
-            IFlurlResponse response;
-
-            if (user.LoginType.Type == "LCP")
-                response = await _flurlClient.Request("media/")
-                                    .SetQueryParam("type", "generic_3d_model") //"one_to_one_overlay_model"
-                                    .WithHeader("Bearer", user.Token)
-                                    .WithHeader("Content-Type", "application/json")
-                                    .GetAsync();
-            else
-                response = await _flurlClient.Request("media/")
-                                    .SetQueryParam("type", "generic_3d_model")
-                                    // .SetQueryParam("type", "one_to_one_overlay_model")
-                                    .WithHeader("Authorization", "Token " + user.Token)
-                                    .WithHeader("Content-Type", "application/json")
-                                    .GetAsync();
-
-            return response.ResponseMessage.IsSuccessStatusCode
-                    ? await response.GetJsonAsync<IList<MediaFile>>()
-                    : null;
-        }
-
-        public async Task<IEnumerable<BIM3DLayer>> Get3DModelById(UserLogin user, int mediaFileId)
-        {
-            _flurlClient.BaseUrl = Utility.GetBaseUrl(user.LoginType.Type, user.LoginType.Region);
-
-            IFlurlResponse response;
-
-            if (user.LoginType.Type == "LCP")
-                response = await _flurlClient.Request($"media/3dmodel/{mediaFileId}/")
-                                    .WithHeader("Bearer", user.Token)
-                                    .WithHeader("Content-Type", "application/json")
-                                    .GetAsync();
-            else
-                response = await _flurlClient.Request($"media/3dmodel/{mediaFileId}/")
-                                    .WithHeader("Authorization", "Token " + user.Token)
-                                    .WithHeader("Content-Type", "application/json")
-                                    .GetAsync();
-
-            return response.ResponseMessage.IsSuccessStatusCode
-                    ? await response.GetJsonAsync<IEnumerable<BIM3DLayer>>()
-                    : null;
         }
 
         /// <summary>

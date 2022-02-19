@@ -24,7 +24,11 @@ namespace HolooneNavis.ViewModels.Login
             _apiLoginService = apiLoginService;
             _localeStorage = localeStorage;
 
+#if DEBUG
+            LoginCredentials = new LoginCredentials { Username = "baki.test@holo-one.com", Password = "g6hN!(3#" };
+#else
             LoginCredentials = new LoginCredentials { };
+#endif
         }
 
         #region methods

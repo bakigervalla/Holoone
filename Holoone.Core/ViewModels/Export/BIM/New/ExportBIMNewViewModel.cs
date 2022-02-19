@@ -247,7 +247,7 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
                     valColl.Add(layer.FilePath, layer.Name);
                 }
 
-                await (await _exportService.EnsureTokenAsync(Instance.UserLogin)).ExportModelFormCompositionAsync(Instance.UserLogin, valParts, valColl, null, "media/bim/add/", "layers");
+                await (await _exportService.EnsureTokenAsync(Instance.UserLogin)).ExportDefaultModelAndNewBIMAsync(Instance.UserLogin, valParts, valColl, null, "media/bim/add/", "layers[]");
 
                 foreach (var layer in BIMLayers)
                     File.Delete(layer.FilePath);
