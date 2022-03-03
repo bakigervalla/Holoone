@@ -56,7 +56,7 @@ namespace HolooneNavis.Services
 
             //Add all the items that are visible to the visible collection
             hidden = oDoc.Models.RootItems.SelectMany(x => x.DescendantsAndSelf).ToList();
-
+                  
             foreach (var layer in bimLayers.Where(x => x.ModelItem != null)) // && !string.IsNullOrEmpty(x.Name)))
             {
                 //Add all the items that are visible to the visible collection
@@ -91,13 +91,13 @@ namespace HolooneNavis.Services
                     //hide the remaining items
                     Application.ActiveDocument.Models.SetHidden(hidden, true);
                 }
-
+                
                 string fileName = getLayerName(layer);
 
                 layer.FilePath = Path.Combine(basePath, Path.GetFileNameWithoutExtension(fileName) + ".nwd");
 
                 //Save the Navisworks file
-                //oDoc.SaveFile(layer.FilePath);
+                // oDoc.SaveFile(layer.FilePath);
                 oDoc.PublishFile(layer.FilePath, GetPublishProperties(fileName));
 
                 oDoc.CurrentSelection.Clear();

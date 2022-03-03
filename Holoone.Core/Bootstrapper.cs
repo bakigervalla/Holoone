@@ -7,7 +7,7 @@ using Holoone.Api.Services.MicrosoftGraph;
 using HolooneNavis.Services;
 using HolooneNavis.Services.Interfaces;
 using HolooneNavis.ViewModels;
-using HolooneNavis.ViewModels.Anchor;
+using HolooneNavis.ViewModels.Anchors;
 using HolooneNavis.ViewModels.Export;
 using HolooneNavis.ViewModels.Export.BIM;
 using HolooneNavis.ViewModels.Export.BIM.Existing;
@@ -52,7 +52,7 @@ namespace HolooneNavis
             _container.PerRequest<LoginViewModel>();
             _container.PerRequest<LoginSphereAndMicrosoftViewModel>();
             _container.PerRequest<LoginThinkRealityViewModel>();
-            _container.PerRequest<AnchorViewModel>();
+            _container.PerRequest<AnchorsViewModel>();
             _container.PerRequest<ExportViewModel>();
             _container.PerRequest<ExportDefaultViewModel>();
             _container.PerRequest<ExportBIMViewModel>();

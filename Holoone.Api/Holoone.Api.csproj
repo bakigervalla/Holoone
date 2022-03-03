@@ -67,6 +67,7 @@
     <Compile Include="Helpers\Converters\BoolConverter.cs" />
     <Compile Include="Helpers\Extensions\GetPropertyInfo.cs" />
     <Compile Include="Helpers\Extensions\Utility.cs" />
+    <Compile Include="Models\Anchor.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\BIM3DLayer.cs" />
     <Compile Include="Models\ExistingBIM3D.cs" />

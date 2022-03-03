@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace HolooneNavis.Views.Anchor
+namespace HolooneNavis.Views.Anchors
 {
     /// <summary>
-    /// Interaction logic for AnchorView.xaml
+    /// Interaction logic for ExistingAnchors.xaml
     /// </summary>
-    public partial class AnchorView : UserControl
+    public partial class ExistingAnchors : UserControl
     {
-        public AnchorView()
+        public ExistingAnchors()
         {
             InitializeComponent();
         }

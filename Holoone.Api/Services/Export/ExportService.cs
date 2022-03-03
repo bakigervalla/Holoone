@@ -208,7 +208,7 @@ namespace Holoone.Api.Services
                 {
                     if (File.Exists(key))
                     {
-                        string fileName = exportType == "file" ? Path.GetFileName(key) : files[key];
+                        string fileName = Path.GetFileName(key);
                         int bytesRead = 0;
                         byte[] buffer = new byte[2048];
                         byte[] formItemBytes = new byte[2048];
