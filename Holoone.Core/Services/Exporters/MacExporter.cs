@@ -56,9 +56,9 @@ namespace HolooneNavis.Services.Exporters
 
             foreach (var marker in _markers)
             {
-                sb.AppendLine($"\tNEW EQUI /Marker_{DateTime.Now.ToString("yyyy-MM-dd")}_{marker.MarkerName}");
+                sb.AppendLine($"\tNEW EQUI /Marker_{DateTime.Now.ToString("yyyy-MM-dd")}_{marker.Name}");
                 sb.AppendLine("\t\tNEW CYLI");
-                sb.AppendLine($"\t\t\tAT E{marker.MarkerPosX * 1000} N{marker.MarkerPosY * 1000} U{marker.MarkerPosZ * 1000}");
+                sb.AppendLine($"\t\t\tAT E{marker.X * 1000} N{marker.Y * 1000} U{marker.Z * 1000}");
                 sb.AppendLine("\t\t\tDIAM 100.0000 HEIG 10.0000");
             }
 

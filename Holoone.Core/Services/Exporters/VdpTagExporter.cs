@@ -94,7 +94,8 @@ namespace HolooneNavis.Services.Exporters
                         doc.Save(xmlWriter);
                     }
 
-                    string vrml = new Vrml().GetVrml(_markers, 0.2f, getMarkerUrl);
+                    string vrml = new Vrml().GetVrml(_markers.First(), getMarkerUrl);
+                    //* string vrml = new Vrml().GetVrml(_markers.First(), 0.2f, getMarkerUrl);
 
                     string wrlFileName = Path.GetFileName(Path.ChangeExtension(path, "wrl"));
                     ZipArchiveEntry wrlEntry = archive.CreateEntry(wrlFileName);

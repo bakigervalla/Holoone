@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="HolooneNavis.Views.Anchors.AddAnchor"
+﻿<UserControl x:Class="HolooneNavis.Views.Anchors.Anchors.AddAnchor"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:HolooneNavis.Views.Anchors"
+             xmlns:local="clr-namespace:HolooneNavis.Views.Anchors.Anchors"
              mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
@@ -13,7 +13,7 @@
     <Grid VerticalAlignment="Stretch" HorizontalAlignment="Center" Margin="20,30,20,10">
         <Grid.RowDefinitions>
             <RowDefinition Height="80" />
-            <RowDefinition Height="40" />
+            <RowDefinition Height="80" />
             <RowDefinition Height="40" />
             <RowDefinition Height="*" />
             <RowDefinition Height="80" />
@@ -22,17 +22,18 @@
         <Image Height="80" VerticalAlignment="Center" 
                Source="pack://application:,,,/HolooneNavis;component/Resources/Images/export.png" />
 
-        <TextBlock Grid.Row="1" VerticalAlignment="Center" Text="Please enter a name for the anchor:" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" />
+        <TextBlock Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" 
+                   Text="Please enter a name for the anchor:" TextWrapping="Wrap" Width="160" Style="{StaticResource MaterialDesignBody1TextBlock}" />
 
-        <TextBox Grid.Row="2" x:Name="AnchorNameTextBox" Text="{Binding Anchor.Name}" Margin="0,0,20,10"
-                         IsHitTestVisible="True" materialDesign:HintAssist.Hint="Anchor Name" IsEnabled="True" IsReadOnly="False" />
+        <TextBox Grid.Row="2" x:Name="AnchorNameTextBox" VerticalAlignment="Bottom" Text="{Binding SelectedAnchor.Name, NotifyOnValidationError=True, ValidatesOnDataErrors=True}" 
+                 MinWidth="260" IsHitTestVisible="True" materialDesign:HintAssist.Hint="Anchor Name" IsEnabled="True" IsReadOnly="False" />
 
         <StackPanel Grid.Row="3" Orientation="Vertical" VerticalAlignment="Bottom">
-            <TextBlock Text="Note - will be added as" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" />
-            <TextBlock Text="{Binding ElementName=AnchorNameTextBox, Path=Text, StringFormat='sphere_anchor_{0}'}" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" />
+            <TextBlock Text="Note - will be added as" Style="{StaticResource MaterialDesignCaptionTextBlock}" Margin="0,0,0,-5" />
+            <TextBlock Text="{Binding ElementName=AnchorNameTextBox, Path=Text, StringFormat='sphere_anchor_{0}'}" Style="{StaticResource MaterialDesignCaptionTextBlock}" />
         </StackPanel>
 
-        <Button Grid.Row="4" x:Name="PlaceAnchorOnModel" Width="150" Margin="0 0 20 0">Place on model</Button>
+        <Button Grid.Row="4" x:Name="PlaceAnchorOnModel" Width="240" Margin="0 0 20 0">Place on model</Button>
 
     </Grid>
     

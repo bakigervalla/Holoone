@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace Holoone.Api.Models
 {
-    public class Anchor
+    public class Anchor : BaseModel
     {
+        [Required(ErrorMessage = "Anchor Name is required")]
         public string Name { get; set; }
         public string FullName { get { return $"sphere_anchor_{Name}"; } }
-        public bool IsDeleted { get; set; }
+
+        [JsonIgnore]
+        public bool IsDirty { get; set; }
     }
 }

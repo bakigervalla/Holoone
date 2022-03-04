@@ -113,6 +113,7 @@
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -141,6 +142,7 @@
     <Compile Include="Models\Marker.cs" />
     <Compile Include="Models\RvtProperties.cs" />
     <Compile Include="Services\Exporters\MacExporter.cs" />
+    <Compile Include="Services\Exporters\MarkerSphereCreator.cs" />
     <Compile Include="Services\Exporters\MarkerWorksExporter.cs" />
     <Compile Include="Services\Exporters\VdpTagExporter.cs" />
     <Compile Include="Services\Exporters\Vrml.cs" />

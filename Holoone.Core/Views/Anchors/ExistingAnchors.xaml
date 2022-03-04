@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="HolooneNavis.Views.Anchors.ExistingAnchors"
+﻿<UserControl x:Class="HolooneNavis.Views.Anchors.Anchors.ExistingAnchors"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:HolooneNavis.Views.Anchors"
+             xmlns:local="clr-namespace:HolooneNavis.Views.Anchors.Anchors"
              mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
@@ -49,7 +49,7 @@
                                     <ColumnDefinition Width="30" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="{Binding FullName}" VerticalAlignment="Center" Margin="0,2,0,2"/>
-                                <materialDesign:PackIcon Grid.Column="3" Kind="Close" Cursor="Hand" VerticalAlignment="Center" HorizontalAlignment="Center" Focusable="False">
+                                <materialDesign:PackIcon Grid.Column="3" Kind="Trash" Cursor="Hand" VerticalAlignment="Center" HorizontalAlignment="Center" Focusable="False">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="MouseLeftButtonUp">
                                             <cal:ActionMessage MethodName="DeleteAnchor">

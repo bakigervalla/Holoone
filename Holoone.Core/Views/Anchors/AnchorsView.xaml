@@ -4,18 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:HolooneNavis.Views.Anchors"
+             xmlns:cal="http://www.caliburnproject.org"             
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
-        <Image Height="80" VerticalAlignment="Center" 
-               Source="pack://application:,,,/HolooneNavis;component/Resources/Images/anchors.png" />
-
+    <Grid>
+        <ContentControl cal:View.Context="{Binding State, Mode=TwoWay}"
+                        cal:View.Model="{Binding}" />
     </Grid>
-
+    
 </UserControl>

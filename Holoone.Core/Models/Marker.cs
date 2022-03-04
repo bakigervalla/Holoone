@@ -11,19 +11,20 @@ namespace HolooneNavis.Models
 {
     public class Marker : BaseModel
     {
-        [XmlIgnore]
         public string Id { get; set; }
-        /// <summary>
-        /// The 3D model that is used for metadata.
-        /// </summary>
+
+        public string Name { get; set; }
+
+        public float Radious { get; set; } = .20f;
+
+        public Point3D Point3D { get; set; }
+
+        public Point3D ExactPoint3D { get; set; }
+
+        public double X { get => Point3D.X; } 
+        public double Y { get => Point3D.Y; }
+        public double Z { get => Point3D.Z; }
+
         public ModelItem ModelItem { get; set; }
-        public long MarkerNumber { get; set; }
-        public string MarkerName { get; set; }
-
-        public double MarkerPosX { get; set; }
-        public double MarkerPosY { get; set; }
-        public double MarkerPosZ { get; set; }
-
-        public string SavedViewPointName { get; set; }
     }
 }

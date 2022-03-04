@@ -45,22 +45,14 @@ namespace HolooneNavis
 
                             var windowManager = IoC.Get<IWindowManager>();
                             var shellViewModel = (Screen)IoC.Get<ShellViewModel>();
+
+                            // System.Windows.Forms.Integration.ElementHost.EnableModelessKeyboardInterop(Application.Current.MainWindow);
+                            //var result = windowManager.ShowWindowAsync(shellViewModel, null);
+
                             var result = windowManager.ShowDialogAsync(shellViewModel, null);
 
-                            Autodesk.Navisworks.Api.Controls.ApplicationControl.Terminate();
+                            //Autodesk.Navisworks.Api.Controls.ApplicationControl.Terminate();
 
-                            ////Get the ViewModel for the screen from Container
-                            //ShellViewModel relayListViewModel = bootstraper._container.GetInstance<ShellViewModel>();
-                            //IWindowManager windowManager = bootstraper._container.GetInstance<IWindowManager>();
-                            //windowManager.ShowWindowAsync(relayListViewModel);
-
-                            //// Open Plugin Dialog that will run the Main Plugin 
-                            //OpenPluginWindow dialog = new OpenPluginWindow();
-                            //dialog.Topmost = true;
-                            //dialog.ShowDialog();
-
-                            //var view = new ShellView(); //shellViewModel.GetView() as Window;
-                            //view.Show();
                             break;
                         }
                 }

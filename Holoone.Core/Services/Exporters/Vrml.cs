@@ -23,19 +23,14 @@ namespace HolooneNavis.Services.Exporters
         /// <param name="getMarkerUrl">A function for generating the marker url. 
         /// A url is added to each marker that can be used to connect a wrl file with an xml file containing metadata.</param>
         /// <returns></returns>
-        public string GetVrml(IEnumerable<Marker> markers, float radius, Func<Marker, string> getMarkerUrl = null)
+        public string GetVrml(Marker marker, Func<Marker, string> getMarkerUrl = null)
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append(Prefix);
 
-            foreach (Marker marker in markers)
-            {
-                string url = getMarkerUrl != null ? getMarkerUrl(marker) : null;
-                stringBuilder.Append(Sphere(marker.Id, marker.MarkerPosX, marker.MarkerPosY, marker.MarkerPosZ,
-                    radius, "Active", url));
-                // stringBuilder.Append(Tag(marker));
-
-            }
+            string url = getMarkerUrl != null ? getMarkerUrl(marker) : null;
+            stringBuilder.Append(Sphere(marker.Id, marker.X, marker.Y, marker.Z, marker.Radious, "Active", url));
+            // stringBuilder.Append(Tag(marker));
 
             stringBuilder.Append(Suffix);
 
