@@ -17,21 +17,17 @@ namespace HolooneNavis.Helpers
     [Plugin("MarkerPointPicker", "ADSK")]
     public class MarkerPicker : ToolPlugin
     {
-        private readonly IEventAggregator _eventAggregator;
+ 
+        //public MarkerPicker()
+        //{
 
+        //}
         public MarkerPicker()
         {
-
+            // For some reason, MarkerPicker is created and activated at application start,
+            // so the navisworks tool has to be reset to Tool.Select to prevent the marker window from opening on mouse down.
+            Application.ActiveDocument.Tool.Set(Tool.Select);
         }
-        //public MarkerPicker(IEventAggregator eventAggregator)
-        //{
-        //    _eventAggregator = eventAggregator;
-        //    _eventAggregator.SubscribeOnUIThread(this);
-
-        //    // For some reason, MarkerPicker is created and activated at application start,
-        //    // so the navisworks tool has to be reset to Tool.Select to prevent the marker window from opening on mouse down.
-        //    Application.ActiveDocument.Tool.Set(Tool.Select);
-        //}
 
         /// <summary>
         /// Sets the cursor icon of the marker tool plugin to the redline cursor.
@@ -97,7 +93,8 @@ namespace HolooneNavis.Helpers
                     Application.MainDocument.Tool.Set(Tool.Select);
 
                     var marker = new Marker { Point3D = rounded, ExactPoint3D = orgPoint, ModelItem = itemResult.ModelItem };
-                    _eventAggregator.PublishOnUIThreadAsync(marker);
+                    IEventAggregator eventAggregator = IoC.Get<IEventAggregator>();
+                    eventAggregator.PublishOnUIThreadAsync(marker);
                 }
                 else
                 {
@@ -112,6 +109,7 @@ namespace HolooneNavis.Helpers
             }
             return false;
         }
+
     }
 
     public class MarkerStatus

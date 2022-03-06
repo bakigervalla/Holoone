@@ -1,6 +1,8 @@
 ﻿using Caliburn.Micro;
 using Hanssens.Net;
+using HolooneNavis.Models;
 using HolooneNavis.Services.Interfaces;
+using HolooneNavis.ViewModels.Anchors;
 using HolooneNavis.ViewModels.Home;
 using HolooneNavis.ViewModels.Settings;
 using System.Threading;
@@ -8,17 +10,16 @@ using System.Threading.Tasks;
 
 namespace HolooneNavis.ViewModels
 {
-    public class ShellViewModel : BaseViewModel, IHandle<bool>
+    public class ShellViewModel : BaseViewModel //, IHandle<bool>, IHandle<ViewState>
     {
         private readonly ILocalStorage _localeStorage;
 
         public ShellViewModel(
-            IHoloNavigationService navigationService,
             ILocalStorage localeStorage,
             IEventAggregator eventAggregator)
         {
             _localeStorage = localeStorage;
-            eventAggregator.SubscribeOnPublishedThread(this);
+            eventAggregator.SubscribeOnUIThread(this);
 
             ShowHomePage();
         }
@@ -26,6 +27,7 @@ namespace HolooneNavis.ViewModels
         public void ShowHomePage() => NavigationService.GoTo<HomeViewModel>();
 
         public async Task ShowSettingsPage() => await NavigationService.GoTo<SettingsViewModel>();
+        public async Task ShowAnchorsPage() => await NavigationService.GoTo<AnchorsViewModel>();
 
         public async Task Logout()
         {
@@ -46,26 +48,5 @@ namespace HolooneNavis.ViewModels
             await Task.Run(() => IsBusy = message);
         }
 
-        //public async Task ShowHomeScreenAsync()
-        //{
-        //    await ActivateItemAsync(
-        //            new HomeViewModel(NavigationService)
-        //        );
-        //}
-
-        //public async Task ShowLoginSphereMicrosoftAsync()
-        //{
-        //    await ActivateItemAsync(
-        //            new LoginViewModel(
-        //                    NavigationService,
-        //                    IoC.Get<ILoginService>()
-        //                )
-        //        );
-        //}
-
-        //public void ShowLogin()
-        //{
-        //    ActivateItemAsync(new LoginViewModel(IoC.Get<ILoginService>(), IoC.Get<INavigationService>()));
-        //}
     }
 }

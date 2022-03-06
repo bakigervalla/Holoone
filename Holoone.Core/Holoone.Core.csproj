@@ -136,6 +136,7 @@
     <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Helpers\Util.cs" />
     <Compile Include="HolooneAddin.cs" />
+    <Compile Include="Models\ViewState.cs" />
     <Compile Include="Models\BIMModel.cs" />
     <Compile Include="Models\ItemTree.cs" />
     <Compile Include="Models\ItemData.cs" />

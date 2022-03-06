@@ -45,11 +45,7 @@ namespace HolooneNavis
 
                             var windowManager = IoC.Get<IWindowManager>();
                             var shellViewModel = (Screen)IoC.Get<ShellViewModel>();
-
-                            // System.Windows.Forms.Integration.ElementHost.EnableModelessKeyboardInterop(Application.Current.MainWindow);
-                            //var result = windowManager.ShowWindowAsync(shellViewModel, null);
-
-                            var result = windowManager.ShowDialogAsync(shellViewModel, null);
+                            var result = windowManager.ShowWindowAsync(shellViewModel, null);
 
                             //Autodesk.Navisworks.Api.Controls.ApplicationControl.Terminate();
 

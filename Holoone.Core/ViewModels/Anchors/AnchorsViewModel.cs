@@ -2,6 +2,7 @@
 using Autodesk.Navisworks.Api.Plugins;
 using Caliburn.Micro;
 using Holoone.Api.Models;
+using HolooneNavis.Helpers;
 using HolooneNavis.Helpers.Extensions;
 using HolooneNavis.Models;
 using HolooneNavis.Services;
@@ -21,13 +22,12 @@ using Application = Autodesk.Navisworks.Api.Application;
 
 namespace HolooneNavis.ViewModels.Anchors
 {
-    public class AnchorsViewModel : BaseViewModel, IHandle<object>, IViewAware
+    public class AnchorsViewModel : BaseViewModel, IHandle<Marker>
     {
 
         private readonly IEventAggregator _eventAggregator;
 
-        public AnchorsViewModel(IEventAggregator eventAggregator,
-            object view, object context = null)
+        public AnchorsViewModel(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
             _eventAggregator.SubscribeOnUIThread(this);
@@ -40,7 +40,7 @@ namespace HolooneNavis.ViewModels.Anchors
         public string State { get => _state; set { _state = value; NotifyOfPropertyChange("State"); } }
 
         public void NavigateToAddAnchorPage()
-        {
+        {            
             State = "AddAnchor";
         }
 
@@ -80,29 +80,6 @@ namespace HolooneNavis.ViewModels.Anchors
 
         #endregion
 
-        #region window events
-        private Window dialogWindow;
-        public void HideWindow()
-        {
-            var shellViewModel = (Screen)IoC.Get<ShellViewModel>();
-            shellViewModel.TryCloseAsync();
-            // dialogWindow.Hide();
-        }
-        public void ShowWindow()
-        {
-            var shellViewModel = (Screen)IoC.Get<ShellViewModel>();
-            shellViewModel.ActivateAsync();
-            // dialogWindow.Show();
-        }
-
-        public object GetView(object context = null)
-        {
-            return dialogWindow;
-        }
-
-        public event EventHandler<ViewAttachedEventArgs> ViewAttached;
-        #endregion
-
         public void AddNewAnchor()
         {
             NavigateToAddAnchorPage();
@@ -113,19 +90,18 @@ namespace HolooneNavis.ViewModels.Anchors
             Anchors.Remove(anchor);
         }
 
-        public void PlaceAnchorOnModel(Anchor anchor)
+        public void PlaceAnchorOnModel()
         {
             SelectedAnchor.IsDirty = true;
 
             if (SelectedAnchor.ValidateObject(SelectedAnchor).HasErrors)
                 return;
 
-            SelectedAnchor = anchor;
-            Anchors.Add(anchor);
+            Anchors.Add(SelectedAnchor);
 
             EnableMarkerToolPluginCommandHandler();
 
-            HideWindow();
+            _eventAggregator.PublishOnUIThreadAsync(ViewState.Minimize);
         }
 
         /// <summary>
@@ -142,22 +118,21 @@ namespace HolooneNavis.ViewModels.Anchors
 
             MarkerSelectionActive = true;
             ToolPluginRecord toolPluginRecord = Application.Plugins.FindPlugin("MarkerPointPicker.ADSK") as ToolPluginRecord;
-            Application.MainDocument.Tool.SetCustomToolPlugin(toolPluginRecord.LoadPlugin());
+            var plugin = toolPluginRecord.LoadPlugin();
+            Application.MainDocument.Tool.SetCustomToolPlugin(plugin);
         }
 
-        public Task HandleAsync(object message, CancellationToken cancellationToken)
+        public Task HandleAsync(Marker message, CancellationToken cancellationToken)
         {
             SelectedMarker = message as Marker;
             SelectedMarker.Id = (Anchors.Count + 1).ToString();
 
-            var vrmlPath = Path.Combine(Path.GetTempPath(), "HolooneNavis", SelectedAnchor.FullName, ".wrl");  // $"sphere_anchor_{Name}";
+            var vrmlPath = Path.Combine(Path.GetTempPath(), "HolooneNavis", $"{SelectedAnchor.FullName}.wrl");  // $"sphere_anchor_{Name}";
             MarkerSphereCreator.CreateMarkerSphere(vrmlPath, SelectedMarker);
 
             NavigateToExistingAnchorsPage();
 
-            ShowWindow();
-
-            return null;
+            return _eventAggregator.PublishOnUIThreadAsync(ViewState.Normal);
         }
 
         ///// <summary>

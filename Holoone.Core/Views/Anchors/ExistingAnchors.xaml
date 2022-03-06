@@ -9,7 +9,7 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:cal="http://www.caliburnproject.org"
              d:DesignHeight="450" d:DesignWidth="800">
-
+    
     <Grid VerticalAlignment="Stretch" HorizontalAlignment="Center" Margin="20,30,20,10">
         <Grid.RowDefinitions>
             <RowDefinition Height="80" />
@@ -22,18 +22,18 @@
                Source="pack://application:,,,/HolooneNavis;component/Resources/Images/export.png" />
 
         <TextBlock Grid.Row="1" VerticalAlignment="Center" Text="Existing Anchors" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" />
-        
-        <Grid Grid.Row="2" Margin="0,40,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="380">
+
+        <Grid Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="360">
             <Grid.Resources>
                 <Style TargetType="RowDefinition">
                     <Setter Property="Height" Value="34" />
                 </Style>
             </Grid.Resources>
-
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CanVerticallyScroll="True">
-
-                <ItemsControl ItemsSource="{Binding Anchors}" Focusable="False"
-                              VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxHeight="240">
+            
+            <Border BorderThickness="1" BorderBrush="#efefef" HorizontalAlignment="Stretch">
+                
+                <ItemsControl ItemsSource="{Binding Anchors}" Focusable="False" AlternationCount="{Binding Anchors.Count}"
+                                  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" MaxHeight="260" Width="376" >
                     <ItemsControl.Template>
                         <ControlTemplate>
                             <ScrollViewer x:Name="ScrollViewer" Padding="{TemplateBinding Padding}">
@@ -42,28 +42,40 @@
                         </ControlTemplate>
                     </ItemsControl.Template>
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="30" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="{Binding FullName}" VerticalAlignment="Center" Margin="0,2,0,2"/>
-                                <materialDesign:PackIcon Grid.Column="3" Kind="Trash" Cursor="Hand" VerticalAlignment="Center" HorizontalAlignment="Center" Focusable="False">
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="MouseLeftButtonUp">
-                                            <cal:ActionMessage MethodName="DeleteAnchor">
-                                                <cal:Parameter Value="{Binding}" />
-                                            </cal:ActionMessage>
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                </materialDesign:PackIcon>
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </StackPanel>
-
+                            <DataTemplate>
+                                <Grid Name="border" HorizontalAlignment="Stretch">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="40" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding FullName}" Padding="6,6,0,6" FontSize="14px" HorizontalAlignment="Stretch"/>
+                                    <materialDesign:PackIcon Grid.Column="3" Kind="TrashCanOutline" Height="20" Width="20" Cursor="Hand" VerticalAlignment="Center" HorizontalAlignment="Center" Focusable="False">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="MouseLeftButtonUp">
+                                                <cal:ActionMessage MethodName="DeleteAnchor">
+                                                    <cal:Parameter Value="{Binding}" />
+                                                </cal:ActionMessage>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </materialDesign:PackIcon>
+                                </Grid>
+                                <DataTemplate.Triggers>
+                                    <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                        <Setter Property="Background" Value="#EAF2F8" TargetName="border" />
+                                    </Trigger>
+                                    <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                        <Setter Property="Background" Value="White" TargetName="border" />
+                                    </Trigger>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="border" Property="Background" Value="#EFEFEF" />
+                                    </Trigger>                                    
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                
+            </Border>
+            
         </Grid>
 
         <Button Grid.Row="3" x:Name="AddNewAnchor" Width="150" Margin="0 0 20 0">Add new Anchor</Button>

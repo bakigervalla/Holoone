@@ -112,21 +112,21 @@ namespace HolooneNavis.Services.Exporters
         //    switch (markerState)
         //    {
         //        case MarkerState.Free:
-        //            return (Color)ColorConverter.ConvertFromString("#0000ff");
+        //            return (Color)ColorConverter.ConvertFromString("#0000ff"); // blue
         //        case MarkerState.Open:
-        //            return (Color)ColorConverter.ConvertFromString("#e30000");
+        //            return (Color)ColorConverter.ConvertFromString("#e30000"); // red
         //        case MarkerState.InProcessing:
-        //            return (Color)ColorConverter.ConvertFromString("#ffbc00"); // #
+        //            return (Color)ColorConverter.ConvertFromString("#ffbc00"); // yellow
         //        case MarkerState.Back:
-        //            return (Color)ColorConverter.ConvertFromString("#c00000");
+        //            return (Color)ColorConverter.ConvertFromString("#c00000"); // reddark
         //        case MarkerState.PostProcessing:
-        //            return (Color)ColorConverter.ConvertFromString("#e30000");
+        //            return (Color)ColorConverter.ConvertFromString("#e30000");  // redlight
         //        case MarkerState.Done:
-        //            return (Color)ColorConverter.ConvertFromString("#5dcb41");
+        //            return (Color)ColorConverter.ConvertFromString("#5dcb41"); green
         //        case MarkerState.Proof:
-        //            return (Color)ColorConverter.ConvertFromString("#7daadc");
+        //            return (Color)ColorConverter.ConvertFromString("#7daadc"); blugrey
         //        case MarkerState.Checked:
-        //            return (Color)ColorConverter.ConvertFromString("#006c7c");
+        //            return (Color)ColorConverter.ConvertFromString("#006c7c"); // bluedark
         //    }
         //    return Colors.Red;
         //}
