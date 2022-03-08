@@ -1,14 +1,9 @@
 ﻿using Autodesk.Navisworks.Api;
-using Autodesk.Navisworks.Api.ComApi;
 using HolooneNavis.Models;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace HolooneNavis.Services.Exporters
+namespace HolooneNavis.Services
 {
     /// <summary>
     /// Creates spheres to represent the markers of the current review or of the project in navisworks. 
@@ -27,11 +22,74 @@ namespace HolooneNavis.Services.Exporters
             string vrml = new Vrml().GetVrml(marker);
 
             // Save the file to disk.
+            if (File.Exists(vrmlPath))
+                File.Delete(vrmlPath);
+                
             File.WriteAllText(vrmlPath, vrml);
 
+            var modelItems = Application.ActiveDocument.Models[0].RootItem.DescendantsAndSelf;
+            
             // Append the file to the navisworks document, adding the marker spheres to the 3D-environment.
             Application.ActiveDocument.AppendFile(vrmlPath);
         }
+
+        //public void InsertDynBlockMethod()
+
+        //{
+
+        //    try
+
+        //    {
+
+        //        Document activeDoc
+
+        //                = Application.DocumentManager.MdiActiveDocument;
+
+        //        using (DocumentLock dl = activeDoc.LockDocument())
+
+        //        {
+
+        //            Database db = activeDoc.Database;
+
+        //            string dynBlockDwgPath
+
+        //                    = @"C:\Temp\DynBlockWithStretchActions.dwg";
+
+
+
+        //            using (Database dynBlkDb = new Database(false, true))
+
+        //            {
+
+        //                dynBlkDb.ReadDwgFile(
+
+        //                                        dynBlockDwgPath,
+
+        //                                        System.IO.FileShare.Read,
+
+        //                                        true,
+
+        //                                        ""
+
+        //                                    );
+
+        //                db.Insert("TestDyn", dynBlkDb, true);
+
+        //            }
+
+        //        }
+
+        //    }
+
+        //    catch (System.Exception ex)
+
+        //    {
+
+        //        Application.DocumentManager.MdiActiveDocument.Editor.WriteMessage(ex.Message);
+
+        //    }
+
+        //}
 
         //public bool SphereExists()
         //{

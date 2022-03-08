@@ -10,11 +10,11 @@
 
     <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
         <Grid.RowDefinitions>
-            <RowDefinition Height="80" />
+            <RowDefinition Height="120" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
             <md:PackIcon Kind="Gear" VerticalAlignment="Center" />
             <TextBlock Text="Settings" Style="{StaticResource MaterialDesignHeadline6TextBlock}" />
         </StackPanel>

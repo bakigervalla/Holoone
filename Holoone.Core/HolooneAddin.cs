@@ -1,5 +1,6 @@
 ﻿using Autodesk.Navisworks.Api.Plugins;
 using Caliburn.Micro;
+using HolooneNavis.Helpers;
 using HolooneNavis.ViewModels;
 using System;
 using System.IO;
@@ -40,6 +41,8 @@ namespace HolooneNavis
                             {
                                 throw new InvalidOperationException("Invalid when running using Automation");
                             }
+
+                            NavisUtils.GetGunits(Autodesk.Navisworks.Api.Application.MainDocument);
 
                             var bootstraper = new Bootstrapper();
 

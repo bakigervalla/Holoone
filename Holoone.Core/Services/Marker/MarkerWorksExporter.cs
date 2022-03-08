@@ -7,12 +7,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ComBridge = Autodesk.Navisworks.Api.ComApi.ComApiBridge;
 
-namespace HolooneNavis.Services.Exporters
+namespace HolooneNavis.Services
 {
     /// <summary>
     /// Exports the markers of the selected review as a markerworks zip-archive that can be imported in VRresult.

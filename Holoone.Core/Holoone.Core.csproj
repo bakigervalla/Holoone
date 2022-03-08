@@ -132,7 +132,8 @@
     <Compile Include="Helpers\Converters\VisibilityConverter.cs" />
     <Compile Include="Helpers\Extensions\TreeViewItemExtensions.cs" />
     <Compile Include="Helpers\Extensions\Utility.cs" />
-    <Compile Include="Helpers\Marker\MarkerPicker.cs" />
+    <Compile Include="Services\Marker\MarkerPicker.cs" />
+    <Compile Include="Helpers\NavisUtils.cs" />
     <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Helpers\Util.cs" />
     <Compile Include="HolooneAddin.cs" />
@@ -142,11 +143,9 @@
     <Compile Include="Models\ItemData.cs" />
     <Compile Include="Models\Marker.cs" />
     <Compile Include="Models\RvtProperties.cs" />
-    <Compile Include="Services\Exporters\MacExporter.cs" />
-    <Compile Include="Services\Exporters\MarkerSphereCreator.cs" />
-    <Compile Include="Services\Exporters\MarkerWorksExporter.cs" />
-    <Compile Include="Services\Exporters\VdpTagExporter.cs" />
-    <Compile Include="Services\Exporters\Vrml.cs" />
+    <Compile Include="Services\Marker\MarkerSphereCreator.cs" />
+    <Compile Include="Services\Marker\MarkerWorksExporter.cs" />
+    <Compile Include="Services\Marker\Vrml.cs" />
     <Compile Include="Services\Interfaces\IExporter.cs" />
     <Compile Include="Services\NavisWorks.cs" />
     <Compile Include="ViewModels\Export\BIM\Existing\ExportBIMExistingViewModel.cs" />

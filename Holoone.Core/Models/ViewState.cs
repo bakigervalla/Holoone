@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace HolooneNavis.Models
 {
-        public enum ViewState
+    public enum ViewState
     {
-            Normal,
-            Minimize,
-            Close
-        }
+        Normal,
+        Minimize,
+        Close,
+        Activate
+    }
 }

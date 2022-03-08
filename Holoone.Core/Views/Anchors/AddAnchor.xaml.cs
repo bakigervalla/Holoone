@@ -23,6 +23,12 @@ namespace HolooneNavis.Views.Anchors.Anchors
         public AddAnchor()
         {
             InitializeComponent();
+            this.Loaded += AddAnchor_Loaded;
+        }
+
+        private void AddAnchor_Loaded(object sender, RoutedEventArgs e)
+        {
+            Keyboard.Focus(AnchorNameTextBox);
         }
     }
 }

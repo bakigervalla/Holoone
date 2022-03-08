@@ -1,13 +1,9 @@
 ﻿using HolooneNavis.Models;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using media = System.Windows.Media;
 
-namespace HolooneNavis.Services.Exporters
+namespace HolooneNavis.Services
 {
     /// <summary>
     /// Class for generating Vrml-Files (.wrl).

@@ -1,8 +1,11 @@
 ﻿using Autodesk.Navisworks.Api;
+using Autodesk.Navisworks.Api.ComApi;
 using Autodesk.Navisworks.Api.Controls;
 using Autodesk.Navisworks.Api.DocumentParts;
+using Autodesk.Navisworks.Api.Interop.ComApi;
 using Autodesk.Navisworks.Api.Plugins;
 using Autodesk.Navisworks.Internal.ApiImplementation;
+using HolooneNavis.Helpers;
 using HolooneNavis.Models;
 using HolooneNavis.Services.Interfaces;
 using System;
@@ -216,6 +219,20 @@ namespace HolooneNavis.Services
 
         }
 
+        public void DeleteDocument(string markerDocName)
+        {
+            Document doc = Application.ActiveDocument;
+
+            var model = doc.Models.FirstOrDefault(x => x.FileName == Util.MarkerPath(markerDocName));
+
+            if (model is null) return;
+
+            doc.CurrentSelection.CopyFrom(model.RootItem.AncestorsAndSelf); // doc.Models[2].RootItem.AncestorsAndSelf);
+
+            InwOpState10 state = ComApiBridge.State;
+
+            state.DeleteSelectedFiles();
+        }
 
         /// <summary>
         /// OBSOLETE
@@ -337,6 +354,7 @@ namespace HolooneNavis.Services
             //hide the remaining items
             //* Autodesk.Navisworks.Api.Application.ActiveDocument.Models.SetHidden(hidden, true);
         }
+
 
         /// <summary>
         /// OBSOLETE

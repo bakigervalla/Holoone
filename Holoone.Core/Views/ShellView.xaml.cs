@@ -34,6 +34,9 @@ namespace HolooneNavis.Views
                 case ViewState.Close:
                     this.Close();
                     return null;
+                case ViewState.Activate:
+                    this.Focus();
+                    return null;
                 default:
                     this.WindowState = System.Windows.WindowState.Normal;
                     return null;

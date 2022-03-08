@@ -3,6 +3,8 @@ using Holoone.Api.Helpers.Constants;
 using Holoone.Api.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Management;
 using System.Net.NetworkInformation;
@@ -107,6 +109,8 @@ namespace HolooneNavis.Helpers
         }
         #endregion // Formatting
 
+        public static ObservableCollection<Anchor> Anchors { get; set; }
+
         public static string GetDeviceIdentifier(DeviceType device)
         {
             switch (device)
@@ -151,6 +155,12 @@ namespace HolooneNavis.Helpers
 
             return await Task.FromResult(s);
         }
+
+        public static string MarkerPath(string markerName)
+        {
+            return Path.Combine(Path.GetTempPath(), "HolooneNavis", $"{markerName}.wrl");   // $"sphere_anchor_{Name}";
+        }
+
     }
 
     enum DeviceType

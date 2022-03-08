@@ -3,18 +3,11 @@ using Autodesk.Navisworks.Api.Plugins;
 using Caliburn.Micro;
 using Holoone.Api.Models;
 using HolooneNavis.Helpers;
-using HolooneNavis.Helpers.Extensions;
 using HolooneNavis.Models;
 using HolooneNavis.Services;
-using HolooneNavis.Services.Exporters;
 using HolooneNavis.Services.Interfaces;
-using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -26,12 +19,14 @@ namespace HolooneNavis.ViewModels.Anchors
     {
 
         private readonly IEventAggregator _eventAggregator;
+        private readonly INavisService _navisService;
 
-        public AnchorsViewModel(IEventAggregator eventAggregator)
+        public AnchorsViewModel(IEventAggregator eventAggregator, INavisService navisService)
         {
             _eventAggregator = eventAggregator;
             _eventAggregator.SubscribeOnUIThread(this);
 
+            _navisService = navisService;
         }
 
         #region navigation
@@ -40,7 +35,7 @@ namespace HolooneNavis.ViewModels.Anchors
         public string State { get => _state; set { _state = value; NotifyOfPropertyChange("State"); } }
 
         public void NavigateToAddAnchorPage()
-        {            
+        {
             State = "AddAnchor";
         }
 
@@ -53,10 +48,11 @@ namespace HolooneNavis.ViewModels.Anchors
 
         #region members
 
-        private ObservableCollection<Anchor> _anchors = new ObservableCollection<Anchor>();
+        private ObservableCollection<Anchor> _anchors = Util.Anchors != null ? Util.Anchors : new ObservableCollection<Anchor>();
         public ObservableCollection<Anchor> Anchors { get => _anchors; set { _anchors = value; NotifyOfPropertyChange(nameof(_anchors)); } }
-        
-        public Anchor SelectedAnchor { get; set; } = new();
+
+        private Anchor _anchor;
+        public Anchor SelectedAnchor { get => _anchor; set { _anchor = value; NotifyOfPropertyChange(nameof(SelectedAnchor)); } }
 
         /// <summary>
         /// The selected marker in the DataGrid.
@@ -82,26 +78,39 @@ namespace HolooneNavis.ViewModels.Anchors
 
         public void AddNewAnchor()
         {
+            SelectedAnchor = new();
+
             NavigateToAddAnchorPage();
         }
 
         public void DeleteAnchor(Anchor anchor)
         {
             Anchors.Remove(anchor);
+            Util.Anchors = Anchors;
+
+            _navisService.DeleteDocument(anchor.FullName);
+
+            _eventAggregator.PublishOnUIThreadAsync(ViewState.Activate);
         }
 
-        public void PlaceAnchorOnModel()
+        public object PlaceAnchorOnModel()
         {
             SelectedAnchor.IsDirty = true;
 
             if (SelectedAnchor.ValidateObject(SelectedAnchor).HasErrors)
-                return;
+                return null;
+
+            if (Anchors.Count(x => x.FullName == SelectedAnchor.FullName) > 0)
+                return MessageBox.Show("Anchor already exists. Delete or add a new one");
 
             Anchors.Add(SelectedAnchor);
+            Util.Anchors = Anchors;
 
             EnableMarkerToolPluginCommandHandler();
 
             _eventAggregator.PublishOnUIThreadAsync(ViewState.Minimize);
+
+            return null;
         }
 
         /// <summary>
@@ -127,7 +136,7 @@ namespace HolooneNavis.ViewModels.Anchors
             SelectedMarker = message as Marker;
             SelectedMarker.Id = (Anchors.Count + 1).ToString();
 
-            var vrmlPath = Path.Combine(Path.GetTempPath(), "HolooneNavis", $"{SelectedAnchor.FullName}.wrl");  // $"sphere_anchor_{Name}";
+            var vrmlPath = Util.MarkerPath(SelectedAnchor.FullName);
             MarkerSphereCreator.CreateMarkerSphere(vrmlPath, SelectedMarker);
 
             NavigateToExistingAnchorsPage();
