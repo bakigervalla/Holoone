@@ -61,9 +61,9 @@
             </MenuItem>
         </Menu>
 
-        <StackPanel Grid.Row="2" Height="80" Width="80" VerticalAlignment="Center" Panel.ZIndex="100">
+        <StackPanel Grid.Row="2" Height="80" Width="80" VerticalAlignment="Center" Panel.ZIndex="1000">
             <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" IsIndeterminate="True" 
-                     VerticalAlignment="Center" VerticalContentAlignment="Center" Width="40"
+                     VerticalAlignment="Center" VerticalContentAlignment="Center" Width="40" Panel.ZIndex="1000"
                      Visibility="{Binding IsBusy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={converters:VisibilityConverter}}" />
         </StackPanel>
 

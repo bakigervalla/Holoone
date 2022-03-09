@@ -57,8 +57,10 @@ namespace HolooneNavis.Services
             if (!Directory.Exists(basePath))
                 Directory.CreateDirectory(basePath);
 
+            string[] anchorFiles = Util.Anchors.Select(x => x.FullName).ToArray();
+
             //Add all the items that are visible to the visible collection
-            hidden = oDoc.Models.RootItems.SelectMany(x => x.DescendantsAndSelf).ToList();
+            hidden = oDoc.Models.RootItems.Where(x=> !anchorFiles.Contains(Path.GetFileNameWithoutExtension(x.DisplayName))).SelectMany(x => x.DescendantsAndSelf).ToList();
                   
             foreach (var layer in bimLayers.Where(x => x.ModelItem != null)) // && !string.IsNullOrEmpty(x.Name)))
             {

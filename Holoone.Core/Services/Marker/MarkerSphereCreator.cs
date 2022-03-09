@@ -1,7 +1,9 @@
 ﻿using Autodesk.Navisworks.Api;
 using HolooneNavis.Models;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace HolooneNavis.Services
 {
@@ -24,72 +26,12 @@ namespace HolooneNavis.Services
             // Save the file to disk.
             if (File.Exists(vrmlPath))
                 File.Delete(vrmlPath);
-                
+
             File.WriteAllText(vrmlPath, vrml);
 
-            var modelItems = Application.ActiveDocument.Models[0].RootItem.DescendantsAndSelf;
-            
             // Append the file to the navisworks document, adding the marker spheres to the 3D-environment.
-            Application.ActiveDocument.AppendFile(vrmlPath);
+            Application.ActiveDocument.MergeFile(vrmlPath);
         }
-
-        //public void InsertDynBlockMethod()
-
-        //{
-
-        //    try
-
-        //    {
-
-        //        Document activeDoc
-
-        //                = Application.DocumentManager.MdiActiveDocument;
-
-        //        using (DocumentLock dl = activeDoc.LockDocument())
-
-        //        {
-
-        //            Database db = activeDoc.Database;
-
-        //            string dynBlockDwgPath
-
-        //                    = @"C:\Temp\DynBlockWithStretchActions.dwg";
-
-
-
-        //            using (Database dynBlkDb = new Database(false, true))
-
-        //            {
-
-        //                dynBlkDb.ReadDwgFile(
-
-        //                                        dynBlockDwgPath,
-
-        //                                        System.IO.FileShare.Read,
-
-        //                                        true,
-
-        //                                        ""
-
-        //                                    );
-
-        //                db.Insert("TestDyn", dynBlkDb, true);
-
-        //            }
-
-        //        }
-
-        //    }
-
-        //    catch (System.Exception ex)
-
-        //    {
-
-        //        Application.DocumentManager.MdiActiveDocument.Editor.WriteMessage(ex.Message);
-
-        //    }
-
-        //}
 
         //public bool SphereExists()
         //{
@@ -119,14 +61,14 @@ namespace HolooneNavis.Services
 
                 doc.CurrentViewpoint.CopyFrom(viewpoint);
 
-                    savedViewpoint = new SavedViewpoint(doc.CurrentViewpoint.ToViewpoint());
-                    savedViewpoint.Viewpoint.Position = new Point3D(item.X, item.Y, item.Z);
-                    savedViewpoint.Viewpoint.AlignDirection(new Vector3D(0, 0, -1)); // align direction top
-                    savedViewpoint.Viewpoint.Rotation = new Rotation3D(0, 0, 0, 1); // align direction north
-                    savedViewpoint.Viewpoint.Projection = ViewpointProjection.Orthographic;
-                    savedViewpoint.Viewpoint.HeightField = 50;
+                savedViewpoint = new SavedViewpoint(doc.CurrentViewpoint.ToViewpoint());
+                savedViewpoint.Viewpoint.Position = new Point3D(item.X, item.Y, item.Z);
+                savedViewpoint.Viewpoint.AlignDirection(new Vector3D(0, 0, -1)); // align direction top
+                savedViewpoint.Viewpoint.Rotation = new Rotation3D(0, 0, 0, 1); // align direction north
+                savedViewpoint.Viewpoint.Projection = ViewpointProjection.Orthographic;
+                savedViewpoint.Viewpoint.HeightField = 50;
 
-     
+
                 savedViewpoint.DisplayName = "Marker " + item.Id;
                 string viewPointComment = $"Creator: Holoone | {DateTime.Now.ToShortDateString()}\r\nAnchor";
                 savedViewpoint.Comments.Add(new Comment(viewPointComment, CommentStatus.New, "Holoone"));
