@@ -1,6 +1,5 @@
 ﻿using Autodesk.Navisworks.Api;
 using Autodesk.Navisworks.Api.ComApi;
-using Autodesk.Navisworks.Api.Controls;
 using Autodesk.Navisworks.Api.DocumentParts;
 using Autodesk.Navisworks.Api.Interop.ComApi;
 using Autodesk.Navisworks.Api.Plugins;
@@ -12,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HolooneNavis.Services
@@ -35,9 +33,18 @@ namespace HolooneNavis.Services
                 //ModelItem rootItem = model.RootItem;
                 //items.Add(rootItem);
 
-                foreach (var model in models)
-                    items.Add(model.RootItem);
-                
+                if (null == Util.Anchors || Util.Anchors.Count == 0)
+                    foreach (var model in models)
+                        items.Add(model.RootItem);
+                else
+                {
+                    string[] anchorFiles = Util.Anchors.Select(x => x.FullName).ToArray();
+
+                    foreach (var model in models)
+                        if (!anchorFiles.Contains(Path.GetFileNameWithoutExtension(model.RootItem.DisplayName)))
+                            items.Add(model.RootItem);
+                }
+
                 return items;
             });
         }
@@ -53,15 +60,15 @@ namespace HolooneNavis.Services
 
             string basePath = Path.Combine(Path.GetTempPath(), "HolooneNavis");
             IEnumerable<ModelItem> allModelItems = bimLayers.Select(x => x.ModelItem);
-            
+
             if (!Directory.Exists(basePath))
                 Directory.CreateDirectory(basePath);
 
             string[] anchorFiles = Util.Anchors.Select(x => x.FullName).ToArray();
 
             //Add all the items that are visible to the visible collection
-            hidden = oDoc.Models.RootItems.Where(x=> !anchorFiles.Contains(Path.GetFileNameWithoutExtension(x.DisplayName))).SelectMany(x => x.DescendantsAndSelf).ToList();
-                  
+            hidden = oDoc.Models.RootItems.Where(x => !anchorFiles.Contains(Path.GetFileNameWithoutExtension(x.DisplayName))).SelectMany(x => x.DescendantsAndSelf).ToList();
+
             foreach (var layer in bimLayers.Where(x => x.ModelItem != null)) // && !string.IsNullOrEmpty(x.Name)))
             {
                 //Add all the items that are visible to the visible collection
@@ -96,7 +103,7 @@ namespace HolooneNavis.Services
                     //hide the remaining items
                     Application.ActiveDocument.Models.SetHidden(hidden, true);
                 }
-                
+
                 string fileName = getLayerName(layer);
 
                 layer.FilePath = Path.Combine(basePath, Path.GetFileNameWithoutExtension(fileName) + ".nwd");

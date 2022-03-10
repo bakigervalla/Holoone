@@ -40,7 +40,6 @@ namespace HolooneNavis.ViewModels.Export.BIM.Existing
             QueryNavisModel().AsResult();
         }
 
-
         #region navigation
 
         public string _state = "SelectLayer";

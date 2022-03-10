@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace HolooneNavis.ViewModels
 {
-    public class ShellViewModel : BaseViewModel //, IHandle<bool>, IHandle<ViewState>
+    public class ShellViewModel : BaseViewModel, IHandle<bool>
     {
         private readonly ILocalStorage _localeStorage;
 
