@@ -9,7 +9,7 @@ namespace HolooneNavis.Models
 
         public string Name { get; set; }
 
-        public float Radious { get; set; } = .20f;
+        public float Radious { get; set; } = .10f;
 
         public Point3D Point3D { get; set; }
 

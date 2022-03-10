@@ -5,7 +5,7 @@ namespace Holoone.Api.Helpers.Constants
 {
     public static class RequestConstants
     {
-        public const string API_VERSION = "1.0.3";
+        public const string API_VERSION = "1.0.4";
         public const string RootUrl = "https://dev.holo-one.com/";
         public const string BaseUrl = "https://dev.holo-one.com/core/";
         

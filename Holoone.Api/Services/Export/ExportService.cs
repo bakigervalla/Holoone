@@ -184,23 +184,25 @@ namespace Holoone.Api.Services
                 requestStream.Write(formItemBytes, 0, formItemBytes.Length);
             }
 
-            // add procesing parameters
-            if (processingParams != null)
-            {
-                var processingArgs = processingParams.GetProperties();
-                var items = processingArgs.SelectMany(x => x.AllKeys.SelectMany(x.GetValues, (k, v) => new { key = k, value = v }));
+            // Processing Parameters already included in the above statement as JSON object
 
-                foreach (var item in items)
-                {
-                    if (string.IsNullOrEmpty(item.key) || string.IsNullOrEmpty(item.value))
-                        break;
+            //// add procesing parameters
+            //if (processingParams != null)
+            //{
+            //    var processingArgs = processingParams.GetProperties();
+            //    var items = processingArgs.SelectMany(x => x.AllKeys.SelectMany(x.GetValues, (k, v) => new { key = k, value = v }));
 
-                    // Write item to stream
-                    byte[] formItemBytes = Encoding.UTF8.GetBytes(string.Format("Content-Disposition: form-data; name=\"{0}\";\r\n\r\n{1}", item.key, item.value));
-                    requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
-                    requestStream.Write(formItemBytes, 0, formItemBytes.Length);
-                }
-            }
+            //    foreach (var item in items)
+            //    {
+            //        if (string.IsNullOrEmpty(item.key) || string.IsNullOrEmpty(item.value))
+            //            break;
+
+            //        // Write item to stream
+            //        byte[] formItemBytes = Encoding.UTF8.GetBytes(string.Format("Content-Disposition: form-data; name=\"{0}\";\r\n\r\n{1}", item.key, item.value));
+            //        requestStream.Write(boundaryBytes, 0, boundaryBytes.Length);
+            //        requestStream.Write(formItemBytes, 0, formItemBytes.Length);
+            //    }
+            //}
 
             if (files != null)
             {

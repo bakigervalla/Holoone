@@ -2,6 +2,7 @@
 using Caliburn.Micro;
 using Holoone.Api.Models;
 using Holoone.Api.Services.Interfaces;
+using HolooneNavis.Helpers;
 using HolooneNavis.Models;
 using HolooneNavis.Services.Interfaces;
 using HolooneNavis.ViewModels.Home;
@@ -255,6 +256,9 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
                 await _eventAggregator.PublishOnUIThreadAsync(false);
 
                 MessageBox.Show("Uploaded successfully.");
+
+                if (Util.Anchors != null)
+                    Util.Anchors.Clear();
 
                 await NavigationService.GoTo<HomeViewModel>();
             }

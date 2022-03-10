@@ -4,6 +4,7 @@ using Holoone.Api.Models;
 using Holoone.Api.Services;
 using Holoone.Api.Services.Export;
 using Holoone.Api.Services.Interfaces;
+using HolooneNavis.Helpers;
 using HolooneNavis.Models;
 using HolooneNavis.Services.Interfaces;
 using HolooneNavis.ViewModels.Home;
@@ -73,6 +74,12 @@ namespace HolooneNavis.ViewModels.Export.Default
 
         public void NavigateToNavisSelectionPage()
         {
+            if (ProcessingParams.Overlay && (Util.Anchors == null || Util.Anchors.Count == 0))
+            {
+                MessageBox.Show("Please add anchors. \nAnchors are required when 'Overlay' option is active.");
+                return;
+            }
+
             State = "NavisSelection";
 
             QueryNavisModel().AsResult();
@@ -225,6 +232,9 @@ namespace HolooneNavis.ViewModels.Export.Default
                 await _eventAggregator.PublishOnUIThreadAsync(false);
 
                 MessageBox.Show("Uploaded successfully.");
+
+                if (Util.Anchors != null)
+                    Util.Anchors.Clear();
 
                 await NavigationService.GoTo<HomeViewModel>();
 
