@@ -74,28 +74,22 @@ namespace HolooneNavis.ViewModels.Export.Default
 
         public void NavigateToNavisSelectionPage()
         {
-            if (ProcessingParams.Overlay && (Util.Anchors == null || Util.Anchors.Count == 0))
-            {
-                MessageBox.Show("Please add anchors. \nAnchors are required when 'Overlay' option is active.");
-                return;
-            }
-
             State = "NavisSelection";
 
-            QueryNavisModel().AsResult();
+            _ = QueryNavisModel().AsResult();
         }
 
         public void NavigateToFoldersPage()
         {
             if (BIMLayers.Count == 0)
             {
-                MessageBox.Show("Please, select a model");
+                _ = MessageBox.Show("Please, select a model");
                 return;
             }
 
             State = "FolderSelection";
 
-            GetFoldersAsync().AsResult();
+            _ = GetFoldersAsync().AsResult();
         }
 
         #endregion
@@ -218,7 +212,7 @@ namespace HolooneNavis.ViewModels.Export.Default
                         { "processing_params", JsonConvert.SerializeObject(ProcessingParams) },
                     };
 
-                    var valColl = new NameValueCollection
+                    NameValueCollection valColl = new NameValueCollection
                     {
                         { layer.FilePath, "" }
                     };
@@ -226,7 +220,7 @@ namespace HolooneNavis.ViewModels.Export.Default
                     await (await _exportService.EnsureTokenAsync(Instance.UserLogin)).ExportDefaultModelAndNewBIMAsync(Instance.UserLogin, valParts, valColl, ProcessingParams, "media/add/file/", "file");
                 }
 
-                foreach (var layer in BIMLayers)
+                foreach (BIMLayer layer in BIMLayers)
                     File.Delete(layer.FilePath);
 
                 await _eventAggregator.PublishOnUIThreadAsync(false);

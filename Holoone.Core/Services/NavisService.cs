@@ -35,14 +35,19 @@ namespace HolooneNavis.Services
 
                 if (null == Util.Anchors || Util.Anchors.Count == 0)
                     foreach (var model in models)
-                        items.Add(model.RootItem);
+                    {
+                        if (Path.GetFileNameWithoutExtension(model.RootItem.DisplayName).IndexOf("sphere_anchor") < 0)
+                            items.Add(model.RootItem);
+                    }
                 else
                 {
                     string[] anchorFiles = Util.Anchors.Select(x => x.FullName).ToArray();
 
                     foreach (var model in models)
-                        if (!anchorFiles.Contains(Path.GetFileNameWithoutExtension(model.RootItem.DisplayName)))
+                        if (!anchorFiles.Contains(Path.GetFileNameWithoutExtension(model.RootItem.DisplayName))
+                            && Path.GetFileNameWithoutExtension(model.RootItem.DisplayName).IndexOf("sphere_anchor") < 0)
                             items.Add(model.RootItem);
+
                 }
 
                 return items;
@@ -65,13 +70,12 @@ namespace HolooneNavis.Services
                 Directory.CreateDirectory(basePath);
 
             //Add all the items that are visible to the visible collection
-            if (Util.Anchors == null || Util.Anchors.Count == 0)
-                hidden = oDoc.Models.RootItems.SelectMany(x => x.DescendantsAndSelf).ToList();
-            else
-            {
-                string[] anchorFiles = Util.Anchors.Select(x => x.FullName).ToArray();
-                hidden = oDoc.Models.RootItems.Where(x => !anchorFiles.Contains(Path.GetFileNameWithoutExtension(x.DisplayName))).SelectMany(x => x.DescendantsAndSelf).ToList();
-            }
+            List<string> anchorFiles = new List<string> { "sphere_anchor_left", "sphere_anchor_right" };
+
+            if (Util.Anchors != null && Util.Anchors.Count > 0)
+                anchorFiles.AddRange(Util.Anchors.Select(x => x.FullName).ToArray());
+
+            hidden = oDoc.Models.RootItems.Where(x => !anchorFiles.Contains(Path.GetFileNameWithoutExtension(x.DisplayName))).SelectMany(x => x.DescendantsAndSelf).ToList();
 
             foreach (var layer in bimLayers.Where(x => x.ModelItem != null)) // && !string.IsNullOrEmpty(x.Name)))
             {
@@ -81,32 +85,42 @@ namespace HolooneNavis.Services
                 // if not the root item is selected find selected layer
                 if (oDoc.Models.RootItems.FirstOrDefault(x => x.DisplayName == layer.ModelItem.DisplayName) == null)
                 {
-                    if (!layer.ModelItem.IsLayer)
-                    {
-                        parents = layer.ModelItem.Ancestors;
-                        foreach (var parent in parents)
-                            visible.Add(parent);
+                    //if (!layer.ModelItem.IsLayer)
+                    //{
+                    parents = layer.ModelItem.Ancestors;
+                    foreach (var parent in parents)
+                        visible.Add(parent);
 
-                        foreach (var itm in layer.ModelItem.DescendantsAndSelf)
-                            visible.Add(itm);
-                    }
-                    else
-                    {
-                        //Add all the items that are visible to the visible collection
-                        // hidden.AddRange(layer.ModelItem.Ancestors.Last().DescendantsAndSelf.ToList());
+                    foreach (var itm in layer.ModelItem.DescendantsAndSelf)
+                        visible.Add(itm);
+                    //}
+                    //else
+                    //{
+                    //    //Add all the items that are visible to the visible collection
+                    //    // hidden.AddRange(layer.ModelItem.Ancestors.Last().DescendantsAndSelf.ToList());
 
-                        visible = hidden.Where(x => x.InstanceHashCode == layer.ModelItem.InstanceHashCode).SelectMany(x => x.DescendantsAndSelf).ToList();
-                    }
+                    //    visible = hidden.Where(x => x.InstanceHashCode == layer.ModelItem.InstanceHashCode).SelectMany(x => x.DescendantsAndSelf).ToList();
+                    //}
 
                     foreach (var itm in visible)
                         hidden.Remove(itm);
-
-                    //Assign the ModelItemCollection to the selection
-                    Application.ActiveDocument.CurrentSelection.CopyFrom(visible);
-
-                    //hide the remaining items
-                    Application.ActiveDocument.Models.SetHidden(hidden, true);
                 }
+                else
+                    foreach (var itm in layer.ModelItem.DescendantsAndSelf)
+                        hidden.Remove(itm);
+
+                //foreach (Model model in models)
+                //{
+                //    ModelItem rootItem = model.RootItem;
+                //    ModelItemEnumerableCollection modelItems = rootItem.DescendantsAndSelf;
+                //    oDoc.Models.SetHidden(modelItems, false);
+                //}
+
+                //Assign the ModelItemCollection to the selection
+                Application.ActiveDocument.CurrentSelection.CopyFrom(visible);
+
+                //hide the remaining items
+                Application.ActiveDocument.Models.SetHidden(hidden, true);
 
                 string fileName = getLayerName(layer);
 
@@ -117,13 +131,6 @@ namespace HolooneNavis.Services
                 oDoc.PublishFile(layer.FilePath, GetPublishProperties(fileName));
 
                 oDoc.CurrentSelection.Clear();
-
-                foreach (Model model in models)
-                {
-                    ModelItem rootItem = model.RootItem;
-                    ModelItemEnumerableCollection modelItems = rootItem.DescendantsAndSelf;
-                    oDoc.Models.SetHidden(modelItems, false);
-                }
             }
 
             return bimLayers;
