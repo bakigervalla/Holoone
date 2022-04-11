@@ -254,7 +254,7 @@ namespace HolooneNavis.ViewModels.Export.BIM.Existing
                 foreach (var itm in layersToUpdate)
                 {
                     layers_to_update.Append(separator);
-                    layers_to_update.Append("\""+itm.Key+"\"");
+                    layers_to_update.Append("\"" + itm.Key + "\"");
                     layers_to_update.Append(":");
                     layers_to_update.Append(itm.Value);
                     separator = ",";

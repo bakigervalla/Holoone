@@ -14,7 +14,7 @@ namespace HolooneNavis.Services.Interfaces
         Task<ModelItemCollection> GetLayers();
         void DeleteDocument(string docName);
 
-        IList<BIMLayer> ExportToNWD(IList<BIMLayer> bimLayers);
+        IList<BIMLayer> ExportToNWD(IList<BIMLayer> bimLayersw);
         IList<BIMLayer> ExportToFBX(IList<BIMLayer> bimLayers);
     }
 }

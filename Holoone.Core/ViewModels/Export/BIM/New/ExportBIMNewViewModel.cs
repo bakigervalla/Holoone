@@ -122,16 +122,6 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
             }
         }
 
-        private string getLayerName(ModelItem model)
-        {
-            if (!string.IsNullOrEmpty(model.DisplayName))
-                return model.DisplayName;
-            else if (string.IsNullOrEmpty(model.Descendants.FirstOrDefault()?.DisplayName))
-                return model.Descendants.FirstOrDefault()?.DisplayName;
-            else
-                return model.ClassDisplayName;
-        }
-
         public void SaveBIMModelAndLayers()
         {
             // save new model
@@ -231,7 +221,6 @@ namespace HolooneNavis.ViewModels.Export.BIM.New
                 await _eventAggregator.PublishOnUIThreadAsync(true);
 
                 //* BIMLayers = new ObservableCollection<BIMLayer>(_navisService.ExportToFBX(BIMLayers));
-
                 BIMLayers = new ObservableCollection<BIMLayer>(_navisService.ExportToNWD(BIMLayers));
 
                 var valParts = new NameValueCollection

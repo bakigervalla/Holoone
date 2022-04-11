@@ -6,6 +6,7 @@ using HolooneNavis.Helpers;
 using HolooneNavis.Models;
 using HolooneNavis.Services;
 using HolooneNavis.Services.Interfaces;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
@@ -135,6 +136,13 @@ namespace HolooneNavis.ViewModels.Anchors
         {
             SelectedMarker = message as Marker;
             SelectedMarker.Id = (Anchors.Count + 1).ToString();
+
+            var parentModels = SelectedMarker.ModelItem.Ancestors;
+            List<ModelItem> parents= new();
+            foreach (var parent in parentModels)
+                parents.Add(parent);
+
+            SelectedAnchor.ParentDocument = parents.First(x => x.ClassDisplayName.Equals("File", System.StringComparison.OrdinalIgnoreCase) && x.Parent == null)?.DisplayName;
 
             var vrmlPath = Util.MarkerPath(SelectedAnchor.FullName);
             MarkerSphereCreator.CreateMarkerSphere(vrmlPath, SelectedMarker);
