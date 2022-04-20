@@ -4,6 +4,7 @@ using Autodesk.Navisworks.Api.DocumentParts;
 using Autodesk.Navisworks.Api.Interop.ComApi;
 using Autodesk.Navisworks.Api.Plugins;
 using Autodesk.Navisworks.Internal.ApiImplementation;
+using Holoone.Api.Models;
 using HolooneNavis.Helpers;
 using HolooneNavis.Models;
 using HolooneNavis.Services.Interfaces;
@@ -69,14 +70,16 @@ namespace HolooneNavis.Services
             if (!Directory.Exists(basePath))
                 Directory.CreateDirectory(basePath);
 
+            bool isRootModel = false;
+
             foreach (var layer in bimLayers.Where(x => x.ModelItem != null))
             {
-                //hidden = oDoc.Models.RootItems.Where(x => !anchorFiles.Contains(Path.GetFileNameWithoutExtension(x.DisplayName))).SelectMany(x => x.DescendantsAndSelf).ToList();
-
                 hidden = oDoc.Models.RootItems.SelectMany(x => x.DescendantsAndSelf).ToList();
 
                 // if not the root item is selected find selected layer
-                if (oDoc.Models.RootItems.FirstOrDefault(x => x.DisplayName == layer.ModelItem.DisplayName) == null)
+                isRootModel = oDoc.Models.RootItems.FirstOrDefault(x => x.DisplayName == layer.ModelItem.DisplayName) == null;
+
+                if (isRootModel)
                 {
                     //if (!layer.ModelItem.IsLayer)
                     //{
@@ -95,18 +98,7 @@ namespace HolooneNavis.Services
                         hidden.Remove(itm);
 
                 // anchors visibility
-                foreach (var anchor in Util.Anchors)
-                {
-                    if (anchor.ParentDocument == layer.ModelItem.DisplayName)
-                    {
-                        var anchors = oDoc.Models.RootItems.FirstOrDefault(x => anchor.FullName == Path.GetFileNameWithoutExtension(x.DisplayName)).DescendantsAndSelf;
-                        foreach (var itm in anchors)
-                            hidden.Remove(itm);
-                    }
-                }
-
-                //Assign the ModelItemCollection to the selection
-                //Application.ActiveDocument.CurrentSelection.CopyFrom(visible);
+                getModelAnchors(oDoc, isRootModel, layer, hidden);
 
                 //hide the remaining items
                 Application.ActiveDocument.Models.SetHidden(hidden, true);
@@ -116,12 +108,12 @@ namespace HolooneNavis.Services
                 layer.FilePath = Path.Combine(basePath, Path.GetFileNameWithoutExtension(fileName) + ".nwd");
 
                 //Save the Navisworks file
-                // oDoc.SaveFile(layer.FilePath);
                 oDoc.PublishFile(layer.FilePath, GetPublishProperties(fileName));
 
                 Application.ActiveDocument.Models.SetHidden(hidden, false);
 
                 oDoc.CurrentSelection.Clear();
+                visible.Clear();
             }
 
             // make everything visible
@@ -133,6 +125,23 @@ namespace HolooneNavis.Services
             }
 
             return bimLayers;
+        }
+
+        private void getModelAnchors(Document oDoc, bool isRootModel, BIMLayer layer, List<ModelItem> hidden)
+        {
+            foreach (var anch in oDoc.Models.RootItems.Where(x => x.DisplayName.Contains("anchor")))
+                if (Util.Anchors.Count(x => x.FullName == Path.GetFileNameWithoutExtension(anch.DisplayName)) == 0)
+                    Util.Anchors.Add(new Anchor
+                    {
+                        FullName = Path.GetFileNameWithoutExtension(anch.DisplayName),
+                        ParentDocument = anch.FindFirstObjectAncestor()?.DisplayName
+                    });
+
+            foreach (var anchor in Util.Anchors.Where(x => x.ParentDocument == layer.ModelItem.DisplayName || string.IsNullOrEmpty(x.ParentDocument)))
+            {
+                foreach (var itm in oDoc.Models.RootItems.Where(x => anchor.FullName == Path.GetFileNameWithoutExtension(x.DisplayName)).SelectMany(x=> x.DescendantsAndSelf))
+                    hidden.Remove(itm);
+            }
         }
 
         private string getLayerName(BIMLayer layer)

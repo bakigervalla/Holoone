@@ -44,7 +44,7 @@ namespace HolooneNavis.Views.Export.BIM
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (BIMNewViewModel.SelectedModelItem == null && BIMExistingViewModel.SelectedModelItem == null)
+            if (BIMNewViewModel?.SelectedModelItem == null && BIMExistingViewModel?.SelectedModelItem == null)
             {
                 MessageBox.Show("Model item was not selected. Please select a model");
                 return;

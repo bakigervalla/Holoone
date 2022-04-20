@@ -109,7 +109,7 @@ namespace HolooneNavis.Helpers
         }
         #endregion // Formatting
 
-        public static ObservableCollection<Anchor> Anchors { get; set; }
+        public static ObservableCollection<Anchor> Anchors { get; set; } = new ObservableCollection<Anchor>();
 
         public static string GetDeviceIdentifier(DeviceType device)
         {

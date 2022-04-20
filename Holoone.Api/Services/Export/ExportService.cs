@@ -26,7 +26,6 @@ namespace Holoone.Api.Services
         public IList<OFile> ListofFiles { get; set; }
     }
 
-
     public class OFile
     {
 

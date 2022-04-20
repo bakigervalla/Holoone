@@ -137,12 +137,12 @@ namespace HolooneNavis.ViewModels.Anchors
             SelectedMarker = message as Marker;
             SelectedMarker.Id = (Anchors.Count + 1).ToString();
 
-            var parentModels = SelectedMarker.ModelItem.Ancestors;
-            List<ModelItem> parents= new();
-            foreach (var parent in parentModels)
-                parents.Add(parent);
+            //var parentModels = SelectedMarker.ModelItem.Ancestors;
+            //List<ModelItem> parents= new();
+            //foreach (var parent in parentModels)
+            //    parents.Add(parent);
 
-            SelectedAnchor.ParentDocument = parents.First(x => x.ClassDisplayName.Equals("File", System.StringComparison.OrdinalIgnoreCase) && x.Parent == null)?.DisplayName;
+            SelectedAnchor.ParentDocument = SelectedMarker.ModelItem.FindFirstObjectAncestor()?.DisplayName; // parents.First(x => x.ClassDisplayName.Equals("File", System.StringComparison.OrdinalIgnoreCase) && x.Parent == null)?.DisplayName;
 
             var vrmlPath = Util.MarkerPath(SelectedAnchor.FullName);
             MarkerSphereCreator.CreateMarkerSphere(vrmlPath, SelectedMarker);

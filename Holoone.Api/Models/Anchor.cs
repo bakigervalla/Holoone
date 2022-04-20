@@ -7,7 +7,9 @@ namespace Holoone.Api.Models
     {
         [Required(ErrorMessage = "Anchor Name is required")]
         public string Name { get; set; }
-        public string FullName { get { return $"sphere_anchor_{Name}"; } }
+
+        private string _fullName;
+        public string FullName { get { return string.IsNullOrEmpty(_fullName) ? $"sphere_anchor_{Name}" : _fullName ; } set { _fullName = value; } }
 
         public string ParentDocument { get; set; }
         [JsonIgnore]
