@@ -137,7 +137,15 @@ namespace HolooneNavis.Services
                         ParentDocument = anch.FindFirstObjectAncestor()?.DisplayName
                     });
 
-            foreach (var anchor in Util.Anchors.Where(x => x.ParentDocument == layer.ModelItem.DisplayName || string.IsNullOrEmpty(x.ParentDocument)))
+            var parentModels = layer.ModelItem.Ancestors;
+            List<ModelItem> parents = new();
+            foreach (var parent in parentModels)
+                parents.Add(parent);
+
+            string layerParnetName = parents.FirstOrDefault(x => x.ClassDisplayName.Equals("File", System.StringComparison.OrdinalIgnoreCase) && x.Parent == null)?.DisplayName;
+
+            //foreach (var anchor in Util.Anchors.Where(x => x.ParentDocument == layer.ModelItem.DisplayName || string.IsNullOrEmpty(x.ParentDocument)))
+            foreach (var anchor in Util.Anchors.Where(x => x.ParentDocument == layerParnetName || string.IsNullOrEmpty(layerParnetName)))
             {
                 foreach (var itm in oDoc.Models.RootItems.Where(x => anchor.FullName == Path.GetFileNameWithoutExtension(x.DisplayName)).SelectMany(x=> x.DescendantsAndSelf))
                     hidden.Remove(itm);
